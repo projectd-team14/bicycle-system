@@ -67,3 +67,69 @@ uvicorn api:app --host=0.0.0.0 --port=9000
 Ctrl + C
 exit
 ```
+  
+## APIの仕様
+・ユーザー登録
+```
+POST: http://localhost:8000/api/register
+{
+  "name" : "0000"
+  "email" : "0000@example.com",
+  "password" : "0000example"
+}
+```
+・ログイン
+```
+POST: http://localhost:8000/api/login
+{
+  "email" : "0000@example.com",
+  "password" : "0000example"
+}
+```
+・登録（駐輪場、カメラ、ラベル範囲）
+```
+POST: http://localhost:8000/api/store_spot/ユーザーID
+{
+  "spots_name" : "文教大学駐輪場A",
+  "spots_address" : "神奈川県茅ケ崎市行谷1100",
+  "spots_img" : "画像のアップロード"
+}
+POST: http://localhost:8000/api/store_camera/駐輪場ID
+{
+  "spots_name" : "カメラA",
+  "spots_url" : "YoutubeURL、動画URL",
+  "spots_address" : "神奈川県茅ケ崎市行谷1100"
+}
+POST: http://localhost:8000/api/labels/駐輪場ID
+{
+  "label_mark" : "A",
+  "label_point1X" : 0,
+  "label_point1Y" : 350,
+  "label_point2X" : 0,
+  "label_point2Y" : 600,
+  "label_point3X" : 625,
+  "label_point3Y" : 675,
+  "label_point4X" : 700,
+  "label_point4Y" : 600
+}
+```
+・スタート
+```
+POST: http://localhost:8000/api/start/カメラID
+```
+・ストップ
+```
+POST: http://localhost:8000/api/stop/カメラID
+```
+
+
+
+
+
+
+
+
+
+
+
+
