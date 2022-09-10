@@ -9,7 +9,7 @@ bicycle_system
   │─ projectd_laravel8(バックエンド)
   │─ projectd_nuxt3(フロントエンド)
   │─ projectd_python3(PythonAPIとYOLOv5)
-  └─ sql_sample(テスト用データベース)
+  └─ sql_sample(テスト用SQL)
 ```
 
 ## 環境構築
