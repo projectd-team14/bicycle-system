@@ -1,9 +1,19 @@
 # YOLOv5を用いた駐輪場管理業務支援システム(bicycle_system)
 Bicycle parking lot management system using YOLOv5
 ※本プロジェクトはDockerコンテナを3つ使用して、ローカルサーバーを3台起動させるため非常に重いです。(とくにPython用サーバーが重い)
+  
+## ディレクトリ構成  
+```
+bicycle_system
+　│─ open_pages(一般ユーザー向けのGISページ)
+  │─ projectd_laravel8(バックエンド)
+  │─ projectd_nuxt3(フロントエンド)
+  │─ projectd_python3(PythonAPIとYOLOv5)
+  └─ sql_sample(テスト用データベース)
+```
 
 ## 環境構築
-・Docker(必須)
+・Docker(必須)  
 ・Postman(APIテスト用、必須ではない)
 
 1.リポジトリのclone
@@ -42,9 +52,18 @@ docker container exec -it projectd_docker_python3-python3-1 bash
 cd src
 pip install -r requirements.txt
 ```
-5-2.恐らくライブラリをインストールした後サーバーを起動すると正常に機能しません（エラーは出ないけどYOLOが動いていない状態になる）。 そこでpythonのライブラリを一部コメントアウトする必要がある。
+5-2.恐らくライブラリをインストールした後サーバーを起動すると正常に機能しません（エラーは出ないけどYOLOが動いていない状態になる）。 そこでvim等でコンテナ内にあるpythonのライブラリを一部コメントアウトする必要がある。
 ```
 2行をコメントアウト↓
  File "/usr/local/lib/python3.10/site-packages/pafy/backend_youtube_dl.py", line 53
  File "/usr/local/lib/python3.10/site-packages/pafy/backend_youtube_dl.py", line 54
+```
+5-3.srcディレクトリに戻りサーバーを起動
+```
+uvicorn api:app --host=0.0.0.0 --port=9000
+```
+6.終了コマンド
+```
+Ctrl + C
+exit
 ```
