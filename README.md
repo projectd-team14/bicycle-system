@@ -17,7 +17,7 @@ bicycle_system
 ・Nuxt.js(TypeScript,Sass)  
 ・Laravel(PHP)  
 ・YOLOv5(Python)
-・Node.js
+・Node.js  
 〇使用ツール  
 ・Docker(必須)  
 ・Postman(APIテスト用、必須ではない)
