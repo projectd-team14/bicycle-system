@@ -13,6 +13,11 @@ bicycle_system
 ```
 
 ## 環境構築
+〇使用フレームワーク、言語等  
+・Nuxt.js(TypeScript,Vue,Sass)  
+・Laravel(PHP)  
+・YOLOv5(Python)  
+〇使用ツール  
 ・Docker(必須)  
 ・Postman(APIテスト用、必須ではない)
 
