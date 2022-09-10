@@ -1,7 +1,7 @@
 # YOLOv5を用いた駐輪場管理業務支援システム(bicycle_system)
 Bicycle parking lot management system using YOLOv5
 ※本プロジェクトはDockerコンテナを3つ使用して、ローカルサーバーを3台起動させるため非常に重いです。(とくにPython用サーバーが重い)
-  
+    
 ## ディレクトリ構成  
 ```
 bicycle_system
