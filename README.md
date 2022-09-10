@@ -13,14 +13,15 @@ bicycle_system
 ```
 
 ## 環境構築
-〇使用フレームワーク、言語等  
+〇主要フレームワーク,ライブラリ,言語等  
 ・Nuxt.js(TypeScript,Vue,Sass)  
 ・Laravel(PHP)  
-・YOLOv5(Python)  
+・YOLOv5(Python)
+・Leaflet(JavaScript)
 〇使用ツール  
 ・Docker(必須)  
 ・Postman(APIテスト用、必須ではない)
-
+  
 1.リポジトリのclone
 ```
 git clone https://github.com/projectd-team14/bicycle_system.git
