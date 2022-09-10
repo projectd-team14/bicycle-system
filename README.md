@@ -48,11 +48,11 @@ docker compose up -d --build
 docker-compose exec app sh
 yarn install
 ```
-4-2サーバーを起動
+4-2.サーバーを起動
 ```
 yarn dev
 ```
-5-1projectd_python3のコンテナに接続(projectd_python3ディレクトリで行う)
+5-1.projectd_python3のコンテナに接続(projectd_python3ディレクトリで行う)
 ```
 docker container exec -it projectd_docker_python3-python3-1 bash
 cd src
