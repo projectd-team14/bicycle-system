@@ -1,5 +1,8 @@
 # YOLOv5を用いた駐輪場管理業務支援システム(bicycle_system)
 Bicycle parking lot management system using YOLOv5  
+〇連携前の個別リポジトリ
+・[フロントエンド](https://github.com/Ban-c0p31073/Pro14_Nuet)
+・[バックエンド](https://github.com/Ban-c0p31073/Pro14_Nuet)
 ※本プロジェクトはDockerコンテナを3つ使用して、ローカルサーバーを3台起動させるため非常に重いです。(とくにPython用サーバーが重い)
     
 ## ディレクトリ構成  
