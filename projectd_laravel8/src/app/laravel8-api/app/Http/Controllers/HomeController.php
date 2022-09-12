@@ -448,5 +448,15 @@ class HomeController extends Controller
         }
         return $spot_lis_all;
     }
+
+    //TGS用のバグ修正ボタン、YOLOが起動してるけど動かない時に押してください
+    public function reset(){
+        $reset_cameras = Camera::where('cameras_status','Run_process')->orWhere('cameras_status','Run')->get();
+        for ($i=0; $i<count($reset_cameras); $i++){
+            Camera::where('cameras_id', $reset_cameras[$i]['cameras_id'])->update(['cameras_status'=>'None']); 
+            bicycle::where('cameras_id', $reset_cameras[$i]['cameras_id'])->delete();
+        }
+        return '強制終了';
+    }
 }
 

@@ -234,7 +234,7 @@ def detect(opt):
             db_lis_last = cur.fetchall()
             conn.commit()
             cur.close()
-            if 'Stop' in db_lis_last[0][2]:
+            if 'Stop' in db_lis_last[0][2] or 'None' in db_lis_last[0][2]:
                 cur = conn.cursor(buffered=True)
                 sql = ("UPDATE cameras SET cameras_status = %s WHERE cameras_id = %s")
                 param2 = ('None',camera_id)
@@ -289,7 +289,7 @@ def detect(opt):
                     cur.execute("SELECT cameras_id, cameras_name, cameras_status FROM cameras WHERE cameras_id = '%s'" % camera_id)
                     db_lis_last = cur.fetchall()
 
-                    if 'Stop' in db_lis_last[0][2]:
+                    if 'Stop' in db_lis_last[0][2] or 'None' in db_lis_last[0][2]:
                         cur = conn.cursor(buffered=True)
                         sql = ("UPDATE cameras SET cameras_status = %s WHERE cameras_id = %s")
                         param2 = ('None',camera_id)

@@ -27,12 +27,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/get_spot/{id}', [HomeController::class, 'get_spot']);
 Route::get('/get_all/{id}', [HomeController::class, 'get_all']);
 Route::get('/open_api', [HomeController::class, 'open_api']);
+Route::get('/reset', [HomeController::class, 'reset']);
 
+//認証
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//認証
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);

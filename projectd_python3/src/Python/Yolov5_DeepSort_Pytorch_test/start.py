@@ -15,7 +15,7 @@ print(conn.is_connected())
 cur = conn.cursor(buffered=True)
 cur.execute("SELECT cameras_id, cameras_name, cameras_status, cameras_url FROM cameras")
 db_lis = cur.fetchall()
-print(db_lis[0])
+print(db_lis)
 # DB操作終了
 cur.close()
 for i in range(len(db_lis)):
