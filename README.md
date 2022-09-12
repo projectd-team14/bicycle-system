@@ -57,7 +57,7 @@ yarn dev
 ```
 5-1.projectd_python3のコンテナに接続(projectd_python3ディレクトリで行う)
 ```
-docker container exec -it projectd_docker_python3-python3-1 bash
+docker container exec -it projectd_python3-python3-1 bash
 cd src
 pip install -r requirements.txt
 ```
