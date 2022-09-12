@@ -61,6 +61,11 @@ docker container exec -it projectd_python3-python3-1 bash
 cd src
 pip install -r requirements.txt
 ```
+※9/12追記:OpenCVのエラー回避
+```
+pip uninstall -y opencv-python
+pip install opencv-python-headless
+```
 5-2.恐らくライブラリをインストールした後サーバーを起動すると正常に機能しません（エラーは出ないけどYOLOが動いていない状態になる）。 そこでvim等でコンテナ内にあるpythonのライブラリを一部コメントアウトする必要がある。
 ```
 2行をコメントアウト↓
