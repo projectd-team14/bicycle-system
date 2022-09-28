@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <h1>動作確認</h1>
+    <p>初コミット</p>
     <h1>ログイン：{{loginUser.user.name}}</h1>
     <v-btn @click="userLogout">ログアウト</v-btn>
   </v-container>
