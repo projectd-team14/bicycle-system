@@ -71,7 +71,7 @@ class HomeController extends Controller
              'spots_over_time' => 3600,
              'spots_img' => '画像のパスが入ります',
         ]);
-        
+
         return $data;
     }
      //カメラを登録,idはspots_id
@@ -93,13 +93,12 @@ class HomeController extends Controller
         $data = $request->all();
         $mark = $data['label_mark'];
         $data_str = json_encode($data);
-
-        //$jsonObject=json_decode(file_get_contents($data),true);
         $label_data = Label::insertGetId([
             'cameras_id' => $id,
             'labels_json' => $data_str,
 
         ]);
+
         return  "ラベリングデータ $mark を登録しました";
     }
 
@@ -122,20 +121,24 @@ class HomeController extends Controller
      */
     public function edit_spot($id){
         $cameras = Spot::where('users_id', $id)->get();
+
         return $cameras;
     }
 
     public function edit_camera($id){
         $cameras = Camera::where('spots_id', $id)->get();
+
         return $cameras;
     }
 
     public function violation($id){
         $violation_bicycles = Violation::where('cameras_id', $id)->get();
+
         return $violation_bicycles;
     }
     public function bicycle($id){
         $violation_bicycles = Bicycle::where('cameras_id', $id)->get();
+
         return $violation_bicycles;
     }
 
@@ -161,17 +164,20 @@ class HomeController extends Controller
     {
         //
     }
+
     public function delete_spot(Request $request, $id)
     {
         $inputs = $request->all();
          Spot::where('spots_id', $id)->delete();
          Camera::where('spots_id', $id)->delete();
+
         return "削除完了";
     }
     public function delete_camera(Request $request, $id)
     {
         $inputs = $request->all();
          Camera::where('cameras_id', $id)->delete();
+
         return "削除完了";
     }
 
@@ -181,19 +187,19 @@ class HomeController extends Controller
         $inputs = $request->all();
         $cameras = Camera::where('cameras_id', $id)->get();
         $camera_lis =  json_decode($cameras , true); 
-        //判定
         if ($cameras[0]["cameras_status"]=="Run" or $cameras[0]["cameras_status"]=="Run_process" or $cameras[0]["cameras_status"]=="Start"){
             return "処理中です";
         }else if ($cameras[0]["cameras_status"]=="None"){
            Camera::where('cameras_id', $id)->update(['cameras_status'=>'Start']);
            //PythonAPI
            $url = "host.docker.internal:9000";
-           $conn = curl_init(); #cURLセッションの初期化
-           curl_setopt($conn, CURLOPT_URL, $url); #取得するURLを指定
-           curl_setopt($conn, CURLOPT_RETURNTRANSFER, true); #実行結果を文字列で返す。
+           $conn = curl_init();
+           curl_setopt($conn, CURLOPT_URL, $url);
+           curl_setopt($conn, CURLOPT_RETURNTRANSFER, true);
            $res =  curl_exec($conn);
            var_dump($res);
-           curl_close($conn); #セッションの終了
+           curl_close($conn);
+
            return "処理を開始します";
         }
     }
@@ -203,12 +209,13 @@ class HomeController extends Controller
         $inputs = $request->all();
         $cameras = Camera::where('cameras_id', $id)->get();
         $camera_lis =  json_decode($cameras , true); 
-        //判定
         if ($cameras[0]["cameras_status"]=="Run_process"){
            Camera::where('cameras_id', $id)->update(['cameras_status'=>'Stop']); 
+
            return '処理を停止します';
         }else if ($cameras[0]["cameras_status"]=="Start" or $cameras[0]["cameras_status"]=="Stop"){
             Camera::where('cameras_id', $id)->update(['cameras_status'=>'None']);
+
             return '無効な処理です';
         }
         else{
@@ -220,17 +227,14 @@ class HomeController extends Controller
     public function test()
     {
         $test = "Apiの動作テスト";
+
         return $test;
     }
 
-
-       //ここから本番用
     //駐輪情報
     public function get_spot($id){
-        //DB
         $spots = Spot::where('spots_id', $id)->get();
         $bicycles = Bicycle::where('spots_id', $id)->get();
-
         $day1_str = explode(",",$spots[0]["spots_count_day1"]);
         $day1_int = array_map('intval', $day1_str);
         $day1_count = count($day1_int);
@@ -243,7 +247,6 @@ class HomeController extends Controller
         $month3_str = explode(",",$spots[0]["spots_count_month3"]);
         $month3_int = array_map('intval', $month3_str);
         $month3_count = count($month3_int);
-        //json化
         $data_day1 = [
             "label" => "1日間",
             "backgroundColor" => "#f87979",
@@ -274,7 +277,6 @@ class HomeController extends Controller
             $data_month1,
             $data_month3
         ];
-
         //numberChartData
         $day1_data = [0,0,0,0,0,0,0,0,0,0,0];
         $week1_data = [0,0,0,0,0,0,0,0,0,0,0];
@@ -282,7 +284,6 @@ class HomeController extends Controller
         $month3_data = [0,0,0,0,0,0,0,0,0,0,0];
         $time_bicycle_lis=[];
         for($i=0;$i<count($bicycles);$i++){
-            //放置時間(秒)
             $time_bicycle = strtotime($bicycles[$i]['updated_at'])-strtotime($bicycles[$i]['created_at']);
             for($i2=0;$i2<count($data_day1);$i2++){
                 if ($time_bicycle>=($i2)*3600 and $time_bicycle<($i2+1)*3600){
@@ -290,7 +291,6 @@ class HomeController extends Controller
                 }
             }
         }
-
         $data_day1 = [
             "label" => "1日間",
             "backgroundColor" => "#f87979",
@@ -332,7 +332,6 @@ class HomeController extends Controller
         for($i=0;$i<count($users);$i++){
             array_push($spots_id_lis,$users[$i]['spots_id']); 
         }
-
         for($i3=0;$i3<count($spots_id_lis);$i3++){
             $spots_id= $spots_id_lis[$i3];
             $spots = Spot::where('spots_id', $spots_id)->get();
@@ -424,6 +423,7 @@ class HomeController extends Controller
         return $spots_data_all;
 
     }
+
     public function open_api(){
         $spots = Spot::get();
         $spot_lis_all = [];
@@ -444,6 +444,7 @@ class HomeController extends Controller
             ];
             array_push($spot_lis_all,$spot_lis);
         }
+
         return $spot_lis_all;
     }
 
@@ -454,6 +455,7 @@ class HomeController extends Controller
             Camera::where('cameras_id', $reset_cameras[$i]['cameras_id'])->update(['cameras_status'=>'None']); 
             bicycle::where('cameras_id', $reset_cameras[$i]['cameras_id'])->delete();
         }
+        
         return '強制終了';
     }
 }
