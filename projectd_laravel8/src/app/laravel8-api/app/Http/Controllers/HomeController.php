@@ -19,6 +19,7 @@ class HomeController extends Controller
     {
         $user = \Auth::user();
         $cameras = Camera::where('users_id', $user['id'])->get();
+
         return view('home', compact('user', 'cameras','camera'));
     }
 
@@ -54,13 +55,13 @@ class HomeController extends Controller
         }
         fclose($fp);
         $xml = simplexml_load_string($line);
-        $insert_long = (string) $xml->coordinate->lng;
-        $insert_lat= (string) $xml->coordinate->lat;
-        $spot_id = Spot::insertGetId([
+        $insertLong = (string) $xml->coordinate->lng;
+        $insertLat= (string) $xml->coordinate->lat;
+        $spotId = Spot::insertGetId([
              'spots_name' => $data['spots_name'],
              'users_id' => $id, 
-             'spots_longitude' => $insert_long, 
-             'spots_latitude' => $insert_lat,
+             'spots_longitude' => $insertLong, 
+             'spots_latitude' => $insertLat,
              'spots_address' => $data['spots_address'],
              'spots_status' => 'None',
              'spots_count_day1' => 'None',
@@ -78,7 +79,7 @@ class HomeController extends Controller
     public function store_camera(Request $request, $id)
     {
         $data = $request->all();
-        $camera_id = Camera::insertGetId([
+        $cameraId = Camera::insertGetId([
              'cameras_name' => $data['cameras_name'],
              'spots_id' => $id, 
              'cameras_url' => $data['cameras_url'],
@@ -92,10 +93,10 @@ class HomeController extends Controller
     {
         $data = $request->all();
         $mark = $data['label_mark'];
-        $data_str = json_encode($data);
+        $dataStr = json_encode($data);
         $label_data = Label::insertGetId([
             'cameras_id' => $id,
-            'labels_json' => $data_str,
+            'labels_json' => $dataStr,
 
         ]);
 
@@ -132,14 +133,15 @@ class HomeController extends Controller
     }
 
     public function violation($id){
-        $violation_bicycles = Violation::where('cameras_id', $id)->get();
+        $violationBicycles = Violation::where('cameras_id', $id)->get();
 
-        return $violation_bicycles;
+        return $violationBicycles;
     }
+    
     public function bicycle($id){
-        $violation_bicycles = Bicycle::where('cameras_id', $id)->get();
+        $bicycles = Bicycle::where('cameras_id', $id)->get();
 
-        return $violation_bicycles;
+        return $bicycles;
     }
 
     /**
@@ -186,7 +188,7 @@ class HomeController extends Controller
     {
         $inputs = $request->all();
         $cameras = Camera::where('cameras_id', $id)->get();
-        $camera_lis =  json_decode($cameras , true); 
+        $cameraLis =  json_decode($cameras , true); 
         if ($cameras[0]["cameras_status"]=="Run" or $cameras[0]["cameras_status"]=="Run_process" or $cameras[0]["cameras_status"]=="Start"){
             return "処理中です";
         }else if ($cameras[0]["cameras_status"]=="None"){
@@ -208,7 +210,7 @@ class HomeController extends Controller
     {
         $inputs = $request->all();
         $cameras = Camera::where('cameras_id', $id)->get();
-        $camera_lis =  json_decode($cameras , true); 
+        $cameraLis =  json_decode($cameras , true); 
         if ($cameras[0]["cameras_status"]=="Run_process"){
            Camera::where('cameras_id', $id)->update(['cameras_status'=>'Stop']); 
 
@@ -235,149 +237,150 @@ class HomeController extends Controller
     public function get_spot($id){
         $spots = Spot::where('spots_id', $id)->get();
         $bicycles = Bicycle::where('spots_id', $id)->get();
-        $day1_str = explode(",",$spots[0]["spots_count_day1"]);
-        $day1_int = array_map('intval', $day1_str);
-        $day1_count = count($day1_int);
-        $week1_str = explode(",",$spots[0]["spots_count_week1"]);
-        $week1_int = array_map('intval', $week1_str);
-        $week1_count = count($week1_int);
-        $month1_str = explode(",",$spots[0]["spots_count_month1"]);
-        $month1_int = array_map('intval', $month1_str);
-        $month1_count = count($month1_int);
-        $month3_str = explode(",",$spots[0]["spots_count_month3"]);
-        $month3_int = array_map('intval', $month3_str);
-        $month3_count = count($month3_int);
-        $data_day1 = [
+        $day1Str = explode(",",$spots[0]["spots_count_day1"]);
+        $day1Int = array_map('intval', $day1Str);
+        $day1Count = count($day1Int);
+        $week1Str = explode(",",$spots[0]["spots_count_week1"]);
+        $week1Int = array_map('intval', $week1Str);
+        $week1Count = count($week1Int);
+        $month1Str = explode(",",$spots[0]["spots_count_month1"]);
+        $month1Int = array_map('intval', $month1Str);
+        $month1Count = count($month1Int);
+        $month3Str = explode(",",$spots[0]["spots_count_month3"]);
+        $month3Int = array_map('intval', $month3Str);
+        $month3Count = count($month3Int);
+        $dataDay1 = [
             "label" => "1日間",
             "backgroundColor" => "#f87979",
-            "data" => $day1_int,
-            "labels" => range(1, $day1_count)
+            "data" => $day1Int,
+            "labels" => range(1, $day1Count)
         ];
-        $data_week1 = [
+        $dataWeek1 = [
             "label" => "1週間",
             "backgroundColor" => "#f87979",
-            "data" => $week1_int,
-            "labels" => range(1, $week1_count)
+            "data" => $week1Int,
+            "labels" => range(1, $week1Count)
         ];
-        $data_month1 = [
+        $dataMonth1 = [
             "label" => "1か月間",
             "backgroundColor" => "#f87979",
-            "data" => $month1_int,
-            "labels" => range(0, $month1_count)
+            "data" => $month1Int,
+            "labels" => range(0, $month1Count)
         ];
-        $data_month3 = [
+        $dataMonth3 = [
             "label" => "３か月間",
             "backgroundColor" => "#f87979",
-            "data" => $month3_int,
-            "labels" => range(1, $month3_count)
+            "data" => $month3Int,
+            "labels" => range(1, $month3Count)
         ];
-        $data_all1 = [
-            $data_day1,
-            $data_week1,
-            $data_month1,
-            $data_month3
+        $dataAll1 = [
+            $dataDay1,
+            $dataWeek1,
+            $dataMonth1,
+            $dataMonth3
         ];
         //numberChartData
-        $day1_data = [0,0,0,0,0,0,0,0,0,0,0];
-        $week1_data = [0,0,0,0,0,0,0,0,0,0,0];
-        $month1_data = [0,0,0,0,0,0,0,0,0,0,0];
-        $month3_data = [0,0,0,0,0,0,0,0,0,0,0];
+        $numberChartDataDay1 = [0,0,0,0,0,0,0,0,0,0,0];
+        $numberChartDataWeek1 = [0,0,0,0,0,0,0,0,0,0,0];
+        $numberChartDataMonth1 = [0,0,0,0,0,0,0,0,0,0,0];
+        $numberChartDataMonth3 = [0,0,0,0,0,0,0,0,0,0,0];
         $time_bicycle_lis=[];
         for($i=0;$i<count($bicycles);$i++){
-            $time_bicycle = strtotime($bicycles[$i]['updated_at'])-strtotime($bicycles[$i]['created_at']);
-            for($i2=0;$i2<count($data_day1);$i2++){
-                if ($time_bicycle>=($i2)*3600 and $time_bicycle<($i2+1)*3600){
-                    $day1_data[$i2] = $day1_data[$i2] + 1;
+            $timeBicycle = strtotime($bicycles[$i]['updated_at'])-strtotime($bicycles[$i]['created_at']);
+            for($i2=0;$i2<count($dataDay1);$i2++){
+                if ($timeBicycle>=($i2)*3600 and $timeBicycle<($i2+1)*3600){
+                    $numberChartDataDay1[$i2] = $numberChartDataDay1[$i2] + 1;
                 }
             }
         }
-        $data_day1 = [
+        $dataDay1 = [
             "label" => "1日間",
             "backgroundColor" => "#f87979",
-            "data" => $day1_data,
+            "data" => $numberChartDataDay1,
         ];
-        $data_week1 = [
+        $dataWeek1 = [
             "label" => "1週間",
             "backgroundColor" => "#f87979",
-            "data" => $week1_data,
+            "data" => $numberChartDataWeek1,
         ];
-        $data_month1 = [
+        $dataMonth1 = [
             "label" => "1か月間",
             "backgroundColor" => "#f87979",
-            "data" => $month1_data,
+            "data" => $numberChartDataMonth1,
         ];
-        $data_month3 = [
+        $dataMonth3 = [
             "label" => "３か月間",
             "backgroundColor" => "#f87979",
-            "data" => $month3_data,
+            "data" => $numberChartDataMonth3,
         ];       
-        $data_all2 = [
-            $data_day1,
-            $data_week1,
-            $data_month1,
-            $data_month3
+        $dataAll2 = [
+            $dataDay1,
+            $dataWeek1,
+            $dataMonth1,
+            $dataMonth3
         ];
         return response()->json(
             [
-                'situationChartData' => $data_all1,
-                "numberChartData" => $data_all2
+                'situationChartData' => $dataAll1,
+                "numberChartData" => $dataAll2
             ]
         );
     }
+
     //全情報
     public function get_all($id){
         $users = Spot::where('users_id', $id)->get();
-        $spots_id_lis = [];
-        $spots_data_all = [];
+        $spotsIdLis = [];
+        $spotsDataAll = [];
         for($i=0;$i<count($users);$i++){
-            array_push($spots_id_lis,$users[$i]['spots_id']); 
+            array_push($spotsIdLis,$users[$i]['spots_id']); 
         }
-        for($i3=0;$i3<count($spots_id_lis);$i3++){
+        for($i3=0;$i3<count($spotsIdLis);$i3++){
             $spots_id= $spots_id_lis[$i3];
-            $spots = Spot::where('spots_id', $spots_id)->get();
-            $day1_str = explode(",",$spots[0]["spots_count_day1"]);
-            $day1_int = array_map('intval', $day1_str);
-            $camera_all = Camera::where('spots_id', $spots_id)->get(['cameras_id','cameras_name','cameras_url']);
-            $bicycles = Bicycle::where('spots_id', $spots_id)->whereIn('bicycles_status', ['None','違反'])->get();
-            $violation = Violation::where('spots_id', $spots_id)->get();
+            $spots = Spot::where('spots_id', $spotsId)->get();
+            $day1Str = explode(",",$spots[0]["spots_count_day1"]);
+            $day1Int = array_map('intval', $day1Str);
+            $cameraAll = Camera::where('spots_id', $spotsId)->get(['cameras_id','cameras_name','cameras_url']);
+            $bicycles = Bicycle::where('spots_id', $spotsId)->whereIn('bicycles_status', ['None','違反'])->get();
+            $violation = Violation::where('spots_id', $spotsId)->get();
             //cameraの項目
-            $camera_new=[];
-            if (count($camera_all)==0){
-                for($i=0;$i<=count($camera_all);$i++){
-                    $camera_new[$i]= [
+            $cameraNew=[];
+            if (count($cameraAll)==0){
+                for($i=0;$i<=count($cameraAll);$i++){
+                    $cameraNew[$i]= [
                         'id' => [],
                         'name' => [],
                         'url' => [],
                     ];
                 }
             } else{
-                for($i=0;$i<count($camera_all);$i++){
-                    $camera_new[$i]= [
-                        'id' => $camera_all[$i]['cameras_id'],
-                        'name' => $camera_all[$i]['cameras_name'],
-                        'url' => $camera_all[$i]['cameras_url'],
+                for($i=0;$i<count($cameraAll);$i++){
+                    $cameraNew[$i]= [
+                        'id' => $cameraAll[$i]['cameras_id'],
+                        'name' => $cameraAll[$i]['cameras_name'],
+                        'url' => $cameraAll[$i]['cameras_url'],
                     ];
                 }
             }
             //situationの項目
-            $label_names =[];
+            $labelNames =[];
             for($i=0;$i<count($bicycles);$i++){
-                if (!(in_array($bicycles[$i]['labels_name'],$label_names))) {
-                   array_push($label_names,$bicycles[$i]['labels_name']); 
+                if (!(in_array($bicycles[$i]['labels_name'],$labelNames))) {
+                   array_push($labelNames,$bicycles[$i]['labels_name']); 
                 }
             }
-            $label_names_new = array_unique($label_names);
+            $labelNamesNew = array_unique($labelNames);
     
-            if (count($label_names_new)==0){
-                for($i=0;$i<=count($label_names_new);$i++){
+            if (count($labelNamesNew)==0){
+                for($i=0;$i<=count($labelNamesNew);$i++){
                     $situation[$i]= [
                         'row' => [],
                         'bicycle' => [],
                     ];
                 }
             } else{
-                for($i=0;$i<count($label_names_new);$i++){
-                    $bicycle = Bicycle::where('spots_id', $spots_id)->where('labels_name',$label_names_new[$i])->get(['bicycles_id','updated_at','created_at','bicycles_status','bicycles_img']);
+                for($i=0;$i<count($labelNamesNew);$i++){
+                    $bicycle = Bicycle::where('spots_id', $spotsId)->where('labels_name',$labelNamesNew[$i])->get(['bicycles_id','updated_at','created_at','bicycles_status','bicycles_img']);
     
                     for($i2=0;$i2<count($bicycle);$i2++){
                         if ($bicycle[$i2]['bicycles_status'] == 'None'){
@@ -388,7 +391,7 @@ class HomeController extends Controller
                             $bicycle[$i2]['bicycles_status'] = false;
                         }
                         $time = strtotime($bicycle[$i2]['updated_at'])-strtotime($bicycle[$i2]['created_at']);
-                        $bicycle_new[$i2]= [
+                        $bicycleNew[$i2]= [
                             'id' => $bicycle[$i2]['bicycles_id'],
                             'time' => $time,
                             'violatin_status' => $bicycle[$i2]['bicycles_status'],
@@ -396,22 +399,22 @@ class HomeController extends Controller
                         ];
                     }
                     $situation[$i]= [
-                        'row' => $label_names_new[$i],
-                        'bicycle' => $bicycle_new,
+                        'row' => $labelNamesNew[$i],
+                        'bicycle' => $bicycleNew,
                     ];
                 }
             }
-            $all_data = [
+            $allData = [
                 'id' => $spots[0]['spots_id'],
                 'name' => $spots[0]['spots_name'],
                 'address' => $spots[0]['spots_address'],
                 'latitude' => $spots[0]['spots_latitude'],
                 'longitude' => $spots[0]['spots_longitude'],
                 'max' => $spots[0]['spots_max'],
-                'count' => end($day1_int),
+                'count' => end($day1Int),
                 'overtime' => $spots[0]['spots_over_time'],
                 'img'=> $spots[0]['spots_img'],
-                'camera' => $camera_new,
+                'camera' => $cameraNew,
                 'situation' => $situation
             ];
             array_push($spots_data_all,$all_data);
@@ -426,36 +429,36 @@ class HomeController extends Controller
 
     public function open_api(){
         $spots = Spot::get();
-        $spot_lis_all = [];
+        $spotLisAll = [];
         for ($i=0; $i<count($spots); $i++){
-            $day1_str = explode(",",$spots[$i]["spots_count_day1"]);
-            $day1_int = array_map('intval', $day1_str);
-            $spots_average = $day1_int[count($day1_int)-1];
-            $spots_count = count(Bicycle::where('spots_id', $spots[$i]['spots_id'])->orWhere('bicycles_status', 'None')->orWhere('bicycles_status', '違反')->get(['bicycles_id']));
-            $spot_lis = [
+            $day1Str = explode(",",$spots[$i]["spots_count_day1"]);
+            $day1Int = array_map('intval', $day1Str);
+            $spotsAverage = $day1Int[count($day1Int)-1];
+            $spotsCount = count(Bicycle::where('spots_id', $spots[$i]['spots_id'])->orWhere('bicycles_status', 'None')->orWhere('bicycles_status', '違反')->get(['bicycles_id']));
+            $spotLis = [
                 'id' => $spots[$i]['spots_id'],
                 'spots_name' => $spots[$i]['spots_name'],
                 'spots_max' => $spots[$i]['spots_max'],
                 'spots_latitude' => $spots[$i]['spots_latitude'],
                 'spots_longitude' => $spots[$i]['spots_longitude'],
                 'spots_address' => $spots[$i]['spots_address'],
-                'spots_count' => $spots_count,
-                'spots_average' => $spots_average
+                'spots_count' => $spotsCount,
+                'spots_average' => $spotsAverage
             ];
-            array_push($spot_lis_all,$spot_lis);
+            array_push($spotLisAll,$spotLis);
         }
 
-        return $spot_lis_all;
+        return $spotLisAll;
     }
 
     //TGS用のバグ修正ボタン、YOLOが起動してるけど動かない時に押してください
     public function reset(){
-        $reset_cameras = Camera::where('cameras_status','Run_process')->orWhere('cameras_status','Run')->get();
-        for ($i=0; $i<count($reset_cameras); $i++){
-            Camera::where('cameras_id', $reset_cameras[$i]['cameras_id'])->update(['cameras_status'=>'None']); 
-            bicycle::where('cameras_id', $reset_cameras[$i]['cameras_id'])->delete();
+        $resetCameras = Camera::where('cameras_status','Run_process')->orWhere('cameras_status','Run')->get();
+        for ($i=0; $i<count($resetCameras); $i++){
+            Camera::where('cameras_id', $resetCameras[$i]['cameras_id'])->update(['cameras_status'=>'None']); 
+            bicycle::where('cameras_id', $resetCameras[$i]['cameras_id'])->delete();
         }
-        
+
         return '強制終了';
     }
 }
