@@ -19,7 +19,6 @@ class HomeController extends Controller
     {
         $user = \Auth::user();
         $cameras = Camera::where('users_id', $user['id'])->get();
-        $Camera = Camera::where('users_id', $user['id'])->get();
         return view('home', compact('user', 'cameras','camera'));
     }
 
@@ -38,12 +37,11 @@ class HomeController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * 
+     * 駐輪場を登録,idはusers_id
      */
-
-    //駐輪場を登録,idはusers_id
     public function store_spot(Request $request, $id)
     {
-        //
         $data = $request->all();
         $query = $data['spots_address'];
         $query = urlencode($query);
@@ -52,7 +50,6 @@ class HomeController extends Controller
         $line="";
         $fp = fopen($url, "r");
         while(!feof($fp)) {
-            
             $line.= fgets($fp);
         }
         fclose($fp);
@@ -74,6 +71,7 @@ class HomeController extends Controller
              'spots_over_time' => 3600,
              'spots_img' => '画像のパスが入ります',
         ]);
+        
         return $data;
     }
      //カメラを登録,idはspots_id
