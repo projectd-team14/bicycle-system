@@ -38,6 +38,7 @@ Route::get('/violation/{id}', [HomeController::class, 'violation']);
 Route::get('/bicycle/{id}', [HomeController::class, 'bicycle']);
 Route::get('/edit_spot/{id}', [HomeController::class, 'edit_spot']);
 Route::get('/edit_camera/{id}', [HomeController::class, 'edit_camera']);
+Route::get('/csv/{id}', [HomeController::class, 'csv']);
 
 Route::post('/store_spot/{id}', [HomeController::class, 'store_spot']);
 Route::post('/store_camera/{id}', [HomeController::class, 'store_camera']);
