@@ -47,7 +47,7 @@
       checkbox: false,
       spots:{
          spots_name: '',
-         spots_url: 'https://www.youtube.com/watch?v=9plqYTT-3w8',
+         spots_url: 'https://www.youtube.com/embed/9plqYTT-3w8',
          spots_address: '',
          spots_img: '',
       }

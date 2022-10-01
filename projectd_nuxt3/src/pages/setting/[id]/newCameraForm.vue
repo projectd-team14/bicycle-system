@@ -35,7 +35,7 @@
       checkbox: false,
       camera:{
          cameras_name: '',
-         cameras_url: 'https://www.youtube.com/watch?v=9plqYTT-3w8',
+         cameras_url: 'https://www.youtube.com/embed/9plqYTT-3w8',
       }
     }),
     methods: {
