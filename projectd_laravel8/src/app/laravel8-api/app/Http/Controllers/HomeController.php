@@ -336,7 +336,7 @@ class HomeController extends Controller
             array_push($spotsIdLis,$users[$i]['spots_id']); 
         }
         for($i3=0;$i3<count($spotsIdLis);$i3++){
-            $spots_id= $spots_id_lis[$i3];
+            $spotsId= $spotsIdLis[$i3];
             $spots = Spot::where('spots_id', $spotsId)->get();
             $day1Str = explode(",",$spots[0]["spots_count_day1"]);
             $day1Int = array_map('intval', $day1Str);
@@ -417,13 +417,13 @@ class HomeController extends Controller
                 'camera' => $cameraNew,
                 'situation' => $situation
             ];
-            array_push($spots_data_all,$all_data);
-            unset($all_data);
+            array_push($spotsDataAll,$allData);
+            unset($allData);
             unset($situation);
-            unset($camera_new);
+            unset($cameraNew);
         }
 
-        return $spots_data_all;
+        return $spotsDataAll;
 
     }
 
