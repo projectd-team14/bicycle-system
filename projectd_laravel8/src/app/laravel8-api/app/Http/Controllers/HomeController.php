@@ -94,7 +94,7 @@ class HomeController extends Controller
         $data = $request->all();
         $mark = $data['label_mark'];
         $dataStr = json_encode($data);
-        $label_data = Label::insertGetId([
+        $labelData = Label::insertGetId([
             'cameras_id' => $id,
             'labels_json' => $dataStr,
 
