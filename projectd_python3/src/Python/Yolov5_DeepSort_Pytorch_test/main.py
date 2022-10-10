@@ -92,7 +92,6 @@ def detect(opt):
     delete = './bicycle_imgs/%s/' % camera_id
 
     #ラベリングの配列
-    #jsonをリストに変換し座標として扱う
     cur = conn.cursor(buffered=True)
     cur.execute("SELECT labels_json FROM labels WHERE cameras_id = '%s'" % camera_id)
     labels=[]
@@ -118,10 +117,8 @@ def detect(opt):
     for i1 in range(len(json_load)):
         label_ap = [json_load[i1]["label_mark"],json_load[i1]["label_point1X"],json_load[i1]["label_point1Y"],json_load[i1]["label_point2X"],json_load[i1]["label_point2Y"],json_load[i1]["label_point3X"],json_load[i1]["label_point3Y"],json_load[i1]["label_point4X"],json_load[i1]["label_point4Y"]]
         labels.append(label_ap)
-        #print(json_load)
     conn.commit()
     cur.close()
-    #確認用
 
     out, source, yolo_model, deep_sort_model, show_vid, save_vid, save_txt, imgsz, evaluate, half, \
         project, exist_ok, update, save_crop = \
@@ -229,7 +226,6 @@ def detect(opt):
         for i, det in enumerate(pred):  # detections per image
             #停止ボタンによる処理
             cur = conn.cursor(buffered=True)
-            #print(spot_id)
             cur.execute("SELECT cameras_id, cameras_name, cameras_status FROM cameras WHERE cameras_id = '%s'" % camera_id)
             db_lis_last = cur.fetchall()
             conn.commit()
@@ -280,7 +276,7 @@ def detect(opt):
                     n = (det[:, -1] == c).sum()  # detections per class
                     s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
                     # Print counter
-                    n_1 = (det[:, -1] == 0).sum() #ラベルAの総数をカウント
+                    n_1 = (det[:, -1] == 0).sum()
                     a = f"{n_1} "#{'A'}{'s' * (n_1 > 1)}, "
                     cv2.putText(im0, "Bicycle : " + str(a), (20, 50), 0, 0, (71, 99, 255), 3)
 
@@ -325,7 +321,6 @@ def detect(opt):
                         id2 = str(id)
                         cls = output[5]
                         conf = output[6]
-                        #print(labels)
                         for il in range(len(labels)):
                             label_name = labels[il][0]
                             P1X = labels[il][1]
@@ -364,7 +359,7 @@ def detect(opt):
                                 time_lis = cur.fetchall()
                                 bicycles_id = time_lis[0][0]
                                 #放置時間計測
-                                out_time = spots_time #違反時間を設定(秒数)
+                                out_time = spots_time
                                 time_dif = time_lis[0][2] - time_lis[0][3]
                                 time_total = time_dif.total_seconds() 
                                 id_collect.append(int(math.floor(float(id2))))      
@@ -385,7 +380,6 @@ def detect(opt):
                                             cur.execute("UPDATE bicycles SET bicycles_img= %s WHERE get_id = %s AND cameras_id = %s",(file_path_json, id_out, camera_id)) 
                                             print(file_path)
                                             print(file_path_json)
-                                        #file_path_str = "%s" % (file_path)      
                                     '''                      
                                     elif time_lis[0][1] == "違反":
                                          #現在存在する自転車（ID）のみ違反車両にする
@@ -405,7 +399,6 @@ def detect(opt):
                                     if not id2 in id_violation:
                                         id_violation.append(id2)       
 
-                        #座標
                         if save_txt:
                             # to MOT format
                             bbox_left = output[0]#X座標
@@ -436,7 +429,6 @@ def detect(opt):
                 time.sleep(5)
                 conn.commit()
                 cur.close()   
-                #なくなった自転車の削除※未完成のため後で必ず修正！
                 '''
                 cur = conn.cursor(buffered=True)
                 cur.execute("SELECT bicycles_id get_id FROM bicycles WHERE cameras_id = '%s'" % camera_id)  
