@@ -13,9 +13,9 @@
 
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 
 .chart
-  height: 350px
+  height: 400px
 
 </style>

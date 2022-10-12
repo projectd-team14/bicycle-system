@@ -20,10 +20,10 @@ export default defineNuxtPlugin(nuxtApp => {
 const myCustomLightTheme: ThemeDefinition = {
   dark: false,
   colors: {
-    background: '#f8f9fa',
+    background: '#ECF0F1',
     surface: '#FFFFFF',
-    primary: '#B2EDCE',
-    secondary: '#F9A825',
+    primary: '#16A085',
+    secondary: '#B2D9D1',
     error: '#B00020',
     info: '#2196F3',
     success: '#4CAF50',

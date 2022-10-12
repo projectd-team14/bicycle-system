@@ -1,10 +1,19 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col cols="12">
-        <DashboardViolatin />
-      </v-col>
-    </v-row>
+    <div>
+      <DashboardViolatin />
+      <v-row>
+        <v-col lg="3" cols="6">
+          <DashboardRequired />
+        </v-col>
+        <v-col lg="5" cols="6">
+          <DashboardCongestion />
+        </v-col>
+        <v-col lg="4" cols="6">
+          <DashboardMonthlyTransition />
+        </v-col>
+      </v-row>
+    </div>
   </v-container>
 </template>
 
