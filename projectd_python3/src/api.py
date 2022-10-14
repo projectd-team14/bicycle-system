@@ -7,7 +7,7 @@ import subprocess
 from subprocess import PIPE
 from time import sleep
 import mysql.connector
-import shutil
+from fastapi.responses import FileResponse
 
 app = FastAPI()
 count=0
@@ -21,8 +21,15 @@ def time_cycle():
         print("update")
         sleep(3600)
 
-@app.get("/")
-async def root(label: int = 0, id: int = 0):
+@app.get("/detect/")
+async def root(id: int = 0):
+    subprocess.Popen('python ./Python/Yolov5_DeepSort_Pytorch_test/start.py',shell=True)
+    if count == 0:
+        asyncio.new_event_loop().run_in_executor(None, time_cycle)
+        print("START")
+
+@app.get("/label/")
+async def main(id: int = 0):
     conn = mysql.connector.connect(
         host='host.docker.internal',
         port='3306',
@@ -30,33 +37,26 @@ async def root(label: int = 0, id: int = 0):
         password='password',
         database='laravel_project'
     )
+    cur = conn.cursor(buffered=True)
+    cur.execute("SELECT cameras_url FROM cameras WHERE cameras_id = %s" % id)
+    db_lis = cur.fetchall()
 
-    if label == 0:
-        subprocess.Popen('python ./Python/Yolov5_DeepSort_Pytorch_test/start.py',shell=True)
-        if count == 0:
-            asyncio.new_event_loop().run_in_executor(None, time_cycle)
-            print("START")
-    else:
-        cur = conn.cursor(buffered=True)
-        cur.execute("SELECT cameras_url FROM cameras WHERE cameras_id = %s" % id)
-        db_lis = cur.fetchall()
+    dir_path = './Python/label_imgs'
+    ext = 'jpg'
 
-        dir_path = './Python/label_imgs'
-        ext = 'jpg'
+    if os.path.isfile('./Python/label_imgs/%s.jpg' % id):
+        os.remove('./Python/label_imgs/%s.jpg' % id)
 
-        if os.path.isfile('./Python/label_imgs/%s.jpg' % id):
-            os.remove('./Python/label_imgs/%s.jpg' % id)
+    video = pafy.new(db_lis[0][0])
+    best = video.getbest(preftype="mp4")
+    cap = cv2.VideoCapture(best.url)
 
-        video = pafy.new(db_lis[0][0])
-        best = video.getbest(preftype="mp4")
-        cap = cv2.VideoCapture(best.url)
+    if not cap.isOpened():
+        return
+    os.makedirs(dir_path, exist_ok=True)
+    base_path = os.path.join(dir_path, str(id))
 
-        if not cap.isOpened():
-            return
-        os.makedirs(dir_path, exist_ok=True)
-        base_path = os.path.join(dir_path, str(id))
+    ret, frame = cap.read()
+    cv2.imwrite('{}.{}'.format(base_path, ext), frame)
 
-        ret, frame = cap.read()
-        cv2.imwrite('{}.{}'.format(base_path, ext), frame)
-
-        return "/Python/label_imgs/%s.jpg" % id
+    return FileResponse('Python/label_imgs/%s.jpg' % id)
