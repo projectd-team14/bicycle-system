@@ -3,7 +3,6 @@ Bicycle parking lot management system using YOLOv5
 〇連携前の個別リポジトリ  
 ・[フロントエンド](https://github.com/Ban-c0p31073/Pro14_Nuet)  
 ・[バックエンド](https://github.com/nishiumidaina/projectd_docker_laravel8)  
-※本プロジェクトはDockerコンテナを3つ使用して、ローカルサーバーを3台起動させるため非常に重いです。(とくにPython用サーバーが重い)
     
 ## ディレクトリ構成  
 ```
