@@ -29,7 +29,7 @@ async def root(id: int = 0):
         print("START")
 
 @app.get("/label/")
-async def main(id: int = 0):
+async def label(id: int = 0):
     conn = mysql.connector.connect(
         host='host.docker.internal',
         port='3306',
@@ -41,11 +41,11 @@ async def main(id: int = 0):
     cur.execute("SELECT cameras_url FROM cameras WHERE cameras_id = %s" % id)
     db_lis = cur.fetchall()
 
-    dir_path = './Python/label_imgs'
+    dir_path = './label_imgs'
     ext = 'jpg'
 
-    if os.path.isfile('./Python/label_imgs/%s.jpg' % id):
-        os.remove('./Python/label_imgs/%s.jpg' % id)
+    if os.path.isfile('./label_imgs/%s.jpg' % id):
+        os.remove('./label_imgs/%s.jpg' % id)
 
     video = pafy.new(db_lis[0][0])
     best = video.getbest(preftype="mp4")
@@ -59,4 +59,8 @@ async def main(id: int = 0):
     ret, frame = cap.read()
     cv2.imwrite('{}.{}'.format(base_path, ext), frame)
 
-    return FileResponse('Python/label_imgs/%s.jpg' % id)
+    return FileResponse('./label_imgs/%s.jpg' % id)
+
+@app.get("/bicycle/")
+async def label(name: str = 0):
+    return FileResponse(name)
