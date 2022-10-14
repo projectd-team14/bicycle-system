@@ -103,6 +103,19 @@ class HomeController extends Controller
         return  "ラベリングデータ $mark を登録しました";
     }
 
+    public function labels_img($id)
+    {
+        //PythonAPI
+        $url = "host.docker.internal:9000/?label=1&id=${id}";
+        $conn = curl_init();
+        curl_setopt($conn, CURLOPT_URL, $url);
+        curl_setopt($conn, CURLOPT_RETURNTRANSFER, true);
+        $res =  curl_exec($conn);
+        curl_close($conn);
+
+        return  $res;
+    }
+
     /**
      * Display the specified resource.
      *
@@ -199,7 +212,6 @@ class HomeController extends Controller
            curl_setopt($conn, CURLOPT_URL, $url);
            curl_setopt($conn, CURLOPT_RETURNTRANSFER, true);
            $res =  curl_exec($conn);
-           var_dump($res);
            curl_close($conn);
 
            return "処理を開始します";

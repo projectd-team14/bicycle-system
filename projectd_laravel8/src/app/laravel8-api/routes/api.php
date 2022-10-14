@@ -48,7 +48,10 @@ Route::post('/delete_camera/{id}', [HomeController::class, 'delete_camera']);
 
 Route::post('/start/{id}', [HomeController::class, 'start']);
 Route::post('/stop/{id}', [HomeController::class, 'stop']);
+
 Route::post('/labels/{id}', [HomeController::class, 'labels']);
+Route::get('/labels_img/{id}', [HomeController::class, 'labels_img']);
+
 
 //ログインしたユーザーのみが/hogeにアクセスできる
 Route::middleware('auth:sanctum')->group(function(){
