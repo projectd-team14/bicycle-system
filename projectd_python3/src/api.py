@@ -6,8 +6,8 @@ import asyncio
 import subprocess
 from subprocess import PIPE
 from time import sleep
-import datetime
 import mysql.connector
+import shutil
 
 app = FastAPI()
 count=0
@@ -44,6 +44,9 @@ async def root(label: int = 0, id: int = 0):
         dir_path = './Python/label_imgs'
         ext = 'jpg'
 
+        if os.path.isfile('./Python/label_imgs/%s.jpg' % id):
+            os.remove('./Python/label_imgs/%s.jpg' % id)
+
         video = pafy.new(db_lis[0][0])
         best = video.getbest(preftype="mp4")
         cap = cv2.VideoCapture(best.url)
@@ -56,4 +59,4 @@ async def root(label: int = 0, id: int = 0):
         ret, frame = cap.read()
         cv2.imwrite('{}.{}'.format(base_path, ext), frame)
 
-        return "/Python/%s.jpg" % id
+        return "/Python/label_imgs/%s.jpg" % id
