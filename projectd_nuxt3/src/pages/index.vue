@@ -1,8 +1,19 @@
 <template>
   <v-container>
-    <h1>動作確認</h1>
-    <h1>ログイン：{{loginUser.user.name}}</h1>
-    <v-btn @click="userLogout">ログアウト</v-btn>
+    <div>
+      <DashboardViolatin />
+      <v-row>
+        <v-col lg="3" cols="6">
+          <DashboardRequired />
+        </v-col>
+        <v-col lg="5" cols="6">
+          <DashboardCongestion />
+        </v-col>
+        <v-col lg="4" cols="6">
+          <DashboardMonthlyTransition />
+        </v-col>
+      </v-row>
+    </div>
   </v-container>
 </template>
 
@@ -11,11 +22,7 @@
   const { title } = useArticleTitle()
   onMounted(() => title.value = 'ダッシュボード')
 
-  const { loginUser, logout } = useAuth()
-
-  const userLogout = async () => {
-    await logout()
-  }
+  const { loginUser } = useAuth()
 
   const { spots } = useSpots()
   const { data: props } = await useFetch('/api/deal',{ params: { id: loginUser.value.user.id  } })

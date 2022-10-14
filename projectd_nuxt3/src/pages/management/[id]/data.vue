@@ -68,6 +68,6 @@ export default {
 <style lang="sass">
 
 .chart
-  height: 400px
+  height: 350px
 
 </style>
