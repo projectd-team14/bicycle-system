@@ -2,7 +2,6 @@ import os
 import pafy
 import cv2
 from fastapi import FastAPI
-import asyncio
 import subprocess
 from subprocess import PIPE
 from time import sleep
@@ -13,8 +12,6 @@ app = FastAPI()
 count=0
 
 def time_cycle():
-    global count
-    count = 1
     # sleepで定期実行、デプロイ時に定期実行用プラグインに移す。
     while True:
         subprocess.run(['python','Python/Yolov5_DeepSort_Pytorch_test/count.py'], stdout=PIPE, stderr=PIPE)        
@@ -40,10 +37,6 @@ async def root(id: int = 0):
     conn.commit()
     cur.close()  
     subprocess.Popen('python ./Python/Yolov5_DeepSort_Pytorch_test/main.py --save-crop --source "%s" --camera_id %s --yolo_model ./Python/Yolov5_DeepSort_Pytorch_test/model_weight/best.pt' % (db_lis[0][0],int(id)),shell=True)
-
-    if count == 0:
-        asyncio.new_event_loop().run_in_executor(None, time_cycle)
-        print("START")
 
 # ラベル付け設定
 @app.get("/label/")

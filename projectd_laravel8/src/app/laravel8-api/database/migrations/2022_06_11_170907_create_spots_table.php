@@ -21,10 +21,10 @@ class CreateSpotsTable extends Migration
             $table->string('spots_longitude');
             $table->string('spots_address');
             $table->string('spots_status')->defalut('None');
-            $table->string('spots_count_day1')->defalut('None');
-            $table->string('spots_count_week1')->defalut('None');
-            $table->string('spots_count_month1')->defalut('None');
-            $table->string('spots_count_month3')->defalut('None');
+            $table->text('spots_count_day1')->defalut('None');
+            $table->text('spots_count_week1')->defalut('None');
+            $table->text('spots_count_month1')->defalut('None');
+            $table->text('spots_count_month3')->defalut('None');
             $table->integer('spots_over_time')->defalut('None');
             $table->integer('spots_max')->defalut('None');
             $table->string('spots_img');
