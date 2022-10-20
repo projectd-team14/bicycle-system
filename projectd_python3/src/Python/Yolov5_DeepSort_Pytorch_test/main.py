@@ -84,7 +84,6 @@ def detect(opt):
 
     #計測時間記録用
     id_collect = []
-    id_violation = []
     bicycle_lis = []
     #id_list = []
     delete = './bicycle_imgs/%s/' % camera_id
@@ -371,9 +370,6 @@ def detect(opt):
                                             file_path_json = "bicycle_imgs/%s/%s" % (id_str,jpg)
                                             save_one_box(bboxes, imc, file_path, BGR=True)
                                             cur.execute("UPDATE bicycles SET bicycles_img= %s WHERE get_id = %s AND cameras_id = %s",(file_path_json, id_out, camera_id)) 
-
-                                    if not id2 in id_violation:
-                                        id_violation.append(id2)       
 
                         if save_txt:
                             # to MOT format
