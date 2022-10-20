@@ -83,9 +83,7 @@ def detect(opt):
     #print(spot_id)
 
     #計測時間記録用
-    id_count = []
     id_collect = []
-    id_collect_old = []
     id_violation = []
     bicycle_lis = []
     #id_list = []
@@ -290,9 +288,7 @@ def detect(opt):
                         sql = ("UPDATE cameras SET cameras_status = %s WHERE cameras_id = %s")
                         param2 = ('None',camera_id)
                         cur.execute(sql,param2)
-                        cur.execute('DELETE FROM bicycles WHERE cameras_id = %s',(camera_id,))
-                        conn.commit()
-                        cur.close()                        
+                        cur.execute('DELETE FROM bicycles WHERE cameras_id = %s',(camera_id,))                      
                         shutil.rmtree('Python/Yolov5_DeepSort_Pytorch_test/runs/track/')
                         shutil.rmtree(delete)
                         exit()
@@ -343,7 +339,6 @@ def detect(opt):
                             id_out = int(math.floor(id))
                             X_out= int(math.floor(output[0]))
                             Y_out= 720 - int(math.floor(output[1]))
-                            #座標の確認
                             XY_out = polygon.contains_point([X_out, Y_out])
                             if XY_out:
                                 #自転車の座標処理
@@ -352,12 +347,10 @@ def detect(opt):
                                 bicycle_lis = cur.fetchall()
                                 if not id in bicycle_lis:
                                     cur.execute("INSERT INTO bicycles (spots_id,cameras_id,labels_name,get_id,bicycles_x_coordinate,bicycles_y_coordinate,bicycles_status) VALUES (%s,%s,%s, %s, %s, %s, %s)", (spots_id,camera_id,label_name,id_out,X_out,Y_out,"None"))
-                                    id_collect_old.append(id_out)
                                 elif id in bicycle_lis:
                                     cur.execute("UPDATE bicycles SET bicycles_x_coordinate = %s,bicycles_y_coordinate = %s WHERE get_id = %s AND cameras_id = %s",(X_out, Y_out,id_out, camera_id))
                                 cur.execute("SELECT bicycles_id, bicycles_status, updated_at, created_at FROM bicycles WHERE cameras_id = %s AND get_id = %s",(camera_id, id_out))
                                 time_lis = cur.fetchall()
-                                bicycles_id = time_lis[0][0]
                                 #放置時間計測
                                 out_time = spots_time
                                 time_dif = time_lis[0][2] - time_lis[0][3]
@@ -370,7 +363,7 @@ def detect(opt):
                                             now = time.time()
                                             now = str(now)
                                             cur.execute("UPDATE bicycles SET bicycles_status = %s WHERE get_id = %s AND cameras_id = %s",('違反', id_out, camera_id))
-                                            #違反車両の画像を保存
+                                            #画像を保存
                                             txt_file_name = txt_file_name if (isinstance(path, list) and len(path) > 1) else ''
                                             file_path = Path("./bicycle_imgs/") / str(camera_id) / f'{p.stem}{now}.jpg'
                                             id_str = str(camera_id)
@@ -378,24 +371,7 @@ def detect(opt):
                                             file_path_json = "bicycle_imgs/%s/%s" % (id_str,jpg)
                                             save_one_box(bboxes, imc, file_path, BGR=True)
                                             cur.execute("UPDATE bicycles SET bicycles_img= %s WHERE get_id = %s AND cameras_id = %s",(file_path_json, id_out, camera_id)) 
-                                            print(file_path)
-                                            print(file_path_json)
-                                    '''                      
-                                    elif time_lis[0][1] == "違反":
-                                         #現在存在する自転車（ID）のみ違反車両にする
-                                        if id_out in id_collect:   
-                                            cur.execute("UPDATE bicycles SET bicycles_status = %s WHERE get_id = %s AND cameras_id = %s",('違反(記録済み)', id_out, camera_id))
-                                    
-                                    elif time_lis[0][1] == "違反(記録済み)":
-                                        #現在存在する自転車（ID）のみ違反車両にする
-                                        if id_out in id_collect:
-                                            cur.execute("UPDATE bicycles SET bicycles_status = %s WHERE get_id = %s AND cameras_id = %s",('無効', id_out, camera_id))
-                                            #↓現状必要ないので消します。
-                                            #cur.execute("INSERT INTO violations (spots_id,cameras_id,bicycles_id,labels_name, violations_x_coordinate, violations_y_coordinate, violations_img) VALUES (%s,%s,%s,%s,%s,%s,%s)", (spots_id,camera_id,bicycles_id,label_name,X_out,Y_out,file_path_json)) 
-                                            cur.execute("UPDATE bicycles SET bicycles_img= %s WHERE get_id = %s AND cameras_id = %s",(file_path_json, id_out, camera_id)) 
-                                        else:
-                                            cur.execute("UPDATE bicycles SET bicycles_status = %s WHERE get_id = %s AND cameras_id = %s",('違反', id_out, camera_id))
-                                    '''
+
                                     if not id2 in id_violation:
                                         id_violation.append(id2)       
 
@@ -418,17 +394,13 @@ def detect(opt):
                                 #txt_file_name = txt_file_name if (isinstance(path, list) and len(path) > 1) else ''
                                 #save_one_box(bboxes, imc, file=save_imgs / 'crops' / txt_file_name / names[c] / f'{id}' / f'{p.stem}.jpg', BGR=True)
                 print(id_collect)#現在のトラッキング
-                print(id_collect_old)#前回のトラッキング
                 cur = conn.cursor(buffered=True)
                 cur.execute("SELECT get_id FROM bicycles WHERE cameras_id = '%s'" % camera_id)
                 last_lis = cur.fetchall()
                 for i5 in range(len(last_lis)):
                     if not last_lis[i5][0] in id_collect:
                         cur.execute("UPDATE bicycles SET bicycles_status = %s WHERE get_id = %s AND cameras_id = %s",('無効', id_out, camera_id))
-                # プログラムを止める
-                time.sleep(5)
-                conn.commit()
-                cur.close()   
+               
                 '''
                 cur = conn.cursor(buffered=True)
                 cur.execute("SELECT bicycles_id get_id FROM bicycles WHERE cameras_id = '%s'" % camera_id)  
@@ -449,7 +421,10 @@ def detect(opt):
                 bicycle_lis.clear()
                 id_collect.clear()
                 LOGGER.info(f'{s}Done. YOLO:({t3 - t2:.3f}s), DeepSort:({t5 - t4:.3f}s)')
-
+                # プログラムを止める
+                conn.commit()
+                cur.close()  
+                time.sleep(5)  
             else:
                 deepsort_list[i].increment_ages()
                 LOGGER.info('No detections')
