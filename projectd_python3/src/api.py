@@ -9,14 +9,6 @@ import mysql.connector
 from fastapi.responses import FileResponse
 
 app = FastAPI()
-count=0
-
-def time_cycle():
-    # sleepで定期実行、デプロイ時に定期実行用プラグインに移す。
-    while True:
-        subprocess.run(['python','Python/Yolov5_DeepSort_Pytorch_test/count.py'], stdout=PIPE, stderr=PIPE)        
-        print("update")
-        sleep(3600)
 
 # スタートボタン
 @app.get("/detect/")
