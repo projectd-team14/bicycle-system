@@ -15,19 +15,37 @@ count=0
 def time_cycle():
     global count
     count = 1
-    #sleepで定期実行
+    # sleepで定期実行、デプロイ時に定期実行用プラグインに移す。
     while True:
-        proc = subprocess.run(['python','Python/Yolov5_DeepSort_Pytorch_test/count.py'], stdout=PIPE, stderr=PIPE)        
+        subprocess.run(['python','Python/Yolov5_DeepSort_Pytorch_test/count.py'], stdout=PIPE, stderr=PIPE)        
         print("update")
         sleep(3600)
 
+# スタートボタン
 @app.get("/detect/")
 async def root(id: int = 0):
-    subprocess.Popen('python ./Python/Yolov5_DeepSort_Pytorch_test/start.py',shell=True)
+    conn = mysql.connector.connect(
+    host='host.docker.internal',
+    port='3306',
+    user='user',
+    password='password',
+    database='laravel_project'
+    )
+    cur = conn.cursor(buffered=True)
+    cur.execute("SELECT cameras_url FROM cameras WHERE cameras_id = %s" % id)
+    db_lis = cur.fetchall()
+    sql = ("UPDATE cameras SET cameras_status = %s WHERE cameras_id = %s")
+    param = ('Run', id)
+    cur.execute(sql, param)
+    conn.commit()
+    cur.close()  
+    subprocess.Popen('python ./Python/Yolov5_DeepSort_Pytorch_test/main.py --save-crop --source "%s" --camera_id %s --yolo_model ./Python/Yolov5_DeepSort_Pytorch_test/model_weight/best.pt' % (db_lis[0][0],int(id)),shell=True)
+
     if count == 0:
         asyncio.new_event_loop().run_in_executor(None, time_cycle)
         print("START")
 
+# ラベル付け設定
 @app.get("/label/")
 async def label(id: int = 0):
     conn = mysql.connector.connect(
@@ -61,6 +79,7 @@ async def label(id: int = 0):
 
     return FileResponse('./label_imgs/%s.jpg' % id)
 
+# 自転車の画像
 @app.get("/bicycle/")
 async def label(name: str = 0):
     return FileResponse(name)

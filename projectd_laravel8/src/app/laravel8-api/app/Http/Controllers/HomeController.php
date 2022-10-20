@@ -207,7 +207,7 @@ class HomeController extends Controller
         }else if ($cameras[0]["cameras_status"]=="None"){
            Camera::where('cameras_id', $id)->update(['cameras_status'=>'Start']);
            //PythonAPI
-           $url = "host.docker.internal:9000/detect/";
+           $url = "host.docker.internal:9000/detect/?id=${id}";
            $conn = curl_init();
            curl_setopt($conn, CURLOPT_URL, $url);
            curl_setopt($conn, CURLOPT_RETURNTRANSFER, true);
