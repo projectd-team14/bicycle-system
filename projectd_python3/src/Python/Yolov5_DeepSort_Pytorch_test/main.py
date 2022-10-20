@@ -55,7 +55,6 @@ def detect(opt):
 
     camera_id = args.camera_id
     camera_id = int(camera_id)
-#ボタンによる処理
     conn = mysql.connector.connect(
         host='host.docker.internal',
         port='3306',
@@ -80,21 +79,18 @@ def detect(opt):
         #shutil.rmtree('Python/Yolov5_DeepSort_Pytorch_test/runs/')        
     conn.commit()
     cur.close()
-    #print(spot_id)
 
-    #計測時間記録用
+    # 計測時間記録用
     id_collect = []
     bicycle_lis = []
-    #id_list = []
     delete = './bicycle_imgs/%s/' % camera_id
 
-    #ラベリングの配列
+    # ラベリングの配列
     cur = conn.cursor(buffered=True)
     cur.execute("SELECT labels_json FROM labels WHERE cameras_id = '%s'" % camera_id)
     labels=[]
     json_load = None
     label_lis = cur.fetchall()
-    #print(label_lis)
     
     if label_lis:
         json_load = json.loads(label_lis[0][0])
@@ -221,7 +217,7 @@ def detect(opt):
 
         # Process detections
         for i, det in enumerate(pred):  # detections per image
-            #停止ボタンによる処理
+            # 停止ボタンによる処理
             cur = conn.cursor(buffered=True)
             cur.execute("SELECT cameras_id, cameras_name, cameras_status FROM cameras WHERE cameras_id = '%s'" % camera_id)
             db_lis_last = cur.fetchall()
@@ -238,6 +234,7 @@ def detect(opt):
                 shutil.rmtree('Python/Yolov5_DeepSort_Pytorch_test/runs/track/')
                 shutil.rmtree(delete)
                 exit()
+            # 停止ボタンによる処理(終了)
 
             seen += 1
             if webcam:  # nr_sources >= 1
@@ -277,11 +274,10 @@ def detect(opt):
                     a = f"{n_1} "#{'A'}{'s' * (n_1 > 1)}, "
                     cv2.putText(im0, "Bicycle : " + str(a), (20, 50), 0, 0, (71, 99, 255), 3)
 
-                    #停止ボタンによる処理
+                    # 停止ボタンによる処理
                     cur = conn.cursor(buffered=True)
                     cur.execute("SELECT cameras_id, cameras_name, cameras_status FROM cameras WHERE cameras_id = '%s'" % camera_id)
                     db_lis_last = cur.fetchall()
-
                     if 'Stop' in db_lis_last[0][2] or 'None' in db_lis_last[0][2]:
                         cur = conn.cursor(buffered=True)
                         sql = ("UPDATE cameras SET cameras_status = %s WHERE cameras_id = %s")
@@ -297,7 +293,9 @@ def detect(opt):
                         param2 = (a,camera_id)
                         cur.execute(sql,param2)
                     conn.commit()
-                    cur.close()                    
+                    cur.close()
+                    # 停止ボタンによる処理(終了)
+                    
                 xywhs = xyxy2xywh(det[:, 0:4])
                 confs = det[:, 4]
                 clss = det[:, 5]
@@ -334,13 +332,13 @@ def detect(opt):
                                     [P4X, P4Y],
                                 ]
                             )
-                            #XY座標の記録。Y座標は原点調整のために720~Y
+                            # XY座標の記録。Y座標は原点調整のために720-Y
                             id_out = int(math.floor(id))
                             X_out= int(math.floor(output[0]))
                             Y_out= 720 - int(math.floor(output[1]))
                             XY_out = polygon.contains_point([X_out, Y_out])
                             if XY_out:
-                                #自転車の座標処理
+                                # 自転車の座標処理
                                 cur = conn.cursor(buffered=True)
                                 cur.execute("SELECT get_id FROM bicycles WHERE cameras_id = '%s'" % camera_id)
                                 bicycle_lis = cur.fetchall()
@@ -350,38 +348,38 @@ def detect(opt):
                                     cur.execute("UPDATE bicycles SET bicycles_x_coordinate = %s,bicycles_y_coordinate = %s WHERE get_id = %s AND cameras_id = %s",(X_out, Y_out,id_out, camera_id))
                                 cur.execute("SELECT bicycles_id, bicycles_status, updated_at, created_at FROM bicycles WHERE cameras_id = %s AND get_id = %s",(camera_id, id_out))
                                 time_lis = cur.fetchall()
-                                #放置時間計測
+
+                                # 放置時間計測
                                 out_time = spots_time
                                 time_dif = time_lis[0][2] - time_lis[0][3]
                                 time_total = time_dif.total_seconds() 
                                 id_collect.append(int(math.floor(float(id2))))      
                                 if time_total >= out_time:
                                     if time_lis[0][1] == "None" or time_lis[0][1] == "無効":
-                                         #現在存在する自転車（ID）のみ違反車両にする
-                                        if id_out in id_collect:
-                                            now = time.time()
-                                            now = str(now)
-                                            cur.execute("UPDATE bicycles SET bicycles_status = %s WHERE get_id = %s AND cameras_id = %s",('違反', id_out, camera_id))
-                                            #画像を保存
-                                            txt_file_name = txt_file_name if (isinstance(path, list) and len(path) > 1) else ''
-                                            file_path = Path("./bicycle_imgs/") / str(camera_id) / f'{p.stem}{now}.jpg'
-                                            id_str = str(camera_id)
-                                            jpg = f'{p.stem}{now}.jpg'
-                                            file_path_json = "bicycle_imgs/%s/%s" % (id_str,jpg)
-                                            save_one_box(bboxes, imc, file_path, BGR=True)
-                                            cur.execute("UPDATE bicycles SET bicycles_img= %s WHERE get_id = %s AND cameras_id = %s",(file_path_json, id_out, camera_id)) 
+                                        # 現在存在する自転車（ID）のみ違反車両にする
+                                        now = time.time()
+                                        now = str(now)
+                                        cur.execute("UPDATE bicycles SET bicycles_status = %s WHERE get_id = %s AND cameras_id = %s",('違反', id_out, camera_id))
+                                        # 画像を保存
+                                        txt_file_name = txt_file_name if (isinstance(path, list) and len(path) > 1) else ''
+                                        file_path = Path("./bicycle_imgs/") / str(camera_id) / f'{id}.jpg'
+                                        id_str = str(camera_id)
+                                        jpg = '%s.jpg' % str(id)  
+                                        file_path_json = "bicycle_imgs/%s/%s" % (id_str,jpg)
+                                        save_one_box(bboxes, imc, file_path, BGR=True)
+                                        cur.execute("UPDATE bicycles SET bicycles_img= %s WHERE get_id = %s AND cameras_id = %s",(file_path_json, id_out, camera_id)) 
 
                         if save_txt:
                             # to MOT format
-                            bbox_left = output[0]#X座標
-                            bbox_top = output[1]#Y座標
-                            bbox_w = output[2] - output[0]#幅
-                            bbox_h = output[3] - output[1]#高さ
+                            bbox_left = output[0] # X座標
+                            bbox_top = output[1] # Y座標
+                            bbox_w = output[2] - output[0] # 幅
+                            bbox_h = output[3] - output[1] # 高さ
                             # Write MOT compliant results to file
                             with open(txt_path + '.txt', 'a') as f:
                                 f.write(('%g ' * 10 + '\n') % (frame_idx + 1, id, bbox_left,  # MOT format
                                                                bbox_top, bbox_w, bbox_h, -1, -1, -1, i))
-                        #画像のトリミング（1回目の違反時に記録する）
+                        # 画像のトリミング（1回目の違反時に記録する）
                         if save_vid or save_crop or show_vid:  # Add bbox to image
                             c = int(cls)  # integer class
                             label = f'{id:0.0f} {names[c]} {conf:.2f}'
@@ -389,7 +387,7 @@ def detect(opt):
                             #if save_crop:
                                 #txt_file_name = txt_file_name if (isinstance(path, list) and len(path) > 1) else ''
                                 #save_one_box(bboxes, imc, file=save_imgs / 'crops' / txt_file_name / names[c] / f'{id}' / f'{p.stem}.jpg', BGR=True)
-                print(id_collect)#現在のトラッキング
+                print(id_collect) # 現在のトラッキング
                 cur = conn.cursor(buffered=True)
                 cur.execute("SELECT get_id FROM bicycles WHERE cameras_id = '%s'" % camera_id)
                 last_lis = cur.fetchall()
