@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- ホスト: db
--- 生成日時: 2022 年 9 月 10 日 13:08
+-- 生成日時: 2022 年 10 月 20 日 13:22
 -- サーバのバージョン： 8.0.30
 -- PHP のバージョン: 8.0.19
 
@@ -52,7 +52,7 @@ CREATE TABLE `cameras` (
   `spots_id` int NOT NULL,
   `cameras_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `cameras_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `cameras_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cameras_status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cameras_count` int NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -63,12 +63,12 @@ CREATE TABLE `cameras` (
 --
 
 INSERT INTO `cameras` (`cameras_id`, `spots_id`, `cameras_name`, `cameras_url`, `cameras_status`, `cameras_count`, `updated_at`, `created_at`) VALUES
-(8, 2, 'カメラA', 'https://www.youtube.com/watch?v=9plqYTT-3w8', 'None', 27, '2022-09-10 13:04:43', '2022-07-17 12:21:43'),
-(9, 2, 'カメラB', 'https://www.youtube.com/watch?v=9plqYTT-3w8', 'None', 26, '2022-09-10 13:02:04', '2022-07-17 12:21:51'),
-(10, 2, 'カメラC', 'https://www.youtube.com/watch?v=9plqYTT-3w8', 'None', 90, '2022-08-21 20:35:54', '2022-07-17 12:21:55'),
-(11, 5, 'カメラA', 'aaaaaaa', 'None', 54, '2022-08-21 20:35:51', '2022-08-21 17:30:08'),
-(12, 5, 'カメラB', 'bbbbb', 'None', 48, '2022-08-21 20:35:45', '2022-08-21 17:30:08'),
-(13, 6, 'cccc', 'dddd', 'None', 0, '2022-08-29 00:53:29', '2022-08-29 00:53:29');
+(8, 2, 'カメラA', 'https://www.youtube.com/watch?v=9plqYTT-3w8', 'None', 100, '2022-10-20 13:20:33', '2022-07-17 12:21:43'),
+(9, 2, 'カメラB', 'https://www.youtube.com/watch?v=9plqYTT-3w8', 'None', 26, '2022-10-14 17:26:23', '2022-07-17 12:21:51'),
+(10, 2, 'カメラC', 'https://www.youtube.com/watch?v=9plqYTT-3w8', 'None', 90, '2022-10-14 17:26:28', '2022-07-17 12:21:55'),
+(11, 5, 'カメラA', 'aaaaaaa', 'None', 54, '2022-10-14 17:26:32', '2022-08-21 17:30:08'),
+(12, 5, 'カメラB', 'bbbbb', 'None', 48, '2022-10-14 17:26:36', '2022-08-21 17:30:08'),
+(13, 6, 'cccc', 'dddd', 'None', 0, '2022-10-14 17:26:40', '2022-08-29 00:53:29');
 
 -- --------------------------------------------------------
 
@@ -170,7 +170,7 @@ CREATE TABLE `personal_access_tokens` (
 --
 
 INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `name`, `token`, `abilities`, `last_used_at`, `created_at`, `updated_at`) VALUES
-(3, 'App\\Models\\User', 1, 'login:user1', '75252f59434cd309b8425610107c222e94600f899323cb4246f2509ae7ab60cb', '[\"*\"]', NULL, '2022-09-10 18:15:16', '2022-09-10 18:15:16');
+(4, 'App\\Models\\User', 1, 'login:user1', '550e1b072c3334d33aeb07149dc3c2472dd2338f75d9275e2c2db68d577b5d30', '[\"*\"]', NULL, '2022-10-09 19:34:58', '2022-10-09 19:34:58');
 
 -- --------------------------------------------------------
 
@@ -186,10 +186,10 @@ CREATE TABLE `spots` (
   `spots_longitude` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `spots_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `spots_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `spots_count_day1` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `spots_count_week1` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `spots_count_month1` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `spots_count_month3` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `spots_count_day1` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `spots_count_week1` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `spots_count_month1` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `spots_count_month3` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `spots_over_time` int NOT NULL,
   `spots_max` int NOT NULL,
   `spots_img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -202,9 +202,9 @@ CREATE TABLE `spots` (
 --
 
 INSERT INTO `spots` (`spots_id`, `users_id`, `spots_name`, `spots_latitude`, `spots_longitude`, `spots_address`, `spots_status`, `spots_count_day1`, `spots_count_week1`, `spots_count_month1`, `spots_count_month3`, `spots_over_time`, `spots_max`, `spots_img`, `updated_at`, `created_at`) VALUES
-(2, 1, '文教大学駐輪場A', '35.37007', '139.416526', '神奈川県茅ヶ崎市行谷１１００', 'None', '233,233,233,233,233,233,233,233,233,234,234,234,234,234,234,234,234,234,234,234,234,234,234,234', '\'233.0\',\'233.0\',\'233.0\',\'233.0\',233.0,233.0,233.0', '233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0', '233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0,233.0', 60, 0, '画像のパスが入ります', '2022-08-26 23:11:26', '2022-07-17 12:14:24'),
-(5, 1, '文教大学駐輪場B', '35.37007', '139.416526', '神奈川県茅ヶ崎市行谷１１００', 'None', '102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102,102', '\'102.0\',\'102.0\',\'102.0\',\'102.0\',102.0,102.0,102.0', '102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0', '102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0', 60, 0, '画像のパスが入ります', '2022-08-26 23:11:26', '2022-07-17 12:21:01'),
-(6, 1, 'aaaaa', '0', '0', 'bbbbb', 'None', 'None', 'None', 'None', 'None', 60, 100, '', '2022-08-28 23:52:53', '2022-08-28 23:52:53');
+(2, 1, '文教大学駐輪場A', '35.37007', '139.416526', '神奈川県茅ヶ崎市行谷１１００', 'None', '216,216,216,216,216,216,216,216,216,216,216,216', '216.0,216.0,216.0,216.0,216.0,216.0,216.0', '216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0', '143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,143.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0,216.0', 60, 0, '画像のパスが入ります', '2022-10-20 13:20:54', '2022-07-17 12:14:24'),
+(5, 1, '文教大学駐輪場B', '35.37007', '139.416526', '神奈川県茅ヶ崎市行谷１１００', 'None', '102,102,102,102,102,102,102,102,102,102', '102.0,102.0,102.0,102.0,102.0,102.0,102.0', '102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0', '102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0,102.0', 60, 0, '画像のパスが入ります', '2022-10-20 13:20:54', '2022-07-17 12:21:01'),
+(6, 1, 'aaaaa', '0', '0', 'bbbbb', 'None', '0,0,0,0,0,0,0,0', '0.0,0.0,0.0,0.0,0.0,0.0,0.0', '0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0', '0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0', 60, 100, '', '2022-10-20 13:20:54', '2022-08-28 23:52:53');
 
 -- --------------------------------------------------------
 
@@ -344,7 +344,7 @@ ALTER TABLE `violations`
 -- テーブルの AUTO_INCREMENT `bicycles`
 --
 ALTER TABLE `bicycles`
-  MODIFY `bicycles_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=775;
+  MODIFY `bicycles_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=949;
 
 --
 -- テーブルの AUTO_INCREMENT `cameras`
@@ -374,7 +374,7 @@ ALTER TABLE `migrations`
 -- テーブルの AUTO_INCREMENT `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- テーブルの AUTO_INCREMENT `spots`
