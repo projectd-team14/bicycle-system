@@ -66,5 +66,5 @@ async def label(id: int = 0):
 
 # 自転車の画像
 @app.get("/bicycle/")
-async def label(name: str = 0):
-    return FileResponse(name)
+async def bicycle(camera_id: int = 0, bicycle_id: int = 0):
+    return FileResponse('./bicycle_imgs/%s/%s.jpg' % (camera_id, bicycle_id))

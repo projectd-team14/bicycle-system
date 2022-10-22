@@ -362,9 +362,9 @@ def detect(opt):
                                         cur.execute("UPDATE bicycles SET bicycles_status = %s WHERE get_id = %s AND cameras_id = %s",('違反', id_out, camera_id))
                                         # 画像を保存
                                         txt_file_name = txt_file_name if (isinstance(path, list) and len(path) > 1) else ''
-                                        file_path = Path("./bicycle_imgs/") / str(camera_id) / f'{id}.jpg'
+                                        file_path = Path("./bicycle_imgs/") / str(camera_id) / f'{int(id)}.jpg'
                                         id_str = str(camera_id)
-                                        jpg = '%s.jpg' % str(id)  
+                                        jpg = '%s.jpg' % int(id)  
                                         file_path_json = "bicycle_imgs/%s/%s" % (id_str,jpg)
                                         save_one_box(bboxes, imc, file_path, BGR=True)
                                         cur.execute("UPDATE bicycles SET bicycles_img= %s WHERE get_id = %s AND cameras_id = %s",(file_path_json, id_out, camera_id)) 
@@ -387,13 +387,17 @@ def detect(opt):
                             #if save_crop:
                                 #txt_file_name = txt_file_name if (isinstance(path, list) and len(path) > 1) else ''
                                 #save_one_box(bboxes, imc, file=save_imgs / 'crops' / txt_file_name / names[c] / f'{id}' / f'{p.stem}.jpg', BGR=True)
+                
                 print(id_collect) # 現在のトラッキング
                 cur = conn.cursor(buffered=True)
                 cur.execute("SELECT get_id FROM bicycles WHERE cameras_id = '%s'" % camera_id)
                 last_lis = cur.fetchall()
                 for i5 in range(len(last_lis)):
                     if not last_lis[i5][0] in id_collect:
-                        cur.execute("UPDATE bicycles SET bicycles_status = %s WHERE get_id = %s AND cameras_id = %s",('無効', id_out, camera_id))
+                        cur.execute("UPDATE bicycles SET bicycles_status = %s WHERE get_id = %s AND cameras_id = %s", ('無効', id_out, camera_id))
+                        trimming_path = "./bicycle_imgs/%s/%s.jpg" % (camera_id, id_out)
+                        if os.path.exists(str(trimming_path)):
+                            os.remove(trimming_path)
                
                 '''
                 cur = conn.cursor(buffered=True)
