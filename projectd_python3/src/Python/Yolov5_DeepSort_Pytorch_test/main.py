@@ -394,8 +394,10 @@ def detect(opt):
                 last_lis = cur.fetchall()
                 for i5 in range(len(last_lis)):
                     if not last_lis[i5][0] in id_collect:
-                        cur.execute("UPDATE bicycles SET bicycles_status = %s WHERE get_id = %s AND cameras_id = %s", ('無効', id_out, camera_id))
-                        trimming_path = "./bicycle_imgs/%s/%s.jpg" % (camera_id, id_out)
+                        # 消えた自転車は消去する（誤判断の対策でDBに残すコードも仮に設置）
+                        # cur.execute("UPDATE bicycles SET bicycles_status = %s WHERE get_id = %s AND cameras_id = %s", ('無効', id_out, camera_id))
+                        cur.execute('DELETE FROM bicycles WHERE get_id = %s' % last_lis[i5][0]) 
+                        trimming_path = "./bicycle_imgs/%s/%s.jpg" % (camera_id, last_lis[i5][0])
                         if os.path.exists(str(trimming_path)):
                             os.remove(trimming_path)
                
