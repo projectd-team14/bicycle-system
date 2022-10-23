@@ -353,21 +353,25 @@ def detect(opt):
                                 out_time = spots_time
                                 time_dif = time_lis[0][2] - time_lis[0][3]
                                 time_total = time_dif.total_seconds() 
-                                id_collect.append(int(math.floor(float(id2))))      
+                                id_collect.append(int(math.floor(float(id2))))
+
+                                # 画像を保存
+                                is_file = os.path.exists("./bicycle_imgs/%s/%s.jpg" % (camera_id, int(id)))
+                                if not is_file:
+                                    txt_file_name = txt_file_name if (isinstance(path, list) and len(path) > 1) else ''
+                                    file_path = Path("./bicycle_imgs/") / str(camera_id) / f'{int(id)}.jpg'
+                                    id_str = str(camera_id)
+                                    jpg = '%s.jpg' % int(id)  
+                                    file_path_json = "bicycle_imgs/%s/%s" % (id_str,jpg)
+                                    save_one_box(bboxes, imc, file_path, BGR=True)
+                                    cur.execute("UPDATE bicycles SET bicycles_img= %s WHERE get_id = %s AND cameras_id = %s",(file_path_json, id_out, camera_id))
+
                                 if time_total >= out_time:
                                     if time_lis[0][1] == "None" or time_lis[0][1] == "無効":
                                         # 現在存在する自転車（ID）のみ違反車両にする
                                         now = time.time()
                                         now = str(now)
-                                        cur.execute("UPDATE bicycles SET bicycles_status = %s WHERE get_id = %s AND cameras_id = %s",('違反', id_out, camera_id))
-                                        # 画像を保存
-                                        txt_file_name = txt_file_name if (isinstance(path, list) and len(path) > 1) else ''
-                                        file_path = Path("./bicycle_imgs/") / str(camera_id) / f'{int(id)}.jpg'
-                                        id_str = str(camera_id)
-                                        jpg = '%s.jpg' % int(id)  
-                                        file_path_json = "bicycle_imgs/%s/%s" % (id_str,jpg)
-                                        save_one_box(bboxes, imc, file_path, BGR=True)
-                                        cur.execute("UPDATE bicycles SET bicycles_img= %s WHERE get_id = %s AND cameras_id = %s",(file_path_json, id_out, camera_id)) 
+                                        cur.execute("UPDATE bicycles SET bicycles_status = %s WHERE get_id = %s AND cameras_id = %s",('違反', id_out, camera_id)) 
 
                         if save_txt:
                             # to MOT format
