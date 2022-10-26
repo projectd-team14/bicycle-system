@@ -24,6 +24,7 @@ use App\Http\Controllers\Csv\CsvController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
 // ログインしたユーザーのみアクセスできる
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('/hoge', function(){
