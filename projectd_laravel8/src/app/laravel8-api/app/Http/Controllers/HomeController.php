@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Spot;
-use App\Models\Label;
 use App\Models\Bicycle;
 use App\Models\Camera;
 
@@ -31,48 +30,6 @@ class HomeController extends Controller
     public function create()
     {
         //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     * 
-     * 駐輪場を登録,idはusers_id
-     */
-    
-    public function labels(Request $request, $id)
-    {
-        $data = $request->all();
-        $mark = $data['label_mark'];
-        $dataStr = json_encode($data);
-        $labelData = Label::insertGetId([
-            'cameras_id' => $id,
-            'labels_json' => $dataStr,
-
-        ]);
-
-        return  "ラベリングデータ $mark を登録しました";
-    }
-
-    public function labels_img($id)
-    {
-        //PythonAPI
-        $url = "host.docker.internal:9000/?label=1&id=${id}";
-        $conn = curl_init();
-        curl_setopt($conn, CURLOPT_URL, $url);
-        curl_setopt($conn, CURLOPT_RETURNTRANSFER, true);
-        $res =  curl_exec($conn);
-        curl_close($conn);
-
-        return  $res;
-    }
-    
-    public function bicycle($id){
-        $bicycles = Bicycle::where('cameras_id', $id)->get();
-
-        return $bicycles;
     }
 
     /**
