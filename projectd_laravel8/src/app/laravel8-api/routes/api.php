@@ -4,9 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\TestController;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\Camera\CameraController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,28 +29,21 @@ Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
 
-//テスト用
-Route::get('/test', [HomeController::class, 'test']);
-
 //メイン処理
-Route::get('/violation/{id}', [HomeController::class, 'violation']);
 Route::get('/bicycle/{id}', [HomeController::class, 'bicycle']);
 Route::get('/edit_spot/{id}', [HomeController::class, 'edit_spot']);
-Route::get('/edit_camera/{id}', [HomeController::class, 'edit_camera']);
 Route::get('/csv/{id}', [HomeController::class, 'csv']);
-
 Route::post('/store_spot/{id}', [HomeController::class, 'store_spot']);
-Route::post('/store_camera/{id}', [HomeController::class, 'store_camera']);
-
 Route::post('/delete_spot/{id}', [HomeController::class, 'delete_spot']);
-Route::post('/delete_camera/{id}', [HomeController::class, 'delete_camera']);
-
-Route::post('/start/{id}', [HomeController::class, 'start']);
-Route::post('/stop/{id}', [HomeController::class, 'stop']);
-
 Route::post('/labels/{id}', [HomeController::class, 'labels']);
 Route::get('/labels_img/{id}', [HomeController::class, 'labels_img']);
 
+//カメラ
+Route::get('/edit_camera/{id}', [CameraController::class, 'edit_camera']);
+Route::post('/store_camera/{id}', [CameraController::class, 'store_camera']);
+Route::post('/delete_camera/{id}', [CameraController::class, 'delete_camera']);
+Route::post('/start/{id}', [CameraController::class, 'start']);
+Route::post('/stop/{id}', [CameraController::class, 'stop']);
 
 //ログインしたユーザーのみが/hogeにアクセスできる
 Route::middleware('auth:sanctum')->group(function(){

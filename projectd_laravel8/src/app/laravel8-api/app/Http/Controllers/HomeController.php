@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\Spot;
 use App\Models\Label;
 use App\Models\Bicycle;
-use App\Models\Violation;
 use App\Models\Camera;
 
 class HomeController extends Controller
@@ -75,19 +75,6 @@ class HomeController extends Controller
 
         return $data;
     }
-     //カメラを登録,idはspots_id
-    public function store_camera(Request $request, $id)
-    {
-        $data = $request->all();
-        $cameraId = Camera::insertGetId([
-             'cameras_name' => $data['cameras_name'],
-             'spots_id' => $id, 
-             'cameras_url' => $data['cameras_url'],
-             'cameras_status' => 'Stop',
-             'cameras_count' => 0,
-        ]);
-        return $data;
-    }
     
     public function labels(Request $request, $id)
     {
@@ -138,18 +125,6 @@ class HomeController extends Controller
 
         return $cameras;
     }
-
-    public function edit_camera($id){
-        $cameras = Camera::where('spots_id', $id)->get();
-
-        return $cameras;
-    }
-
-    public function violation($id){
-        $violationBicycles = Violation::where('cameras_id', $id)->get();
-
-        return $violationBicycles;
-    }
     
     public function bicycle($id){
         $bicycles = Bicycle::where('cameras_id', $id)->get();
@@ -187,55 +162,6 @@ class HomeController extends Controller
          Camera::where('spots_id', $id)->delete();
 
         return "削除完了";
-    }
-    public function delete_camera(Request $request, $id)
-    {
-        $inputs = $request->all();
-         Camera::where('cameras_id', $id)->delete();
-
-        return "削除完了";
-    }
-
-    #スタートボタンidはcameras_id
-    public function start(Request $request, $id)
-    {
-        $inputs = $request->all();
-        $cameras = Camera::where('cameras_id', $id)->get();
-        if ($cameras[0]["cameras_status"]=="Run"){
-            return "処理中です";
-        } else {
-           Camera::where('cameras_id', $id)->update(['cameras_status'=>'Run']);
-           //PythonAPI
-           $url = "host.docker.internal:9000/detect/?id=${id}";
-           $conn = curl_init();
-           curl_setopt($conn, CURLOPT_URL, $url);
-           curl_setopt($conn, CURLOPT_RETURNTRANSFER, true);
-           $res =  curl_exec($conn);
-           curl_close($conn);
-
-           return "処理を開始します";
-        }
-    }
-
-    public function stop(Request $request, $id)
-    {
-        $inputs = $request->all();
-        $cameras = Camera::where('cameras_id', $id)->get();
-        if ($cameras[0]["cameras_status"]=="Run"){
-           Camera::where('cameras_id', $id)->update(['cameras_status'=>'Stop']); 
-
-           return '処理を停止します';
-        } else {
-            return '処理が開始されていません';
-        }
-    }
-
-    //動作テスト用
-    public function test()
-    {
-        $test = "Apiの動作テスト";
-
-        return $test;
     }
 
     //駐輪情報
@@ -347,7 +273,6 @@ class HomeController extends Controller
             $day1Int = array_map('intval', $day1Str);
             $cameraAll = Camera::where('spots_id', $spotsId)->get(['cameras_id','cameras_name','cameras_url']);
             $bicycles = Bicycle::where('spots_id', $spotsId)->whereIn('bicycles_status', ['None','違反'])->get();
-            $violation = Violation::where('spots_id', $spotsId)->get();
             //cameraの項目
             $cameraNew=[];
             if (count($cameraAll)==0){
