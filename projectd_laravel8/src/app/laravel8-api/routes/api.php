@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Camera\CameraController;
 use App\Http\Controllers\Spot\SpotController;
 use App\Http\Controllers\Label\LabelController;
+use App\Http\Controllers\Csv\CsvController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,16 +31,11 @@ Route::middleware('auth:sanctum')->group(function(){
     });
 });
 
-Route::get('/get_spot/{id}', [HomeController::class, 'get_spot']);
-Route::get('/get_all/{id}', [HomeController::class, 'get_all']);
-Route::get('/open_api', [HomeController::class, 'open_api']);
+// 認証
 Route::get('/reset', [HomeController::class, 'reset']);
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
-
-// CSV
-Route::get('/csv/{id}', [HomeController::class, 'csv']);
 
 // カメラ
 Route::get('/edit_camera/{id}', [CameraController::class, 'edit_camera']);
@@ -57,3 +53,10 @@ Route::post('/delete_spot/{id}', [SpotController::class, 'delete_spot']);
 Route::post('/labels/{id}', [LabelController::class, 'labels']);
 Route::get('/labels_img/{id}', [LabelController::class, 'labels_img']);
 
+// CSV
+Route::get('/csv/{id}', [CsvController::class, 'csv']);
+
+// その他
+Route::get('/get_spot/{id}', [HomeController::class, 'get_spot']);
+Route::get('/get_all/{id}', [HomeController::class, 'get_all']);
+Route::get('/open_api', [HomeController::class, 'open_api']);
