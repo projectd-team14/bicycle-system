@@ -10,7 +10,7 @@ from fastapi.responses import FileResponse
 
 app = FastAPI()
 
-# スタートボタン
+# 検出処理を開始
 @app.get("/detect/")
 async def root(id: int = 0):
     conn = mysql.connector.connect(
@@ -23,9 +23,6 @@ async def root(id: int = 0):
     cur = conn.cursor(buffered=True)
     cur.execute("SELECT cameras_url FROM cameras WHERE cameras_id = %s" % id)
     db_lis = cur.fetchall()
-    sql = ("UPDATE cameras SET cameras_status = %s WHERE cameras_id = %s")
-    param = ('Run', id)
-    cur.execute(sql, param)
     conn.commit()
     cur.close()  
     subprocess.Popen('python ./Python/Yolov5_DeepSort_Pytorch_test/main.py --save-crop --source "%s" --camera_id %s --yolo_model ./Python/Yolov5_DeepSort_Pytorch_test/model_weight/best.pt' % (db_lis[0][0],int(id)),shell=True)

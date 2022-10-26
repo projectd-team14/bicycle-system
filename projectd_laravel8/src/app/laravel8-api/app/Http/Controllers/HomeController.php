@@ -83,7 +83,7 @@ class HomeController extends Controller
              'cameras_name' => $data['cameras_name'],
              'spots_id' => $id, 
              'cameras_url' => $data['cameras_url'],
-             'cameras_status' => 'None',
+             'cameras_status' => 'Stop',
              'cameras_count' => 0,
         ]);
         return $data;
@@ -201,11 +201,10 @@ class HomeController extends Controller
     {
         $inputs = $request->all();
         $cameras = Camera::where('cameras_id', $id)->get();
-        $cameraLis =  json_decode($cameras , true); 
-        if ($cameras[0]["cameras_status"]=="Run" or $cameras[0]["cameras_status"]=="Run_process" or $cameras[0]["cameras_status"]=="Start"){
+        if ($cameras[0]["cameras_status"]=="Run"){
             return "処理中です";
-        }else if ($cameras[0]["cameras_status"]=="None"){
-           Camera::where('cameras_id', $id)->update(['cameras_status'=>'Start']);
+        } else {
+           Camera::where('cameras_id', $id)->update(['cameras_status'=>'Run']);
            //PythonAPI
            $url = "host.docker.internal:9000/detect/?id=${id}";
            $conn = curl_init();
@@ -222,17 +221,11 @@ class HomeController extends Controller
     {
         $inputs = $request->all();
         $cameras = Camera::where('cameras_id', $id)->get();
-        $cameraLis =  json_decode($cameras , true); 
-        if ($cameras[0]["cameras_status"]=="Run_process"){
+        if ($cameras[0]["cameras_status"]=="Run"){
            Camera::where('cameras_id', $id)->update(['cameras_status'=>'Stop']); 
 
            return '処理を停止します';
-        }else if ($cameras[0]["cameras_status"]=="Start" or $cameras[0]["cameras_status"]=="Stop"){
-            Camera::where('cameras_id', $id)->update(['cameras_status'=>'None']);
-
-            return '無効な処理です';
-        }
-        else{
+        } else {
             return '処理が開始されていません';
         }
     }

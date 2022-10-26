@@ -69,14 +69,7 @@ def detect(opt):
     spots_id = db_lis[0][1]
     cur.execute("SELECT spots_over_time FROM spots WHERE spots_id = %s" % spots_id)
     spots_time_lis = cur.fetchall()
-    spots_time = spots_time_lis[0][0]
-    if 'Run' in db_lis[0][3]:
-        camera_id = db_lis[0][0]
-        cur = conn.cursor(buffered=True)
-        sql = ("UPDATE cameras SET cameras_status = %s WHERE cameras_id = %s")
-        param = ('Run_process',db_lis[0][0])
-        cur.execute(sql,param)
-        #shutil.rmtree('Python/Yolov5_DeepSort_Pytorch_test/runs/')        
+    spots_time = spots_time_lis[0][0]   
     conn.commit()
     cur.close()
 
@@ -223,11 +216,8 @@ def detect(opt):
             db_lis_last = cur.fetchall()
             conn.commit()
             cur.close()
-            if 'Stop' in db_lis_last[0][2] or 'None' in db_lis_last[0][2]:
+            if 'Stop' in db_lis_last[0][2]:
                 cur = conn.cursor(buffered=True)
-                sql = ("UPDATE cameras SET cameras_status = %s WHERE cameras_id = %s")
-                param2 = ('None',camera_id)
-                cur.execute(sql,param2)
                 cur.execute('DELETE FROM bicycles WHERE cameras_id = %s',(camera_id,))
                 conn.commit()
                 cur.close()                
@@ -278,16 +268,13 @@ def detect(opt):
                     cur = conn.cursor(buffered=True)
                     cur.execute("SELECT cameras_id, cameras_name, cameras_status FROM cameras WHERE cameras_id = '%s'" % camera_id)
                     db_lis_last = cur.fetchall()
-                    if 'Stop' in db_lis_last[0][2] or 'None' in db_lis_last[0][2]:
+                    if 'Stop' in db_lis_last[0][2]:
                         cur = conn.cursor(buffered=True)
-                        sql = ("UPDATE cameras SET cameras_status = %s WHERE cameras_id = %s")
-                        param2 = ('None',camera_id)
-                        cur.execute(sql,param2)
                         cur.execute('DELETE FROM bicycles WHERE cameras_id = %s',(camera_id,))                      
                         shutil.rmtree('Python/Yolov5_DeepSort_Pytorch_test/runs/track/')
                         shutil.rmtree(delete)
                         exit()
-                    elif 'Run_process' in db_lis_last[0][2]:
+                    else:
                         cur = conn.cursor(buffered=True)
                         sql = ("UPDATE cameras SET cameras_count = %s WHERE cameras_id = %s")
                         param2 = (a,camera_id)
@@ -425,9 +412,10 @@ def detect(opt):
                 bicycle_lis.clear()
                 id_collect.clear()
                 LOGGER.info(f'{s}Done. YOLO:({t3 - t2:.3f}s), DeepSort:({t5 - t4:.3f}s)')
-                # プログラムを止める
                 conn.commit()
-                cur.close()  
+                cur.close()
+                
+                # プログラムを止める  
                 time.sleep(5)  
             else:
                 deepsort_list[i].increment_ages()
