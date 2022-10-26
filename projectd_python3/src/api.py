@@ -25,7 +25,7 @@ async def root(id: int = 0):
     db_lis = cur.fetchall()
     conn.commit()
     cur.close()  
-    subprocess.Popen('python ./Python/Yolov5_DeepSort_Pytorch_test/main.py --save-crop --source "%s" --camera_id %s --yolo_model ./Python/Yolov5_DeepSort_Pytorch_test/model_weight/best.pt' % (db_lis[0][0],int(id)),shell=True)
+    subprocess.Popen('python ./Yolov5_DeepSort_Pytorch/main.py --save-crop --source "%s" --camera_id %s --yolo_model ./Yolov5_DeepSort_Pytorch/model_weight/best.pt' % (db_lis[0][0],int(id)),shell=True)
 
 # ラベル付け設定
 @app.get("/label/")
