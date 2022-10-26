@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Camera\CameraController;
+use App\Http\Controllers\Spot\SpotController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,10 +32,7 @@ Route::post('/logout', [LoginController::class, 'logout']);
 
 //メイン処理
 Route::get('/bicycle/{id}', [HomeController::class, 'bicycle']);
-Route::get('/edit_spot/{id}', [HomeController::class, 'edit_spot']);
 Route::get('/csv/{id}', [HomeController::class, 'csv']);
-Route::post('/store_spot/{id}', [HomeController::class, 'store_spot']);
-Route::post('/delete_spot/{id}', [HomeController::class, 'delete_spot']);
 Route::post('/labels/{id}', [HomeController::class, 'labels']);
 Route::get('/labels_img/{id}', [HomeController::class, 'labels_img']);
 
@@ -45,7 +43,12 @@ Route::post('/delete_camera/{id}', [CameraController::class, 'delete_camera']);
 Route::post('/start/{id}', [CameraController::class, 'start']);
 Route::post('/stop/{id}', [CameraController::class, 'stop']);
 
-//ログインしたユーザーのみが/hogeにアクセスできる
+// 駐輪場
+Route::get('/edit_spot/{id}', [SpotController::class, 'edit_spot']);
+Route::post('/store_spot/{id}', [SpotController::class, 'store_spot']);
+Route::post('/delete_spot/{id}', [SpotController::class, 'delete_spot']);
+
+//ログインしたユーザーのみアクセスできる
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('/hoge', function(){
         return 'auth is working';
