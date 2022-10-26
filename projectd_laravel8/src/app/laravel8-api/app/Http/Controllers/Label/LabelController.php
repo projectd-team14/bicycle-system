@@ -36,5 +36,4 @@ class LabelController extends Controller
         return  $res;
     }    
     */
-
 }

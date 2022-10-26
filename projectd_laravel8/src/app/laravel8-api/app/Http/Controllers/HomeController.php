@@ -245,7 +245,6 @@ class HomeController extends Controller
         }
 
         return $spotsDataAll;
-
     }
 
     public function open_api(){
