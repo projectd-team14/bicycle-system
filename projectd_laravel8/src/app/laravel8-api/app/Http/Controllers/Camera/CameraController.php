@@ -50,9 +50,8 @@ class CameraController extends Controller
     }
 
     #スタートボタンidはcameras_id
-    public function start(Request $request, $id)
+    public function start($id)
     {
-        $inputs = $request->all();
         $cameras = Camera::where('cameras_id', $id)->get();
         if ($cameras[0]["cameras_status"]=="Run"){
             return "処理中です";
@@ -70,9 +69,8 @@ class CameraController extends Controller
         }
     }
 
-    public function stop(Request $request, $id)
+    public function stop($id)
     {
-        $inputs = $request->all();
         $cameras = Camera::where('cameras_id', $id)->get();
         if ($cameras[0]["cameras_status"]=="Run"){
            Camera::where('cameras_id', $id)->update(['cameras_status'=>'Stop']); 

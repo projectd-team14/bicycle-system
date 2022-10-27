@@ -42,8 +42,8 @@ Route::post('/logout', [LoginController::class, 'logout']);
 Route::get('/edit_camera/{id}', [CameraController::class, 'edit_camera']);
 Route::post('/store_camera/{id}', [CameraController::class, 'store_camera']);
 Route::post('/delete_camera/{id}', [CameraController::class, 'delete_camera']);
-Route::post('/start/{id}', [CameraController::class, 'start']);
-Route::post('/stop/{id}', [CameraController::class, 'stop']);
+Route::get('/start/{id}', [CameraController::class, 'start']);
+Route::get('/stop/{id}', [CameraController::class, 'stop']);
 
 // 駐輪場
 Route::get('/edit_spot/{id}', [SpotController::class, 'edit_spot']);
