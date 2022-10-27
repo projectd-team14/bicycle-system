@@ -3,7 +3,7 @@ import numpy as np
 import sys
 import torch
 sys.path.append('deep_sort/deep/reid')
-sys.path.append("Python/Yolov5_DeepSort_Pytorch_test/deep_sort/deep/reid")
+sys.path.append("Yolov5_DeepSort_Pytorch/deep_sort/deep/reid")
 from torchreid.metrics.distance import compute_distance_matrix
 
 

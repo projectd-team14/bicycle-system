@@ -1,12 +1,12 @@
 import os
 import sys
-sys.path.append("Python/Yolov5_DeepSort_Pytorch_test/deep_sort")
-sys.path.append("Python/Yolov5_DeepSort_Pytorch_test/deep_sort/configs/deep_sort.yaml")
+sys.path.append("Yolov5_DeepSort_Pytorch/deep_sort")
+sys.path.append("Yolov5_DeepSort_Pytorch/deep_sort/configs/deep_sort.yaml")
 
 import yaml
 from easydict import EasyDict as edict
 
-config_file1="Python/Yolov5_DeepSort_Pytorch_test/deep_sort/configs/deep_sort.yaml"
+config_file1="Yolov5_DeepSort_Pytorch/deep_sort/configs/deep_sort.yaml"
 class YamlParser(edict):
     """
     This is yaml parser based on EasyDict.
@@ -25,7 +25,7 @@ class YamlParser(edict):
         super(YamlParser, self).__init__(cfg_dict)
 
     def merge_from_file(self, config_file1):
-        with open("Python/Yolov5_DeepSort_Pytorch_test/deep_sort/configs/deep_sort.yaml", 'r') as fo:
+        with open("Yolov5_DeepSort_Pytorch/deep_sort/configs/deep_sort.yaml", 'r') as fo:
             yaml_ = yaml.load(fo.read(), Loader=yaml.FullLoader)
             self.update(yaml_)
 

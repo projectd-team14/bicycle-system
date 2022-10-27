@@ -9,7 +9,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-sys.path.append("Python/Yolov5_DeepSort_Pytorch_test/yolov5")
+sys.path.append("Yolov5_DeepSort_Pytorch/yolov5")
 sys.path.insert(0, './yolov5')
 from models.common import Conv
 from utils.downloads import attempt_download
