@@ -65,3 +65,8 @@ async def label(id: int = 0):
 @app.get("/bicycle/")
 async def bicycle(camera_id: int = 0, bicycle_id: int = 0):
     return FileResponse('./bicycle_imgs/%s/%s.jpg' % (camera_id, bicycle_id))
+
+# テスト
+@app.get("/test/")
+async def bicycle(camera_id: int = 0, bicycle_id: int = 0):
+    return "APIのテストです。"
