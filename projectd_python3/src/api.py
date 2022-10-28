@@ -68,5 +68,5 @@ async def bicycle(camera_id: int = 0, bicycle_id: int = 0):
 
 # テスト
 @app.get("/test/")
-async def bicycle(camera_id: int = 0, bicycle_id: int = 0):
+async def bicycle():
     return "APIのテストです。"
