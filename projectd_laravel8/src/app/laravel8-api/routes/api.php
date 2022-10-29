@@ -62,3 +62,6 @@ Route::get('/csv/{id}', [CsvController::class, 'csv']);
 Route::get('/get_spot/{id}', [HomeController::class, 'get_spot']);
 Route::get('/get_all/{id}', [HomeController::class, 'get_all']);
 Route::get('/open_api', [HomeController::class, 'open_api']);
+
+// YOLOv5
+Route::get('/get_url/{id}', [YoloController::class, 'get_url']);
