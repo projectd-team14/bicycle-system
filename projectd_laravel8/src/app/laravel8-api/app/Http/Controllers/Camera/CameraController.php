@@ -58,7 +58,7 @@ class CameraController extends Controller
         } else {
            Camera::where('cameras_id', $id)->update(['cameras_status'=>'Run']);
            //PythonAPI
-           $url = "host.docker.internal:9000/detect/?id=${id}";
+           $url = "https://projectd-fastapi.herokuapp.com/detect/?id=${id}";
            $conn = curl_init();
            curl_setopt($conn, CURLOPT_URL, $url);
            curl_setopt($conn, CURLOPT_RETURNTRANSFER, true);
