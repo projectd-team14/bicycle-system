@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Camera\CameraController;
 use App\Http\Controllers\Spot\SpotController;
 use App\Http\Controllers\Label\LabelController;
+use App\Http\Controllers\Yolo\YoloController;
 use App\Http\Controllers\Csv\CsvController;
 
 /*
