@@ -64,4 +64,18 @@ Route::get('/get_all/{id}', [HomeController::class, 'get_all']);
 Route::get('/open_api', [HomeController::class, 'open_api']);
 
 // YOLOv5
+Route::get('/get_camera_status/{id}', [YoloController::class, 'get_camera_status']);
+Route::get('/get_camera_stop/{id}', [YoloController::class, 'get_camera_stop']);
+Route::get('/get_camera_count/{id}/{count}', [YoloController::class, 'get_camera_count']);
+
 Route::get('/get_url/{id}', [YoloController::class, 'get_url']);
+Route::get('/over_time/{id}', [YoloController::class, 'over_time']);
+Route::get('/get_label/{id}', [YoloController::class, 'get_label']);
+Route::get('/get_id/{id}', [YoloController::class, 'get_id']);
+
+Route::get('/bicycle_status/{camera_id}/{get_id}', [YoloController::class, 'bicycle_status']);
+Route::post('/bicycle_insert/{id}', [YoloController::class, 'bicycle_insert']);
+Route::post('/bicycle_update/{id}', [YoloController::class, 'bicycle_update']);
+Route::post('/bicycle_delete/{camera_id}', [YoloController::class, 'bicycle_delete']);
+Route::get('/bicycle_violation/{camera_id}/{get_id}', [YoloController::class, 'bicycle_violation']);
+
