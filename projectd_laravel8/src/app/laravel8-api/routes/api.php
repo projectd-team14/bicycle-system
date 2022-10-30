@@ -64,6 +64,7 @@ Route::get('/get_all/{id}', [HomeController::class, 'get_all']);
 Route::get('/open_api', [HomeController::class, 'open_api']);
 
 // YOLOv5
+Route::get('/get_camera_all', [YoloController::class, 'get_camera_all']);
 Route::get('/get_camera_status/{id}', [YoloController::class, 'get_camera_status']);
 Route::get('/get_camera_stop/{id}', [YoloController::class, 'get_camera_stop']);
 Route::get('/get_camera_count/{id}/{count}', [YoloController::class, 'get_camera_count']);
@@ -79,3 +80,14 @@ Route::post('/bicycle_update/{id}', [YoloController::class, 'bicycle_update']);
 Route::post('/bicycle_delete/{camera_id}', [YoloController::class, 'bicycle_delete']);
 Route::get('/bicycle_violation/{camera_id}/{get_id}', [YoloController::class, 'bicycle_violation']);
 
+Route::get('/get_spot_day1/{id}', [YoloController::class, 'get_spot_day1']);
+Route::post('/get_spot_day1_update/{id}/', [YoloController::class, 'get_spot_day1_update']);
+
+Route::get('/get_spot_week1/{id}', [YoloController::class, 'get_spot_week1']);
+Route::post('/get_spot_week1_update/{id}/', [YoloController::class, 'get_spot_week1_update']);
+
+Route::get('/get_spot_month1/{id}', [YoloController::class, 'get_spot_month1']);
+Route::post('/get_spot_month1_update/{id}/', [YoloController::class, 'get_spot_month1_update']);
+
+Route::get('/get_spot_month3/{id}', [YoloController::class, 'get_spot_month3']);
+Route::post('/get_spot_month3_update/{id}/', [YoloController::class, 'get_spot_month3_update']);

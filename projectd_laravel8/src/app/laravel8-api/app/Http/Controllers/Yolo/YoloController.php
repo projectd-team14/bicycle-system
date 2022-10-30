@@ -11,6 +11,34 @@ use App\Models\Bicycle;
 
 class YoloController extends Controller
 {
+    public function get_camera_all()
+    {
+        $cameraAll = Camera::get(['spots_id', 'cameras_count']);
+
+        return $cameraAll;
+    }
+
+    public function get_camera_status($id)
+    {
+        $cameraStatus = Camera::where('cameras_id', $id)->get('cameras_status');
+        
+        return $cameraStatus;
+    }
+
+    public function get_camera_stop($id)
+    {
+        Bicycle::where('cameras_id', $id)->delete();
+        
+        return "終了";
+    }
+
+    public function get_camera_count($id, $count)
+    {
+        Camera::where('cameras_id', $id)->update(['cameras_count' => $count]);
+        
+        return $count;
+    }
+
     public function get_url($id)
     {
         $cameraUrl = Camera::where('cameras_id', $id)->get('cameras_url');
@@ -91,31 +119,68 @@ class YoloController extends Controller
 
     public function bicycle_violation($camera_id, $get_id)
     {
-        $bicycleViolation = Bicycle::where('cameras_id', $camera_id)->where('get_id', $get_id)->update([
-            'bicycles_status' => '違反',
-       ]);
+        $bicycleViolation = Bicycle::where('cameras_id', $camera_id)->where('get_id', $get_id)->update(['bicycles_status' => '違反']);
 
         return $bicycleViolation;
     }
 
-    public function get_camera_status($id)
+    public function get_spot_day1($id)
     {
-        $cameraStatus = Camera::where('cameras_id', $id)->get('cameras_status');
-        
-        return $cameraStatus;
+        $spotDay1 = Spot::where('spots_id', $id)->get('spots_count_day1');
+
+        return $spotDay1;
     }
 
-    public function get_camera_stop($id)
+    public function get_spot_day1_update(Request $request, $id)
     {
-        Bicycle::where('cameras_id', $id)->delete();
-        
-        return "終了";
+        $inputs = $request->all();
+        $spotDay1Update = Spot::where('spots_id', $id)->update(['spots_count_day1' => $inputs['spots_count_day1']]);
+
+        return $spotDay1Update;
     }
 
-    public function get_camera_count($id, $count)
+    public function get_spot_week1($id)
     {
-        Camera::where('cameras_id', $id)->update(['cameras_count' => $count]);
-        
-        return $count;
+        $spotWeek1 = Spot::where('spots_id', $id)->get('spots_count_week1');
+
+        return $spotWeek1;
+    }
+
+    public function get_spot_week1_update(Request $request, $id)
+    {
+        $inputs = $request->all();
+        $spotWeek1Update = Spot::where('spots_id', $id)->update(['spots_count_week1' => $inputs['spots_count_week1']]);
+
+        return $spotWeek1Update;
+    }
+
+    public function get_spot_month1($id)
+    {
+        $spotMonth1 = Spot::where('spots_id', $id)->get('spots_count_month1');
+
+        return $spotMonth1;
+    }
+
+    public function get_spot_month1_update(Request $request, $id)
+    {
+        $inputs = $request->all();
+        $spotMonth1Update = Spot::where('spots_id', $id)->update(['spots_count_month1' => $inputs['spots_count_month1']]);
+
+        return $spotMonth1Update;
+    }
+
+    public function get_spot_month3($id)
+    {
+        $spotMonth1 = Spot::where('spots_id', $id)->get('spots_count_month3');
+
+        return $spotMonth1;
+    }
+
+    public function get_spot_month3_update(Request $request, $id)
+    {
+        $inputs = $request->all();
+        $spotMonth3Update = Spot::where('spots_id', $id)->update(['spots_count_month3' => $inputs['spots_count_month3']]);
+
+        return $spotMonth3Update;
     }
 }
