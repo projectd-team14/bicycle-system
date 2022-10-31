@@ -6,7 +6,6 @@ bicycle_system
 　│─ open_pages(一般ユーザー向けのGISページ)
   │─ projectd_laravel8(バックエンド)
   │─ projectd_nuxt3(フロントエンド)
-  │─ projectd_python3(PythonAPIとYOLOv5)
   └─ sql_sample(テスト用SQL)
 ```
 
