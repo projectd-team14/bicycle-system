@@ -1,9 +1,5 @@
 # YOLOv5を用いた駐輪場管理業務支援システム(bicycle_system)
 Bicycle parking lot management system using YOLOv5  
-〇連携前の個別リポジトリ  
-・[フロントエンド](https://github.com/Ban-c0p31073/Pro14_Nuet)  
-・[バックエンド](https://github.com/nishiumidaina/projectd_docker_laravel8)  
-    
 ## ディレクトリ構成  
 ```
 bicycle_system
@@ -56,7 +52,6 @@ yarn dev
 Ctrl + C
 exit
 ```
-  
 ## APIの仕様
 ・ユーザー登録
 ```
@@ -196,6 +191,10 @@ GET: http://localhost:8000/api/get_all/ユーザーID
     }
 ]
 ```
+## その他 
+〇連携前の個別リポジトリ  
+・[フロントエンド](https://github.com/Ban-c0p31073/Pro14_Nuet)  
+・[バックエンド](https://github.com/nishiumidaina/projectd_docker_laravel8)  
 
 
 
