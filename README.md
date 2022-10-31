@@ -14,7 +14,8 @@ bicycle_system
   └─ sql_sample(テスト用SQL)
 ```
 
-## 環境構築
+## 環境構築  
+※本プロジェクトは[YOLOv5用サーバー](https://github.com/projectd-team14/yolov5-server)の環境構築が必要です。  
 〇主要フレームワーク、ライブラリ、言語等  
 ・Nuxt.js(TypeScript,Sass)  
 ・Laravel(PHP)  
@@ -38,10 +39,6 @@ cd projectd_Laravel8
 docker compose up -d --build
 ```
 ```
-cd projectd_python3
-docker compose up -d --build
-```
-```
 cd_projectd_nuxt3
 docker compose up -d --build
 ```
@@ -53,27 +50,6 @@ yarn install
 4-2.サーバーを起動
 ```
 yarn dev
-```
-5-1.projectd_python3のコンテナに接続(projectd_python3ディレクトリで行う)
-```
-docker container exec -it projectd_python3-python3-1 bash
-cd src
-pip install -r requirements.txt
-```
-※9/12追記:OpenCVのエラー回避
-```
-pip uninstall -y opencv-python
-pip install opencv-python-headless
-```
-5-2.恐らくライブラリをインストールした後サーバーを起動すると正常に機能しません（エラーは出ないけどYOLOが動いていない状態になる）。 そこでvim等でコンテナ内にあるpythonのライブラリを一部コメントアウトする必要がある。
-```
-2行をコメントアウト↓
- File "/usr/local/lib/python3.10/site-packages/pafy/backend_youtube_dl.py", line 53
- File "/usr/local/lib/python3.10/site-packages/pafy/backend_youtube_dl.py", line 54
-```
-5-3.srcディレクトリに戻りサーバーを起動
-```
-uvicorn api:app --host=0.0.0.0 --port=9000
 ```
 6.終了コマンド
 ```
