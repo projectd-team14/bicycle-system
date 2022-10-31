@@ -75,10 +75,9 @@ Route::get('/get_label/{id}', [YoloController::class, 'get_label']);
 Route::get('/get_id/{id}', [YoloController::class, 'get_id']);
 
 Route::get('/bicycle_status/{camera_id}/{get_id}', [YoloController::class, 'bicycle_status']);
-Route::post('/bicycle_insert/{id}', [YoloController::class, 'bicycle_insert']);
-Route::post('/bicycle_update/{id}', [YoloController::class, 'bicycle_update']);
+Route::post('/bicycle_update', [YoloController::class, 'bicycle_update']);
 Route::post('/bicycle_delete/{camera_id}', [YoloController::class, 'bicycle_delete']);
-Route::get('/bicycle_violation/{camera_id}/{get_id}', [YoloController::class, 'bicycle_violation']);
+Route::post('/bicycle_violation', [YoloController::class, 'bicycle_violation']);
 
 Route::get('/get_spot_day1/{id}', [YoloController::class, 'get_spot_day1']);
 Route::post('/get_spot_day1_update/{id}/', [YoloController::class, 'get_spot_day1_update']);

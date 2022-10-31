@@ -80,31 +80,39 @@ class YoloController extends Controller
         return $bicycleList;
     }
 
-    public function bicycle_insert(Request $request, $id)
+    public function bicycle_update(Request $request)
     {
         $inputs = $request->all();
-        $bicycleInsert = Bicycle::insertGetId([
-            'spots_id' => $inputs['spots_id'],
-            'cameras_id' => $inputs['cameras_id'],
-            'labels_name' => $inputs['labels_name'], 
-            'get_id' => $inputs['get_id'],
-            'bicycles_x_coordinate' => $inputs['bicycles_x_coordinate'],
-            'bicycles_y_coordinate' => $inputs['bicycles_y_coordinate'],
-            'bicycles_status' => 'None',
-       ]);
+        $bicycleStatusList = [];
+        for ($i=0; $i<count($inputs); $i++) {
+            if ($inputs[$i]['type'] == 'insert') {
+                $bicycleInsert = Bicycle::insertGetId([
+                    'spots_id' => $inputs[$i]['spots_id'],
+                    'cameras_id' => $inputs[$i]['cameras_id'],
+                    'labels_name' => $inputs[$i]['labels_name'], 
+                    'get_id' => $inputs[$i]['get_id'],
+                    'bicycles_x_coordinate' => $inputs[$i]['bicycles_x_coordinate'],
+                    'bicycles_y_coordinate' => $inputs[$i]['bicycles_y_coordinate'],
+                    'bicycles_status' => 'None',
+               ]);
+            } else {
+                $bicycleUpdate = Bicycle::where('cameras_id', $inputs[$i]['cameras_id'])->where('get_id', $inputs[$i]['get_id'])->update([
+                    'bicycles_x_coordinate' => $inputs[$i]['bicycles_x_coordinate'],
+                    'bicycles_y_coordinate' => $inputs[$i]['bicycles_y_coordinate'],
+               ]);
+            }
+            $bicycleStatus = Bicycle::where('cameras_id', $inputs[$i]['cameras_id'])->where('get_id', $inputs[$i]['get_id'])->get(['bicycles_id', 'bicycles_status', 'updated_at', 'created_at']);
+            $bicycleGet = [
+                'get_id' => $inputs[$i]['get_id'],
+                'bicycles_id' => $bicycleStatus[0]['bicycles_id'],
+                'bicycles_status' => $bicycleStatus[0]['bicycles_status'],
+                'updated_at' => $bicycleStatus[0]['updated_at'],
+                'created_at' => $bicycleStatus[0]['created_at']
+            ];
+            array_push($bicycleStatusList, $bicycleGet);
+        }
 
-        return $bicycleInsert;
-    }
-
-    public function bicycle_update(Request $request, $id)
-    {
-        $inputs = $request->all();
-        $bicycleUpdate = Bicycle::where('cameras_id', $inputs['cameras_id'])->where('get_id', $inputs['get_id'])->update([
-            'bicycles_x_coordinate' => $inputs['bicycles_x_coordinate'],
-            'bicycles_y_coordinate' => $inputs['bicycles_y_coordinate'],
-       ]);
-
-        return $bicycleUpdate;
+       return $bicycleStatusList;
     }
 
     public function bicycle_delete(Request $request, $camera_id)
@@ -117,12 +125,16 @@ class YoloController extends Controller
         return $inputs;
     }
 
-    public function bicycle_violation($camera_id, $get_id)
+    public function bicycle_violation(Request $request)
     {
-        $bicycleViolation = Bicycle::where('cameras_id', $camera_id)->where('get_id', $get_id)->update(['bicycles_status' => '違反']);
-
-        return $bicycleViolation;
+        $inputs = $request->all();
+        for ($i=0; $i<count($inputs['violation_list']); $i++) {
+            $bicycleViolation = Bicycle::where('cameras_id', $inputs['camera_id'])->where('get_id', $inputs['violation_list'][$i])->update(['bicycles_status' => '違反']);
+        }
+        
+        return $inputs;
     }
+
 
     public function get_spot_day1($id)
     {
