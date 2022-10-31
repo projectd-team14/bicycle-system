@@ -11,7 +11,6 @@ class LabelController extends Controller
     public function labels(Request $request, $id)
     {
         $data = $request->all();
-        $mark = $data['label_mark'];
         $dataStr = json_encode($data);
         $labelData = Label::insertGetId([
             'cameras_id' => $id,
@@ -19,7 +18,7 @@ class LabelController extends Controller
 
         ]);
 
-        return  "ラベリングデータ $mark を登録しました";
+        return  "ラベリングデータを登録しました";
     }
 
     // ラベリングデータの初期設定用
