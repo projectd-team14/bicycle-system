@@ -27,7 +27,7 @@ class CreateSpotsTable extends Migration
             $table->text('spots_count_month3')->defalut('None');
             $table->integer('spots_over_time')->defalut('None');
             $table->integer('spots_max')->defalut('None');
-            $table->string('spots_img');
+            $table->string('spots_url');
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });

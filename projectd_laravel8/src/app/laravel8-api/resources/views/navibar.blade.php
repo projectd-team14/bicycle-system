@@ -41,9 +41,7 @@
         </li>
         <li class="list">
           <a href="/setting/{{ $user['id'] }}">
-            <span class="icon"
-              ><ion-icon name="settings-outline"></ion-icon
-            ></span>
+            <span class="icon"><ion-icon name="bicycle-outline"></ion-icon></span>
             <span class="title">Setting</span>
           </a>
         </li>
