@@ -2,8 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterApiController;
+use App\Http\Controllers\Auth\LoginApiController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\Camera\CameraController;
@@ -36,9 +36,9 @@ Route::middleware('auth:sanctum')->group(function(){
 
 // 認証
 Route::get('/reset', [HomeController::class, 'reset']);
-Route::post('/register', [RegisterController::class, 'register']);
-Route::post('/login', [LoginController::class, 'login']);
-Route::post('/logout', [LoginController::class, 'logout']);
+Route::post('/register', [RegisterApiController::class, 'register']);
+Route::post('/login', [LoginApiController::class, 'login']);
+Route::post('/logout', [LoginApiController::class, 'logout']);
 
 // カメラ
 Route::get('/edit_camera/{id}', [CameraController::class, 'edit_camera']);
