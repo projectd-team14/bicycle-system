@@ -1,0 +1,131 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    height: 100%;
+    margin-bottom: -10px;
+    background-color: #ffffff;
+  }
+  
+  .navigation {
+    position: relative;
+    height: 100%;
+    background: linear-gradient(to bottom, #ff9f0f 0%, #d31900 100%);
+    overflow-x: hidden;
+    transition: all 0.5s;
+  }
+  
+  .navigation ul {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding-top: 20px;
+    padding-left: 10px;
+  }
+  
+  .navigation ul li {
+    list-style: none;
+    display: block;
+    position: relative;
+    width: 100%;
+    border-radius: 15px;
+  }
+  
+  .navigation ul li:hover {
+    background-color: #20272c5e;
+  }
+  
+  .navigation ul li a {
+    display: block;
+    position: relative;
+    text-decoration: none;
+    color: white;
+    width: 100%;
+    display: flex;
+  }
+  
+  .navigation ul li a .icon {
+    display: block;
+    min-width: 45px;
+    height: 60px;
+    line-height: 70px;
+    text-align: center;
+  }
+  
+  .navigation ul li a .icon ion-icon {
+    font-size: 1.5em;
+  }
+  
+  .navigation ul li a .title {
+    padding-left: 15px;
+    height: 60px;
+    line-height: 60px;
+    white-space: nowrap;
+  }
+
+  .login{
+    color: #ffffff;
+    background: linear-gradient(to bottom, #20c77c 0%, #0071b8 100%);
+  }
+  .register{
+    color: #ffffff;
+    background: linear-gradient(to bottom, #20c77c 0%, #0071b8 100%);
+  }
+  .card{
+    background: #434347;
+  }
+  .card-name{
+    color: #ffffff;;
+  }
+  .card-body{
+    background: #20272c5e;
+  }
+  .btn-link{
+    color: #e65757;
+  }
+  .btn-link:hover{
+    color: #e65757;
+  }
+  .btn-link:active{
+    color: #e65757;
+  }
+  .btn-primary{
+    background: #c75d20; 
+  }
+  .btn-primary:hover{
+    background: #83390e; 
+  }
+  .navbar-brand{
+    color: #ffffff;
+  }
+  #navbarDropdown{
+    color: #ffffff;
+  }
+  .nav-link{
+    color: #ffffff;   
+  }
+  .nav-link:hover{
+    color: #c75d20; 
+  }
+  .navbar-brand:hover{
+    color: #c75d20; 
+  }
+  .dropdown-item{
+    background-color: #f06f06;
+    color: #ffffff;
+  }
+  .dropdown-item:hover{
+    background-color: #974413; 
+    color: #ffffff;
+  }
+  .card{
+    margin-top: 25px;
+    color: #ffffff;
+  }
+  .title{
+    color: #ffffff;
+  }

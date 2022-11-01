@@ -10,49 +10,25 @@ use App\Models\Camera;
 class HomeController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Create a new controller instance.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {
         $user = \Auth::user();
-        $cameras = Camera::where('users_id', $user['id'])->get();
-
-        return view('home', compact('user', 'cameras','camera'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        
+        return view('layouts/app' ,compact('user'));
     }
 
     //駐輪情報
@@ -187,11 +163,11 @@ class HomeController extends Controller
             $labelNames =[];
             for($i=0;$i<count($bicycles);$i++){
                 if (!(in_array($bicycles[$i]['labels_name'],$labelNames))) {
-                   array_push($labelNames,$bicycles[$i]['labels_name']); 
+                    array_push($labelNames,$bicycles[$i]['labels_name']); 
                 }
             }
             $labelNamesNew = array_unique($labelNames);
-    
+
             if (count($labelNamesNew)==0){
                 for($i=0;$i<=count($labelNamesNew);$i++){
                     $situation[$i]= [
@@ -202,7 +178,7 @@ class HomeController extends Controller
             } else{
                 for($i=0;$i<count($labelNamesNew);$i++){
                     $bicycle = Bicycle::where('spots_id', $spotsId)->where('labels_name',$labelNamesNew[$i])->get(['get_id','bicycles_id','updated_at','created_at','bicycles_status']);
-    
+
                     for($i2=0;$i2<count($bicycle);$i2++){
                         if ($bicycle[$i2]['bicycles_status'] == 'None'){
                             $bicycle[$i2]['bicycles_status'] = false;
@@ -282,4 +258,3 @@ class HomeController extends Controller
         return '強制終了';
     }
 }
-

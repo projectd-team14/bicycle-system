@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MainController;
 use App\Http\Controllers\Camera\CameraController;
 use App\Http\Controllers\Spot\SpotController;
 use App\Http\Controllers\Label\LabelController;
@@ -59,9 +60,9 @@ Route::get('/labels_img/{id}', [LabelController::class, 'labels_img']);
 Route::get('/csv/{id}', [CsvController::class, 'csv']);
 
 // その他
-Route::get('/get_spot/{id}', [HomeController::class, 'get_spot']);
-Route::get('/get_all/{id}', [HomeController::class, 'get_all']);
-Route::get('/open_api', [HomeController::class, 'open_api']);
+Route::get('/get_spot/{id}', [MainController::class, 'get_spot']);
+Route::get('/get_all/{id}', [MainController::class, 'get_all']);
+Route::get('/open_api', [MainController::class, 'open_api']);
 
 // YOLOv5
 Route::get('/get_camera_all', [YoloController::class, 'get_camera_all']);
