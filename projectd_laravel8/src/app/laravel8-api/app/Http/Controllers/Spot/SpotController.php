@@ -32,38 +32,24 @@ class SpotController extends Controller
         $insertLong = (string) $xml->coordinate->lng;
         $insertLat= (string) $xml->coordinate->lat;
         if ($data['spots_url'] == "") {
-            $spotId = Spot::insertGetId([
-                'spots_name' => $data['spots_name'],
-                'users_id' => $id, 
-                'spots_longitude' => $insertLong, 
-                'spots_latitude' => $insertLat,
-                'spots_address' => $data['spots_address'],
-                'spots_status' => 'None',
-                'spots_count_day1' => 'None',
-                'spots_count_week1' => 'None',
-                'spots_count_month1' => 'None',
-                'spots_count_month3' => 'None',
-                'spots_max' => 100,
-                'spots_over_time' => 3600,
-                'spots_url' => '画像のパスが入ります',
-            ]);            
-        } else {
-            $spotId = Spot::insertGetId([
-                'spots_name' => $data['spots_name'],
-                'users_id' => $id, 
-                'spots_longitude' => $insertLong, 
-                'spots_latitude' => $insertLat,
-                'spots_address' => $data['spots_address'],
-                'spots_status' => 'None',
-                'spots_count_day1' => 'None',
-                'spots_count_week1' => 'None',
-                'spots_count_month1' => 'None',
-                'spots_count_month3' => 'None',
-                'spots_max' => 100,
-                'spots_over_time' => 3600,
-                'spots_url' => $data['spots_url'],
-            ]); 
-        };
+        $spotId = Spot::insertGetId([
+             'spots_name' => $data['spots_name'],
+             'users_id' => $id, 
+             'spots_longitude' => $insertLong, 
+             'spots_latitude' => $insertLat,
+             'spots_address' => $data['spots_address'],
+             'spots_status' => 'None',
+             'spots_count_day1' => 'None',
+             'spots_count_week1' => 'None',
+             'spots_count_month1' => 'None',
+             'spots_count_month3' => 'None',
+             'spots_max' => 100,
+             'spots_over_time' => 3600,
+             'spots_url' => $data['spots_url'],
+        ]);            
+        }
+
+
         return $data;
     }
 
