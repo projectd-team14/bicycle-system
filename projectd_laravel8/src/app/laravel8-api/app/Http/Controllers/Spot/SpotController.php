@@ -31,7 +31,6 @@ class SpotController extends Controller
         $xml = simplexml_load_string($line);
         $insertLong = (string) $xml->coordinate->lng;
         $insertLat= (string) $xml->coordinate->lat;
-        if ($data['spots_url'] == "") {
         $spotId = Spot::insertGetId([
              'spots_name' => $data['spots_name'],
              'users_id' => $id, 
@@ -47,8 +46,6 @@ class SpotController extends Controller
              'spots_over_time' => 3600,
              'spots_url' => $data['spots_url'],
         ]);            
-        }
-
 
         return $data;
     }
