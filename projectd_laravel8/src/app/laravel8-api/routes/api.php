@@ -10,6 +10,7 @@ use App\Http\Controllers\Camera\CameraController;
 use App\Http\Controllers\Spot\SpotController;
 use App\Http\Controllers\Label\LabelController;
 use App\Http\Controllers\Yolo\YoloController;
+use App\Http\Controllers\Chart\ChartController;
 use App\Http\Controllers\Csv\CsvController;
 
 /*
@@ -91,3 +92,6 @@ Route::post('/get_spot_month1_update/{id}/', [YoloController::class, 'get_spot_m
 
 Route::get('/get_spot_month3/{id}', [YoloController::class, 'get_spot_month3']);
 Route::post('/get_spot_month3_update/{id}/', [YoloController::class, 'get_spot_month3_update']);
+
+// AWS Lambda
+Route::get('/chart', [ChartController::class, 'chart']);

@@ -42,7 +42,7 @@ class MainController extends Controller
                 "label" => "1か月間",
                 "backgroundColor" => "#f87979",
                 "data" => $month1Int,
-                "labels" => range(0, $month1Count)
+                "labels" => range(1, $month1Count)
             ];
             $dataMonth3 = [
                 "label" => "３か月間",
