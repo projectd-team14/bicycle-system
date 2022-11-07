@@ -1,62 +1,11 @@
 <template>
    <div>
-      <v-tooltip location="bottom" v-if="!bicycle.violatin_status">
-         <template v-slot:activator="{ props }">
-         <v-icon
-            color="black"
-            dark
-            v-bind="props"
-            class="mr-1"
-         >
-            mdi-bicycle
-         </v-icon>
-         </template>
-         <span>{{bicycle.time}}時間</span>
-      </v-tooltip>
-
-      <v-tooltip location="bottom" v-else>
-         <template v-slot:activator="{ props }">
-         <v-icon
-            color="red"
-            dark
-            v-bind="props"
-            class="mr-1"
-            @click="overlay = !overlay"
-         >
-            mdi-bicycle
-         </v-icon>
-         </template>
-         <span>{{bicycle.time}}時間!!!</span>
-      </v-tooltip>
-
-      <v-dialog v-model="overlay" persistent class="align-center justify-center">
-         <v-card>
-            <v-card-text class="d-flex">
-               <img :src="`http://host.docker.internal:8000/${bicycle.violatin_img}`" >
-               <v-table density="compact">
-                  <tbody>
-                     <tr>
-                        <td>ID</td>
-                        <td>{{ bicycle.id }}</td>
-                     </tr>
-                     <tr>
-                        <td>停車時間</td>
-                        <td>{{ bicycle.time }}時間</td>
-                     </tr>
-                  </tbody>
-               </v-table>
-            </v-card-text>
-            <v-card-actions>
-               <v-spacer></v-spacer>
-               <v-btn
-               color="success"
-               @click="overlay = false"
-               >
-               閉じる
-               </v-btn>
-            </v-card-actions>
-         </v-card>
-      </v-dialog>
+      <v-card width="300px" v-bind="props">
+        <v-card-title class="bg-light-blue-lighten-3 text-center" v-if="!bicycle.violatin_status" >{{bicycle.time}}時間</v-card-title>
+        <v-card-title class="bg-red-lighten-1 text-center" v-if="bicycle.violatin_status" >{{bicycle.time}}時間</v-card-title>
+        <v-img :src="'http://localhost:9000/bicycle/?camera_id=8&bicycle_id='+bicycle.id" height="300" cover></v-img>
+        <v-card-title class="bg-grey-lighten-3 text-center">ID: {{bicycle.id}}</v-card-title>
+      </v-card>
    </div>
 </template>
 

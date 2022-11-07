@@ -1,9 +1,9 @@
 <template>
    <v-container>
-      <v-card class="pa-3">
-         <div class="d-flex flex-column">
+      <div class="d-flex flex-column">
+         <v-card class="pa-3 mt-2">
             <p class="text-h4">{{name}}</p>
-            <div class="mt-2 px-3">
+            <div class="mt-2 px-3 pb-3">
                <div class="text-h6">混雑状況：{{ Math.ceil(per) }}%</div>
                <v-progress-linear
                   v-model="per"
@@ -13,16 +13,22 @@
                   <strong>{{ Math.ceil(per) }}%</strong>
                </v-progress-linear>
             </div>
-            <v-row>
-               <v-col lg="6" cols="12">
+         </v-card>
+         <v-row class="mt-4">
+            <v-col lg="6" cols="12">
+               <v-card class="pa-3">
+                  <p class="text-h4 my-2">駐輪場カメラ</p>
                   <ManagementCamera :camera="spots[index].camera" />
-               </v-col>
-               <v-col lg="6" cols="12">
+               </v-card>
+            </v-col>
+            <v-col lg="6" cols="12">
+               <v-card class="pa-3">
+                  <p class="text-h4 my-2">放置自転車状況</p>
                   <ManagementSituation :situation="spots[index].situation" />
-               </v-col>
-            </v-row>
-         </div>
-      </v-card>
+               </v-card>
+            </v-col>
+         </v-row>
+      </div>
    </v-container>
 </template>
 

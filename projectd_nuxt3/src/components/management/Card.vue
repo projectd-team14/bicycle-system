@@ -17,7 +17,7 @@
             </v-list-item>
          </v-col>
          <v-col class="ma-3 cardImg">
-            <v-img src="/assets/img/1.png" height="225" cover/>
+            <v-img :src="'http://localhost:9000/label/?id='+ camera[0].id" height="225" cover/>
          </v-col>
       </v-row>
    </v-card>
@@ -30,6 +30,7 @@ interface Props {
    address: String,
    count: Number,
    max: Number,
+   camera: Array,
 }
 
 const props = withDefaults(defineProps<Props>(), {

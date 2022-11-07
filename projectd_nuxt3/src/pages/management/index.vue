@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col v-for="(v, k) in spots" :key="k" lg="6" cols="12">
-        <ManagementCard :name="v.name" :address="v.address" :count="v.count" :max="v.max" :to="'/management/'+v.id"/>
+        <ManagementCard :name="v.name" :address="v.address" :count="v.count" :max="v.max" :camera="v.camera" :to="'/management/'+v.id"/>
       </v-col>
     </v-row>
   </v-container>
