@@ -195,4 +195,15 @@ class YoloController extends Controller
 
         return $spotMonth3Update;
     }
+
+    public function server_condition($id)
+    {
+        $serverCondition = Bicycle::where('cameras_id', $id)->exists();
+
+        if ($serverCondition) {
+            return 'true';
+        } else {
+            return 'false';
+        }
+    }
 }
