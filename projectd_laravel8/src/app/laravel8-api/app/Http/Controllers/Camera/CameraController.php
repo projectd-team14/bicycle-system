@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Camera;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Camera;
+use App\Models\Bicycle;
 
 class CameraController extends Controller
 {
@@ -53,18 +54,31 @@ class CameraController extends Controller
     public function start($id)
     {
         $cameras = Camera::where('cameras_id', $id)->get();
-        if ($cameras[0]["cameras_status"]=="Run"){
+        $serverCondition = Bicycle::where('cameras_id', $id)->exists();
+
+        if ($cameras[0]["cameras_status"]=="Run") {
             return "処理中です";
         } else {
            Camera::where('cameras_id', $id)->update(['cameras_status'=>'Run']);
            //PythonAPI
            // $url = "https://projectd-fastapi.herokuapp.com/detect/?id=${id}";
-           $url = "host.docker.internal:9000/detect/?id=${id}";
-           $conn = curl_init();
-           curl_setopt($conn, CURLOPT_URL, $url);
-           curl_setopt($conn, CURLOPT_RETURNTRANSFER, true);
-           $res =  curl_exec($conn);
-           curl_close($conn);
+
+           if (!$serverCondition) {
+                $url = "host.docker.internal:9000/detect/?id=${id}&status=0";
+                $conn = curl_init();
+                curl_setopt($conn, CURLOPT_URL, $url);
+                curl_setopt($conn, CURLOPT_RETURNTRANSFER, true);
+                $res =  curl_exec($conn);
+                curl_close($conn);
+           } else{
+                // メンテナンスまたはサーバーダウン後の修復処理
+                $url = "host.docker.internal:9000/detect/?id=${id}&status=1";
+                $conn = curl_init();
+                curl_setopt($conn, CURLOPT_URL, $url);
+                curl_setopt($conn, CURLOPT_RETURNTRANSFER, true);
+                $res =  curl_exec($conn);
+                curl_close($conn);
+           }
 
            return "処理を開始します";
         }
