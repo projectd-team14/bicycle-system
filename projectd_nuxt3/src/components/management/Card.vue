@@ -39,4 +39,7 @@ const props = withDefaults(defineProps<Props>(), {
   count: 1
 })
 
+const config = useRuntimeConfig()
+const imgURL = config.public.FastURL
+
 </script>

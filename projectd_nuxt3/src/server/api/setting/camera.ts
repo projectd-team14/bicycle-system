@@ -1,5 +1,6 @@
 export default defineEventHandler(async (event) => {
   const spotId = useQuery(event)
-  const result: string = await $fetch(`http://host.docker.internal:8000/api/edit_camera/${spotId.id}`)
+  const config = useRuntimeConfig()
+  const result: string = await $fetch(config.public.LaravelURL+`/api/edit_camera/${spotId.id}`)
   return result
 })

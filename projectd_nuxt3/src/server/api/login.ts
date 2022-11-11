@@ -1,4 +1,5 @@
-let url: string = `http://host.docker.internal:8000/api/login`
+const config = useRuntimeConfig()
+let url: string = config.public.LaravelURL+`/api/login`
 
 export interface login {
   token: string;

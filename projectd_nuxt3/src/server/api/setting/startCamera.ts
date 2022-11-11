@@ -1,6 +1,6 @@
 export default defineEventHandler(async (event) => {
   const cameraId = useQuery(event)
-  const body = await useBody(event)
-  const result: string = await $fetch(`http://host.docker.internal:8000/api/start/${cameraId.id}`)
+  const config = useRuntimeConfig()
+  const result: string = await $fetch(config.public.LaravelURL+`/api/start/${cameraId.id}`)
   return result
 })
