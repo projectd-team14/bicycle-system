@@ -35,9 +35,15 @@ docker compose up -d --build
 ```
 ```
 cd_projectd_nuxt3
-docker compose up -d --build
+docker compose up -d --build  
 ```
-4-1.projectd_nuxt3のコンテナに接続(projectd_nuxt3ディレクトリで行う)
+4-1.projectd_laravel8のコンテナに接続(projectd_laravel8ディレクトリで行う)
+```
+docker container exec -it projectd_laravel8-php-1 bash
+cd laravel8-api
+composer install
+```
+4-2.projectd_nuxt3のコンテナに接続(projectd_nuxt3ディレクトリで行う)
 ```
 docker-compose exec app sh
 yarn install
