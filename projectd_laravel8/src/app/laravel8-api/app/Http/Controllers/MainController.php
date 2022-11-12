@@ -226,7 +226,6 @@ class MainController extends Controller
             return $spotLisAll;
         }
     
-        //TGS用のバグ修正ボタン、YOLOが起動してるけど動かない時に押してください
         public function reset(){
             $resetCameras = Camera::where('cameras_status','Run_process')->orWhere('cameras_status','Run')->get();
             for ($i=0; $i<count($resetCameras); $i++){
