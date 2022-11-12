@@ -23,7 +23,7 @@ class LabelController extends Controller
 
     // ラベリングデータの初期設定用
     /* 
-    public function labels_img($id)
+    public function labelsImg($id)
     {
         $url = "host.docker.internal:9000/?label=1&id=${id}";
         $conn = curl_init();

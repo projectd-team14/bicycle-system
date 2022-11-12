@@ -11,7 +11,7 @@ use App\Models\Camera;
 class MainController extends Controller
 {
         //駐輪情報
-        public function get_spot($id){
+        public function getSpot($id){
             $spots = Spot::where('spots_id', $id)->get();
             $bicycles = Bicycle::where('spots_id', $id)->get();
             $day1Str = explode(",",$spots[0]["spots_count_day1"]);
@@ -105,7 +105,7 @@ class MainController extends Controller
         }
     
         //全情報
-        public function get_all($id){
+        public function getAll($id){
             $users = Spot::where('users_id', $id)->get();
             $spotsIdLis = [];
             $spotsDataAll = [];
@@ -202,7 +202,7 @@ class MainController extends Controller
             return $spotsDataAll;
         }
     
-        public function open_api(){
+        public function openApi(){
             $spots = Spot::get();
             $spotLisAll = [];
             for ($i=0; $i<count($spots); $i++){

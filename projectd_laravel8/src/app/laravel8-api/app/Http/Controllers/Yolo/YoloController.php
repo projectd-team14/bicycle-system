@@ -11,42 +11,42 @@ use App\Models\Bicycle;
 
 class YoloController extends Controller
 {
-    public function get_camera_all()
+    public function getCameraAll()
     {
         $cameraAll = Camera::get(['spots_id', 'cameras_count']);
 
         return $cameraAll;
     }
 
-    public function get_camera_status($id)
+    public function getCameraStatus($id)
     {
         $cameraStatus = Camera::where('cameras_id', $id)->get('cameras_status');
         
         return $cameraStatus;
     }
 
-    public function get_camera_stop($id)
+    public function getCameraStop($id)
     {
         Bicycle::where('cameras_id', $id)->delete();
         
         return "終了";
     }
 
-    public function get_camera_count($id, $count)
+    public function getCameraCount($id, $count)
     {
         Camera::where('cameras_id', $id)->update(['cameras_count' => $count]);
         
         return $count;
     }
 
-    public function get_url($id)
+    public function getUrl($id)
     {
         $cameraUrl = Camera::where('cameras_id', $id)->get('cameras_url');
         
         return $cameraUrl;
     }
 
-    public function over_time($id)
+    public function overTime($id)
     {
         $spotId = Camera::where('cameras_id', $id)->get('spots_id');
         $overTime = Spot::where('spots_id', $spotId[0]["spots_id"])->get(['spots_id', 'spots_over_time']);
@@ -54,14 +54,14 @@ class YoloController extends Controller
         return $overTime;
     }
 
-    public function get_label($id)
+    public function getLabel($id)
     {
         $labelJson = Label::where('cameras_id', $id)->get('labels_json');
 
         return $labelJson;
     }
 
-    public function get_id($id)
+    public function getId($id)
     {
         $labelJson = Bicycle::where('cameras_id', $id)->get('get_id');
         $idList = [];
@@ -72,7 +72,7 @@ class YoloController extends Controller
         return $idList;
     }
 
-    public function bicycle_status($camera_id, $get_id)
+    public function bicycleStatus($camera_id, $get_id)
     {
         $bicycleStatus = Bicycle::where('cameras_id', $camera_id)->where('get_id', $get_id)->get(['bicycles_id', 'bicycles_status', 'updated_at', 'created_at']);
         $bicycleList = [$bicycleStatus[0]['bicycles_id'], $bicycleStatus[0]['bicycles_status'], $bicycleStatus[0]['updated_at'], $bicycleStatus[0]['created_at']];
@@ -80,7 +80,7 @@ class YoloController extends Controller
         return $bicycleList;
     }
 
-    public function bicycle_update(Request $request)
+    public function bicycleUpdate(Request $request)
     {
         $inputs = $request->all();
         $bicycleStatusList = [];
@@ -115,7 +115,7 @@ class YoloController extends Controller
        return $bicycleStatusList;
     }
 
-    public function bicycle_delete(Request $request, $camera_id)
+    public function bicycleDelete(Request $request, $camera_id)
     {
         $inputs = $request->all();
         for ($i=0; $i<count($inputs['delete_list']); $i++){
@@ -125,7 +125,7 @@ class YoloController extends Controller
         return $inputs;
     }
 
-    public function bicycle_violation(Request $request)
+    public function bicycleViolation(Request $request)
     {
         $inputs = $request->all();
         for ($i=0; $i<count($inputs['violation_list']); $i++) {
@@ -136,14 +136,14 @@ class YoloController extends Controller
     }
 
 
-    public function get_spot_day1($id)
+    public function getSpotDay1($id)
     {
         $spotDay1 = Spot::where('spots_id', $id)->get('spots_count_day1');
 
         return $spotDay1;
     }
 
-    public function get_spot_day1_update(Request $request, $id)
+    public function getSpotDay1Update(Request $request, $id)
     {
         $inputs = $request->all();
         $spotDay1Update = Spot::where('spots_id', $id)->update(['spots_count_day1' => $inputs['spots_count_day1']]);
@@ -151,14 +151,14 @@ class YoloController extends Controller
         return $spotDay1Update;
     }
 
-    public function get_spot_week1($id)
+    public function getSpotWeek1($id)
     {
         $spotWeek1 = Spot::where('spots_id', $id)->get('spots_count_week1');
 
         return $spotWeek1;
     }
 
-    public function get_spot_week1_update(Request $request, $id)
+    public function getSpotWeek1Update(Request $request, $id)
     {
         $inputs = $request->all();
         $spotWeek1Update = Spot::where('spots_id', $id)->update(['spots_count_week1' => $inputs['spots_count_week1']]);
@@ -166,14 +166,14 @@ class YoloController extends Controller
         return $spotWeek1Update;
     }
 
-    public function get_spot_month1($id)
+    public function getSpotMonth1($id)
     {
         $spotMonth1 = Spot::where('spots_id', $id)->get('spots_count_month1');
 
         return $spotMonth1;
     }
 
-    public function get_spot_month1_update(Request $request, $id)
+    public function getSpotMonth1Update(Request $request, $id)
     {
         $inputs = $request->all();
         $spotMonth1Update = Spot::where('spots_id', $id)->update(['spots_count_month1' => $inputs['spots_count_month1']]);
@@ -181,14 +181,14 @@ class YoloController extends Controller
         return $spotMonth1Update;
     }
 
-    public function get_spot_month3($id)
+    public function getSpotMonth3($id)
     {
         $spotMonth1 = Spot::where('spots_id', $id)->get('spots_count_month3');
 
         return $spotMonth1;
     }
 
-    public function get_spot_month3_update(Request $request, $id)
+    public function getSpotMonth3Update(Request $request, $id)
     {
         $inputs = $request->all();
         $spotMonth3Update = Spot::where('spots_id', $id)->update(['spots_count_month3' => $inputs['spots_count_month3']]);
@@ -196,7 +196,7 @@ class YoloController extends Controller
         return $spotMonth3Update;
     }
 
-    public function server_condition($id)
+    public function serverCondition($id)
     {
         $serverCondition = Bicycle::where('cameras_id', $id)->exists();
 
@@ -207,7 +207,7 @@ class YoloController extends Controller
         }
     }
 
-    public function server_update(Request $request, $id)
+    public function serverUpdate(Request $request, $id)
     {
         $inputs = $request->all();
         $bicycleOld = Bicycle::where('cameras_id', $id)->get('get_id');

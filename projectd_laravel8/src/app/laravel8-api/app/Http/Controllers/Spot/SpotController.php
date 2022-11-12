@@ -9,13 +9,13 @@ use App\Models\Bicycle;
 
 class SpotController extends Controller
 {
-    public function edit_spot($id){
+    public function editSpot($id){
         $cameras = Spot::where('users_id', $id)->get();
 
         return $cameras;
     }
 
-    public function store_spot(Request $request, $id)
+    public function storeSpot(Request $request, $id)
     {
         $data = $request->all();
         $query = $data['spots_address'];
@@ -50,7 +50,7 @@ class SpotController extends Controller
         return $data;
     }
 
-    public function delete_spot(Request $request, $id)
+    public function deleteSpot(Request $request, $id)
     {
         $inputs = $request->all();
          Spot::where('spots_id', $id)->delete();

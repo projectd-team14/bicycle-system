@@ -22,14 +22,14 @@ class CameraController extends Controller
         return view('home', compact('user', 'cameras','camera'));
     }
 
-    public function edit_camera($id){
+    public function editCamera($id){
         $cameras = Camera::where('spots_id', $id)->get();
 
         return $cameras;
     }
 
     //カメラを登録,idはspots_id
-    public function store_camera(Request $request, $id)
+    public function storeCamera(Request $request, $id)
     {
         $data = $request->all();
         $cameraId = Camera::insertGetId([
@@ -42,7 +42,7 @@ class CameraController extends Controller
         return $data;
     }
 
-    public function delete_camera(Request $request, $id)
+    public function deleteCamera(Request $request, $id)
     {
         $inputs = $request->all();
          Camera::where('cameras_id', $id)->delete();
