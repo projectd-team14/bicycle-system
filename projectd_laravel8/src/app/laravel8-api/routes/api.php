@@ -92,7 +92,9 @@ Route::post('/get_spot_month1_update/{id}/', [YoloController::class, 'get_spot_m
 
 Route::get('/get_spot_month3/{id}', [YoloController::class, 'get_spot_month3']);
 Route::post('/get_spot_month3_update/{id}/', [YoloController::class, 'get_spot_month3_update']);
+
 Route::get('/server_condition/{id}', [YoloController::class, 'server_condition']);
+Route::post('/server_update/{id}', [YoloController::class, 'server_update']);
 
 // AWS Lambda
 Route::get('/chart', [ChartController::class, 'chart']);

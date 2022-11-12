@@ -206,4 +206,33 @@ class YoloController extends Controller
             return ['condition' =>'false'];
         }
     }
+
+    public function server_update(Request $request, $id)
+    {
+        $inputs = $request->all();
+        $bicycleOld = Bicycle::where('cameras_id', $id)->get('get_id');
+
+        $newIdList = [];
+        $oldIdList = [];
+
+        for ($i=0; $i<count($inputs); $i++) {
+            $bicycleServerUpdate = Bicycle::where('cameras_id', $id)->where('get_id', $inputs[$i]['old'])->update(['get_id' => $inputs[$i]['new']]);
+        }
+
+        for ($i=0; $i<count($inputs); $i++) {
+            array_push($newIdList, $inputs[$i]['old']);
+        }
+
+        for ($i=0; $i<count($bicycleOld); $i++) {
+            array_push($oldIdList, $bicycleOld[$i]['get_id']);
+        }
+
+        for ($i=0; $i<count($bicycleOld); $i++) {
+            if (!in_array($bicycleOld[$i]['get_id'], $newIdList)) {
+                $bicycleDelete = Bicycle::where('cameras_id', $id)->where('get_id', $bicycleOld[$i]['get_id'])->delete();
+            }
+        }
+
+        return $inputs;
+    }
 }
