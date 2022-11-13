@@ -38,7 +38,7 @@ class ChartController extends Controller
             }
             array_push($spotCountDay1, [$spotCount[$i]['spots_id'], $countDay1]);
 
-            if ($listDay1[0] == 'None') {
+            if ($listDay1[0] === 'None') {
                 $dataDay1 = (string)$countDay1;
             } else if (count($listDay1) >= 24) {
                 $dataDay1 = (string)$countDay1;
@@ -77,7 +77,7 @@ class ChartController extends Controller
             ];
 
             // 最終時刻以外の時
-            if ($dataAveWeek1 == 'None') {
+            if ($dataAveWeek1 === 'None') {
                 array_splice($insertData, 1);
             }
 

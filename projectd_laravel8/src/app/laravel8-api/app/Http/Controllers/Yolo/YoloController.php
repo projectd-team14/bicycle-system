@@ -85,7 +85,7 @@ class YoloController extends Controller
         $inputs = $request->all();
         $bicycleStatusList = [];
         for ($i=0; $i<count($inputs); $i++) {
-            if ($inputs[$i]['type'] == 'insert') {
+            if ($inputs[$i]['type'] === 'insert') {
                 $bicycleInsert = Bicycle::insertGetId([
                     'spots_id' => $inputs[$i]['spots_id'],
                     'cameras_id' => $inputs[$i]['cameras_id'],
