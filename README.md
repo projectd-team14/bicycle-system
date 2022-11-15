@@ -1,4 +1,4 @@
-# YOLOv5を用いた駐輪場管理業務支援システム(bicycle_system)
+# YOLOv5を用いた駐輪場管理業務支援システム(bicycle-system)
 Bicycle parking lot management system using YOLOv5  
 ## ディレクトリ構成  
 ```
