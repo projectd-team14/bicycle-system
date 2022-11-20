@@ -201,9 +201,9 @@ class YoloController extends Controller
         $serverCondition = Bicycle::where('cameras_id', $id)->exists();
 
         if ($serverCondition) {
-            return ['condition' =>'true'];
-        } else {
             return ['condition' =>'false'];
+        } else {
+            return ['condition' =>'true'];
         }
     }
 
