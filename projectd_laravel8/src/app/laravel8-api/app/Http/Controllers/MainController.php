@@ -57,19 +57,27 @@ class MainController extends Controller
                 $dataMonth3
             ];
             //numberChartData
-            $numberChartDataDay1 = [0,0,0,0,0,0,0,0,0,0,0];
-            $numberChartDataWeek1 = [0,0,0,0,0,0,0,0,0,0,0];
-            $numberChartDataMonth1 = [0,0,0,0,0,0,0,0,0,0,0];
-            $numberChartDataMonth3 = [0,0,0,0,0,0,0,0,0,0,0];
-            $time_bicycle_lis=[];
-            for($i=0;$i<count($bicycles);$i++){
-                $timeBicycle = strtotime($bicycles[$i]['updated_at'])-strtotime($bicycles[$i]['created_at']);
-                for($i2=0;$i2<count($dataDay1);$i2++){
-                    if ($timeBicycle>=($i2)*3600 and $timeBicycle<($i2+1)*3600){
-                        $numberChartDataDay1[$i2] = $numberChartDataDay1[$i2] + 1;
+            $numberChartDataDay1 = [0,0,0,0,0,0,0,0,0,0,0,0];
+            $numberChartDataWeek1 = [0,0,0,0,0,0,0,0,0,0,0,0];
+            $numberChartDataMonth1 = [0,0,0,0,0,0,0,0,0,0,0,0];
+            $numberChartDataMonth3 = [0,0,0,0,0,0,0,0,0,0,0,0];
+
+            for($i=0; $i<count($numberChartDataDay1)-1; $i++){
+                for($i2=0; $i2<count($bicycles); $i2++){
+                    $timeBicycle = (strtotime($bicycles[$i2]['updated_at'])-strtotime($bicycles[$i2]['created_at'])) / 3600 ;
+                    if($timeBicycle>=$i and $timeBicycle<$i+1){
+                        $numberChartDataDay1[$i] += 1;
                     }
                 }
             }
+            
+            for($i=0; $i<count($bicycles); $i++){
+                $timeBicycle = (strtotime($bicycles[$i]['updated_at'])-strtotime($bicycles[$i]['created_at'])) / 3600 ;
+                if($timeBicycle>=10){
+                    $numberChartDataDay1[11] += 1;
+                }
+            }
+
             $dataDay1 = [
                 "label" => "1日間",
                 "backgroundColor" => "#f87979",
