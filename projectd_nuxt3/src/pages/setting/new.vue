@@ -22,8 +22,8 @@
     ></v-text-field>
 
    <v-text-field
-      v-model="spots.spots_img"
-      label="IMG"
+      v-model="spots.spots_over_time"
+      label="MAX TIME"
       required
     ></v-text-field>
 

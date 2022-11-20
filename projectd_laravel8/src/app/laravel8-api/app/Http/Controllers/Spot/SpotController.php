@@ -43,7 +43,7 @@ class SpotController extends Controller
              'spots_count_month1' => 'None',
              'spots_count_month3' => 'None',
              'spots_max' => 100,
-             'spots_over_time' => 3600,
+             'spots_over_time' => $data['spots_over_time'] * 3600,
              'spots_url' => $data['spots_url'],
         ]);            
 
