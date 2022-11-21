@@ -23,7 +23,7 @@
 
    <v-text-field
       v-model="spots.spots_over_time"
-      label="MAX TIME"
+      label="Over Time"
       required
     ></v-text-field>
 
