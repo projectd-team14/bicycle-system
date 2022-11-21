@@ -56,7 +56,7 @@ class CameraController extends Controller
         $cameras = Camera::where('cameras_id', $id)->get();
         $serverCondition = Bicycle::where('cameras_id', $id)->exists();
 
-        if ($cameras[0]["cameras_status"]=="Run") {
+        if ($cameras[0]["cameras_status"] == "Run") {
             return "処理中です";
         } else {
            Camera::where('cameras_id', $id)->update(['cameras_status'=>'Run']);

@@ -62,18 +62,18 @@ class MainController extends Controller
             $numberChartDataMonth1 = [0,0,0,0,0,0,0,0,0,0,0,0];
             $numberChartDataMonth3 = [0,0,0,0,0,0,0,0,0,0,0,0];
 
-            for($i=0; $i<count($numberChartDataDay1)-1; $i++){
-                for($i2=0; $i2<count($bicycles); $i2++){
-                    $timeBicycle = (strtotime($bicycles[$i2]['updated_at'])-strtotime($bicycles[$i2]['created_at'])) / 3600 ;
-                    if($timeBicycle>=$i and $timeBicycle<$i+1){
+            for ($i=0; $i < count($numberChartDataDay1) - 1; $i++) {
+                for ($i2=0; $i2 < count($bicycles); $i2++) {
+                    $timeBicycle = (strtotime($bicycles[$i2]['updated_at']) - strtotime($bicycles[$i2]['created_at'])) / 3600 ;
+                    if ($timeBicycle >= $i && $timeBicycle < $i+1) {
                         $numberChartDataDay1[$i] += 1;
                     }
                 }
             }
             
-            for($i=0; $i<count($bicycles); $i++){
-                $timeBicycle = (strtotime($bicycles[$i]['updated_at'])-strtotime($bicycles[$i]['created_at'])) / 3600 ;
-                if($timeBicycle>=10){
+            for ($i=0; $i < count($bicycles); $i++) {
+                $timeBicycle = (strtotime($bicycles[$i]['updated_at']) - strtotime($bicycles[$i]['created_at'])) / 3600 ;
+                if ($timeBicycle>=10) {
                     $numberChartDataDay1[11] += 1;
                 }
             }
@@ -117,10 +117,10 @@ class MainController extends Controller
             $users = Spot::where('users_id', $id)->get();
             $spotsIdLis = [];
             $spotsDataAll = [];
-            for($i=0;$i<count($users);$i++){
+            for ($i=0; $i<count($users); $i++) {
                 array_push($spotsIdLis,$users[$i]['spots_id']); 
             }
-            for($i3=0;$i3<count($spotsIdLis);$i3++){
+            for ($i3=0; $i3 < count($spotsIdLis); $i3++){
                 $spotsId= $spotsIdLis[$i3];
                 $spots = Spot::where('spots_id', $spotsId)->get();
                 $day1Str = explode(",",$spots[0]["spots_count_day1"]);
@@ -129,16 +129,16 @@ class MainController extends Controller
                 $bicycles = Bicycle::where('spots_id', $spotsId)->whereIn('bicycles_status', ['None','違反'])->get();
                 //cameraの項目
                 $cameraNew=[];
-                if (count($cameraAll)==0){
-                    for($i=0;$i<=count($cameraAll);$i++){
+                if (count($cameraAll) == 0) {
+                    for ($i=0; $i <= count($cameraAll); $i++) {
                         $cameraNew[$i]= [
                             'id' => [],
                             'name' => [],
                             'url' => [],
                         ];
                     }
-                } else{
-                    for($i=0;$i<count($cameraAll);$i++){
+                } else {
+                    for ($i=0; $i < count($cameraAll); $i++){
                         $cameraNew[$i]= [
                             'id' => $cameraAll[$i]['cameras_id'],
                             'name' => $cameraAll[$i]['cameras_name'],
@@ -148,33 +148,33 @@ class MainController extends Controller
                 }
                 //situationの項目
                 $labelNames =[];
-                for($i=0;$i<count($bicycles);$i++){
-                    if (!(in_array($bicycles[$i]['labels_name'],$labelNames))) {
+                for ($i=0; $i < count($bicycles); $i++) {
+                    if (!(in_array($bicycles[$i]['labels_name'], $labelNames))) {
                         array_push($labelNames,$bicycles[$i]['labels_name']); 
                     }
                 }
                 $labelNamesNew = array_unique($labelNames);
     
-                if (count($labelNamesNew)==0){
-                    for($i=0;$i<=count($labelNamesNew);$i++){
+                if (count($labelNamesNew) == 0) {
+                    for ($i=0; $i <= count($labelNamesNew); $i++) {
                         $situation[$i]= [
                             'row' => [],
                             'bicycle' => [],
                         ];
                     }
-                } else{
-                    for($i=0;$i<count($labelNamesNew);$i++){
+                } else {
+                    for($i=0; $i < count($labelNamesNew); $i++) {
                         $bicycle = Bicycle::where('spots_id', $spotsId)->where('labels_name',$labelNamesNew[$i])->get(['get_id','bicycles_id','updated_at','created_at','bicycles_status']);
     
-                        for($i2=0;$i2<count($bicycle);$i2++){
+                        for ($i2=0; $i2 < count($bicycle); $i2++) {
                             if ($bicycle[$i2]['bicycles_status'] == 'None'){
                                 $bicycle[$i2]['bicycles_status'] = false;
                             } elseif ($bicycle[$i2]['bicycles_status'] == '違反'){
                                 $bicycle[$i2]['bicycles_status'] = true;
-                            } else{
+                            } else {
                                 $bicycle[$i2]['bicycles_status'] = false;
                             }
-                            $time = strtotime($bicycle[$i2]['updated_at'])-strtotime($bicycle[$i2]['created_at']);
+                            $time = strtotime($bicycle[$i2]['updated_at']) - strtotime($bicycle[$i2]['created_at']);
                             $bicycleNew[$i2]= [
                                 'id' => $bicycle[$i2]['get_id'],
                                 'time' => $time,
@@ -213,7 +213,7 @@ class MainController extends Controller
         public function openApi(){
             $spots = Spot::get();
             $spotLisAll = [];
-            for ($i=0; $i<count($spots); $i++){
+            for ($i=0; $i < count($spots); $i++) {
                 $day1Str = explode(",",$spots[$i]["spots_count_day1"]);
                 $day1Int = array_map('intval', $day1Str);
                 $spotsAverage = $day1Int[count($day1Int)-1];
@@ -236,7 +236,7 @@ class MainController extends Controller
     
         public function reset(){
             $resetCameras = Camera::where('cameras_status','Run_process')->orWhere('cameras_status','Run')->get();
-            for ($i=0; $i<count($resetCameras); $i++){
+            for ($i=0; $i < count($resetCameras); $i++) {
                 Camera::where('cameras_id', $resetCameras[$i]['cameras_id'])->update(['cameras_status'=>'None']); 
                 bicycle::where('cameras_id', $resetCameras[$i]['cameras_id'])->delete();
             }

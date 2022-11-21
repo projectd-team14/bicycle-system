@@ -84,7 +84,7 @@ class YoloController extends Controller
     {
         $inputs = $request->all();
         $bicycleStatusList = [];
-        for ($i=0; $i<count($inputs); $i++) {
+        for ($i=0; $i < count($inputs); $i++) {
             if ($inputs[$i]['type'] === 'insert') {
                 $bicycleInsert = Bicycle::insertGetId([
                     'spots_id' => $inputs[$i]['spots_id'],
@@ -118,7 +118,7 @@ class YoloController extends Controller
     public function bicycleDelete(Request $request, $camera_id)
     {
         $inputs = $request->all();
-        for ($i=0; $i<count($inputs['delete_list']); $i++){
+        for ($i=0; $i < count($inputs['delete_list']); $i++){
             Bicycle::where('cameras_id', $camera_id)->where('get_id', $inputs['delete_list'][$i])->delete();
         }
         
@@ -128,7 +128,7 @@ class YoloController extends Controller
     public function bicycleViolation(Request $request)
     {
         $inputs = $request->all();
-        for ($i=0; $i<count($inputs['violation_list']); $i++) {
+        for ($i=0; $i < count($inputs['violation_list']); $i++) {
             $bicycleViolation = Bicycle::where('cameras_id', $inputs['camera_id'])->where('get_id', $inputs['violation_list'][$i])->update(['bicycles_status' => '違反']);
         }
         
@@ -215,19 +215,19 @@ class YoloController extends Controller
         $newIdList = [];
         $oldIdList = [];
 
-        for ($i=0; $i<count($inputs); $i++) {
+        for ($i=0; $i < count($inputs); $i++) {
             $bicycleServerUpdate = Bicycle::where('cameras_id', $id)->where('get_id', $inputs[$i]['old'])->update(['get_id' => $inputs[$i]['new']]);
         }
 
-        for ($i=0; $i<count($inputs); $i++) {
+        for ($i=0; $i < count($inputs); $i++) {
             array_push($newIdList, $inputs[$i]['old']);
         }
 
-        for ($i=0; $i<count($bicycleOld); $i++) {
+        for ($i=0; $i < count($bicycleOld); $i++) {
             array_push($oldIdList, $bicycleOld[$i]['get_id']);
         }
 
-        for ($i=0; $i<count($bicycleOld); $i++) {
+        for ($i=0; $i < count($bicycleOld); $i++) {
             if (!in_array($bicycleOld[$i]['get_id'], $newIdList)) {
                 $bicycleDelete = Bicycle::where('cameras_id', $id)->where('get_id', $bicycleOld[$i]['get_id'])->delete();
             }
