@@ -27,6 +27,12 @@
       required
     ></v-text-field>
 
+    <v-text-field
+      v-model="spots.spots_max"
+      label="Capacity"
+      required
+    ></v-text-field>
+
    <v-checkbox
       v-model="checkbox"
       :rules="[v => !!v || 'You must agree to continue!']"
