@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Spot;
 use App\Models\Camera;
+use App\Models\Bicycle;
 
 class ChartController extends Controller
 {
     public function chart()
     {
-        $spotCount = Spot::get(['spots_id', 'spots_count_day1', 'spots_count_week1', 'spots_count_month1', 'spots_count_month3']);
+        $spotCount = Spot::get(['spots_id', 'spots_count_day1', 'spots_count_week1', 'spots_count_month1', 'spots_count_month3', 'spots_violations']);
         $camera = Camera::get(['spots_id', 'cameras_count']);
 
         $spotCountDay1 = [];
@@ -20,16 +21,20 @@ class ChartController extends Controller
         $spotCountMonth3 = [];
 
         for ($i=0; $i < count($spotCount); $i++) {
-            // １時間
+            $bicycleViolations = Bicycle::where('spots_id', $spotCount[$i]['spots_id'])->where('bicycles_status', '違反')->get('get_id');
+
             $countDay1 = 0;
             $dataDay1 = '';
             $dataAveWeek1 = 'None';
             $dataAveMonth1 = 'None';
             $dataAveMonth3 = 'None';
+            $dataViolations = 'None';
+
             $listDay1 = explode(",",$spotCount[$i]['spots_count_day1']);
             $listWeek1 = explode(",",$spotCount[$i]['spots_count_week1']);
             $listMonth1 = explode(",",$spotCount[$i]['spots_count_month1']);
             $listMonth3 = explode(",",$spotCount[$i]['spots_count_month3']);
+            $listViolations = explode(",",$spotCount[$i]['spots_violations']);
             
             for ($i2=0; $i2 < count($camera); $i2++) {
                 if ($camera[$i2]['spots_id'] == $spotCount[$i]['spots_id']) {
@@ -51,6 +56,9 @@ class ChartController extends Controller
 
                     $dummyMonth3 = str_repeat('0,', 89);
                     $dataAveMonth3 = $dummyMonth3 . (string)(array_sum($listDay1) / 24);
+
+                    $dummyViolations = str_repeat('0,', 29);
+                    $dataViolations = $dummyViolations . (string)(count($bicycleViolations));
                 } else {
                     array_shift($listWeek1);
                     $beforeWeek1 = implode(',', $listWeek1);;
@@ -63,6 +71,10 @@ class ChartController extends Controller
                     array_shift($listMonth3);
                     $beforeMonth3 = implode(',', $listMonth3);;
                     $dataAveMonth3 = $beforeMonth3 . ',' .(string)(array_sum($listDay1) / 24);
+
+                    array_shift($listViolations);
+                    $beforeViolation = implode(',', $listViolations);;
+                    $dataViolations = $beforeViolation . ',' .(string)(count($bicycleViolations));
                 }
             } else {
                 $dataDay1 = $spotCount[$i]['spots_count_day1'] . ',' . (string)$countDay1;
@@ -74,6 +86,7 @@ class ChartController extends Controller
                 'spots_count_week1' => $dataAveWeek1,
                 'spots_count_month1' => $dataAveMonth1,
                 'spots_count_month3' => $dataAveMonth3,
+                'spots_violations' => $dataViolations
             ];
 
             // 最終時刻以外の時
