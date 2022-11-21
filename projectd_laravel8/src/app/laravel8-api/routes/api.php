@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\Camera\CameraController;
 use App\Http\Controllers\Spot\SpotController;
+use App\Http\Controllers\Spot\SpotDashboardController;
 use App\Http\Controllers\Label\LabelController;
 use App\Http\Controllers\Yolo\YoloController;
 use App\Http\Controllers\Chart\ChartController;
@@ -40,6 +41,9 @@ Route::get('/reset', [HomeController::class, 'reset']);
 Route::post('/register', [RegisterApiController::class, 'register']);
 Route::post('/login', [LoginApiController::class, 'login']);
 Route::post('/logout', [LoginApiController::class, 'logout']);
+
+// ダッシュボード
+Route::get('/congestions_spot/{id}', [SpotDashboardController::class, 'CongestionsSpot']);
 
 // カメラ
 Route::get('/edit_camera/{id}', [CameraController::class, 'editCamera']);

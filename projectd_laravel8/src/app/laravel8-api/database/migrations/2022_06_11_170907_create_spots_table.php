@@ -25,6 +25,7 @@ class CreateSpotsTable extends Migration
             $table->text('spots_count_week1')->defalut('None');
             $table->text('spots_count_month1')->defalut('None');
             $table->text('spots_count_month3')->defalut('None');
+            $table->text('spots_violations')->defalut('None');
             $table->integer('spots_over_time')->defalut('None');
             $table->integer('spots_max')->defalut('None');
             $table->string('spots_url');
