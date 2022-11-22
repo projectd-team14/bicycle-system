@@ -7,7 +7,7 @@
               <template v-slot:activator="{ props }" nav>
                 <v-list-item v-bind="props" :title="n.name"></v-list-item>
               </template>
-              <v-list-item title="ラベル登録"/>
+              <v-list-item title="ラベル登録" :to="'/setting/'+paramsId+'/'+n.id+'/newLabel'" />
               <v-list-item title="削除" @click="deleteCamera(n.id)" />
               <v-list-item title="検出開始" @click="startCamera(n.id)" />
               <v-list-item title="検出停止" @click="stopCamera(n.id)" />
