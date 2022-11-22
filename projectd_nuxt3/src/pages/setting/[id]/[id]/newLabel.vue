@@ -2,7 +2,7 @@
   <v-container>
   <v-card class="pa-4">
   <p class="text-h5 mb-5">ラベル登録</p>
-  <img id="img_source" :src="imgURL+'/label/?id='+paramsId" v-on:load="setImage" cover>
+  <img id="img_source" :width=1280 :height=720  :src="imgURL+'/label/?id='+paramsId" v-on:load="setImage" cover>
   <canvas id="canvas" :width=1280 :height=720 @click="drawSquare(event)"></canvas>
 
   <v-list-item title="エリアの保存" @click="" />
