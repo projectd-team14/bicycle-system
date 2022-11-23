@@ -2,9 +2,8 @@
   <v-container>
   <v-card class="pa-4">
   <p class="text-h5 mb-5">ラベル登録</p>
-  <img id="img_source" :width=0 :height=0  :src="imgURL+'/label/?id='+paramsId" v-on:load="setImage" cover>
-  <canvas id="canvas" :width=1280 :height=720 @click="drawSquare"></canvas>
-
+  <img id="img_source" :src="imgURL+'/label/?id='+paramsId" v-on:load="setImage" cover>
+  <canvas id="canvas" :style="('width: 100%; height: 100%')" @click="drawSquare"></canvas>
   <v-list-item title="エリアの保存" @click="onClickSaveButton" />
   <v-list-item title="送信" @click="onClickPostButton" />
   </v-card>
@@ -14,6 +13,7 @@
 <script lang="ts">
   var points = [];
   var post_poins = [];
+  var rate_w;
   var image;
   var cvs;
   var ctx;
@@ -40,16 +40,23 @@
         cvs = document.getElementById('canvas');
         ctx = cvs.getContext('2d'); 
         image = document.getElementById("img_source"); 
-        cvs.width  = 1280;
-        cvs.height = 720;
+        cvs.width  = image.width;
+        cvs.height = image.height;
+        console.log(image);
         ctx.drawImage(image, 0, 0); 
+
+        const element = document.getElementById("img_source"); 
+        element.remove();
       },
       async drawSquare(e) {
+        // 縦横比の変換処理を入れる
+        var client_w = document.getElementById('canvas').clientWidth;
+        rate_w = client_w / image.width 
         var rect = e.target.getBoundingClientRect()
-        var x = e.clientX - rect.left
-        var y = e.clientY - rect.top
-        points.push([x,y]);
+        var x = (e.clientX - rect.left) / rate_w
+        var y = (e.clientY - rect.top) / rate_w
 
+        points.push([x,y]);
         if (points.length > 4){
           points.shift();
         }
@@ -130,14 +137,14 @@
         for (var i = 0; i<post_poins.length; i++) {
           var json_template = {
             "label_mark": i,
-            "label_point1X" : post_poins[i][0][0],
-            "label_point1Y" : 720 - post_poins[i][0][1],
-            "label_point2X" : post_poins[i][1][0],
-            "label_point2Y" : 720 - post_poins[i][1][1],
-            "label_point3X" : post_poins[i][2][0],
-            "label_point3Y" : 720 - post_poins[i][2][1],
-            "label_point4X" : post_poins[i][3][0],
-            "label_point4Y" : 720 - post_poins[i][3][1]
+            "label_point1X" : post_poins[i][0][0] * rate_w,
+            "label_point1Y" : 720 - (post_poins[i][0][1] * rate_w),
+            "label_point2X" : post_poins[i][1][0] * rate_w,
+            "label_point2Y" : 720 - post_poins[i][1][1] * (rate_w),
+            "label_point3X" : post_poins[i][2][0] * rate_w,
+            "label_point3Y" : 720 - (post_poins[i][2][1] * rate_w),
+            "label_point4X" : post_poins[i][3][0] * rate_w,
+            "label_point4Y" : 720 - (post_poins[i][3][1] * rate_w)
             };
             data.push(json_template);
         }
@@ -158,7 +165,6 @@
 
 <style>
 #canvas {
-  margin-top : 100;
 }
 #img_source{
 }
