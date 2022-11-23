@@ -17,8 +17,8 @@
   var image;
   var cvs;
   var ctx;
-  var coord=[];
-  var coordarr={};
+  var coord = [];
+  var coordarr = {};
   var data = [];
 
   export default {
@@ -42,7 +42,7 @@
         image = document.getElementById("img_source"); 
         cvs.width  = image.width;
         cvs.height = image.height;
-        ctx.drawImage(image,0,0); 
+        ctx.drawImage(image, 0, 0); 
       },
       async drawSquare(e) {
         var rect = e.target.getBoundingClientRect()
@@ -99,12 +99,27 @@
             ctx.lineTo(s[k][0] , s[k][1]);
             ctx.stroke();
           }
-          coord =[s[0],s[1],s[2],s[3]];
+          var r = Math.floor(Math.random() * 200) ;
+          var g = Math.floor(Math.random() * 200) ;
+          var b = Math.floor(Math.random() * 200) ;
+          var color = "rgba(" + r + "," + g + "," + b + ",0.5)";
+          coord =[s[0],s[1],s[2],s[3], color];
           points=[];
+        }
+        for (var i = 0; i<post_poins.length; i++) {
+          ctx.beginPath();
+          ctx.fillStyle = post_poins[i][4];
+          console.log(post_poins[i][4][0]);
+          ctx.moveTo(post_poins[i][0][0], post_poins[i][0][1]);
+          ctx.lineTo(post_poins[i][1][0], post_poins[i][1][1]);
+          ctx.lineTo(post_poins[i][2][0], post_poins[i][2][1]);
+          ctx.lineTo(post_poins[i][3][0], post_poins[i][3][1]);
+          ctx.closePath();
+          ctx.fill();          
         }
       },
       async onClickSaveButton() {
-        if (coord.length === 4){
+        if (coord.length === 5){
           post_poins.push(coord);
         }
         console.log(post_poins);
