@@ -5,31 +5,33 @@
   <img id="img_source" :width=1280 :height=720  :src="imgURL+'/label/?id='+paramsId" v-on:load="setImage" cover>
   <canvas id="canvas" :width=1280 :height=720 @click="drawSquare"></canvas>
 
-  <v-list-item title="エリアの保存" @click="" />
-  <v-list-item title="送信" @click="" />
+  <v-list-item title="エリアの保存" @click="onClickSaveButton" />
+  <v-list-item title="送信" @click="onClickPostButton" />
   </v-card>
   </v-container>
 </template>
 
 <script lang="ts">
   var points = [];
+  var post_poins = [];
   var image;
   var cvs;
   var ctx;
   var coord=[];
   var coordarr={};
+  var data = [];
 
   export default {
     data: () => ({
       checkbox: false,
     }),
     methods: {
-      async storeCamera() {
+      async storeLabel() {
          const route = useRoute()
          const id = route.params.id
          const a = await $fetch( '/api/setting/storeLabel', {
             method: 'POST',
-            body: this.camera,
+            body: data,
             params: { id: id }
          } );
          this.$router.push('/setting/')
@@ -101,10 +103,39 @@
             coord =[s[0],s[1],s[2],s[3]];
             points=[];
           }
-        console.log(coord);
       },
-      async onButtonClick() {
+      async onClickSaveButton() {
+        if (coord.length === 4){
+          post_poins.push(coord);
+        }
+        console.log(post_poins);
+      },
+      async onClickPostButton() {
+        data =[];
 
+        for (var i = 0; i<post_poins.length; i++) {
+          var json_template = {
+            "label_mark": i,
+            "label_point1X" : post_poins[i][0][0],
+            "label_point1Y" : 720 - post_poins[i][0][1],
+            "label_point2X" : post_poins[i][1][0],
+            "label_point2Y" : 720 - post_poins[i][1][1],
+            "label_point3X" : post_poins[i][2][0],
+            "label_point3Y" : 720 - post_poins[i][2][1],
+            "label_point4X" : post_poins[i][3][0],
+            "label_point4Y" : 720 - post_poins[i][3][1]
+            };
+            data.push(json_template);
+        }
+
+        const route = useRoute()
+         const id = route.params.id
+         const a = await $fetch( '/api/setting/storeLabel', {
+            method: 'POST',
+            body: data,
+            params: { id: id }
+         } );
+         this.$router.push('/setting/')
       }
     },
   }
