@@ -2,7 +2,7 @@
   <v-container>
   <v-card class="pa-4">
   <p class="text-h5 mb-5">ラベル登録</p>
-  <img id="img_source" :width=1280 :height=720  :src="imgURL+'/label/?id='+paramsId" v-on:load="setImage" cover>
+  <img id="img_source" :width=0 :height=0  :src="imgURL+'/label/?id='+paramsId" v-on:load="setImage" cover>
   <canvas id="canvas" :width=1280 :height=720 @click="drawSquare"></canvas>
 
   <v-list-item title="エリアの保存" @click="onClickSaveButton" />
@@ -40,8 +40,8 @@
         cvs = document.getElementById('canvas');
         ctx = cvs.getContext('2d'); 
         image = document.getElementById("img_source"); 
-        cvs.width  = image.width;
-        cvs.height = image.height;
+        cvs.width  = 1280;
+        cvs.height = 720;
         ctx.drawImage(image, 0, 0); 
       },
       async drawSquare(e) {
@@ -158,9 +158,8 @@
 
 <style>
 #canvas {
-  margin-top : -720px;
+  margin-top : 100;
 }
 #img_source{
-  margin-bottom: -25px;
 }
 </style>
