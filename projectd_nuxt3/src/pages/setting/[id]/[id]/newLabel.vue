@@ -67,7 +67,6 @@
         }
         
         if (points.length === 4) {
-          // 四角を描く
           let p = points.slice(0, points.length);
           let s = [];
           let is_cross = function(line1, line2) {
