@@ -27,14 +27,14 @@
     }),
     methods: {
       async storeLabel() {
-         const route = useRoute()
-         const id = route.params.id
-         const a = await $fetch( '/api/setting/storeLabel', {
-            method: 'POST',
-            body: data,
-            params: { id: id }
-         } );
-         this.$router.push('/setting/')
+        const route = useRoute()
+        const id = route.params.id
+        const a = await $fetch( '/api/setting/storeLabel', {
+          method: 'POST',
+          body: data,
+          params: { id: id }
+        } );
+        this.$router.push('/setting/')
       },
       async setImage() {
         cvs = document.getElementById('canvas');
@@ -71,38 +71,38 @@
           let p = points.slice(0, points.length);
           let s = [];
           let is_cross = function(line1, line2) {
-              var l1_from  = line1[0];
-              var l1_to    = line1[1];
-              var l2_from  = line2[0];
-              var l2_to    = line2[1];
-              var line_formula = function(l){
-                  return l[1]-l1_from[1]-(l[0]-l1_from[0])*(l1_to[1]-l1_from[1])/(l1_to[0]-l1_from[0]);
-                  
-              }
-              return line_formula(l2_from)*line_formula(l2_to)<0;
+            var l1_from  = line1[0];
+            var l1_to    = line1[1];
+            var l2_from  = line2[0];
+            var l2_to    = line2[1];
+            var line_formula = function(l){
+                return l[1]-l1_from[1]-(l[0]-l1_from[0])*(l1_to[1]-l1_from[1])/(l1_to[0]-l1_from[0]);
+                
+            }
+            return line_formula(l2_from)*line_formula(l2_to)<0;
               
-            }
-
-            if (is_cross([p[0], p[1]] , [p[2], p[3]])){
-                s = [p[0], p[2], p[1] , p[3]];
-            }
-            else if (is_cross([p[0], p[2]] , [p[1], p[3]])){
-                s = [p[0], p[1], p[2] , p[3]];
-            }
-            else {
-                s = [p[0], p[1], p[3] , p[2]];
-            }
-            
-            for (let i=0,j=s.length; i<j; i++){
-                ctx.beginPath();
-                ctx.moveTo(s[i][0] , s[i][1]);
-                let k = (i === s.length -1 ? 0 : i + 1);
-                ctx.lineTo(s[k][0] , s[k][1]);
-                ctx.stroke();
-            }
-            coord =[s[0],s[1],s[2],s[3]];
-            points=[];
           }
+
+          if (is_cross([p[0], p[1]] , [p[2], p[3]])){
+              s = [p[0], p[2], p[1] , p[3]];
+          }
+          else if (is_cross([p[0], p[2]] , [p[1], p[3]])){
+              s = [p[0], p[1], p[2] , p[3]];
+          }
+          else {
+              s = [p[0], p[1], p[3] , p[2]];
+          }
+          
+          for (let i=0,j=s.length; i<j; i++){
+            ctx.beginPath();
+            ctx.moveTo(s[i][0] , s[i][1]);
+            let k = (i === s.length -1 ? 0 : i + 1);
+            ctx.lineTo(s[k][0] , s[k][1]);
+            ctx.stroke();
+          }
+          coord =[s[0],s[1],s[2],s[3]];
+          points=[];
+        }
       },
       async onClickSaveButton() {
         if (coord.length === 4){
@@ -128,14 +128,7 @@
             data.push(json_template);
         }
 
-        const route = useRoute()
-         const id = route.params.id
-         const a = await $fetch( '/api/setting/storeLabel', {
-            method: 'POST',
-            body: data,
-            params: { id: id }
-         } );
-         this.$router.push('/setting/')
+        this.storeLabel();
       }
     },
   }
@@ -152,7 +145,6 @@
 <style>
 #canvas {
   margin-top : -720px;
-  
 }
 #img_source{
   margin-bottom: -25px;
