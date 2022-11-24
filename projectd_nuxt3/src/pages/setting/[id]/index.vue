@@ -21,6 +21,12 @@
           <v-list-item title="駐輪場の削除" @click="deleteSpot"/>
         </v-list>
       </v-card>
+            <v-card class="pa-3 mt-6">
+         <p class="text-h5 mb-0">データ出力</p>
+         <v-list nav>
+            <v-list-item title="CSV" :href="config.public.LaravelURL+'/api/csv/spots_id('+paramsId+')'"/>
+        </v-list>
+      </v-card>
 
       <v-snackbar v-model="snackBar" multi-line color="secondary">
       {{snackText}}
@@ -83,6 +89,7 @@
 <script setup lang="ts">
   const { title } = useArticleTitle()
   const { spots } = useSpots()
+  const config = useRuntimeConfig()
   onMounted( async () => {title.value = '設定 / '+name})
 
   const route = useRoute()
