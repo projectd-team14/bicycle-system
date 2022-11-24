@@ -13,6 +13,7 @@
               <v-select class="pa-4" :items="items" label="期間" v-model="select"/>
             </div>
           </div>
+          {{chartData.situationChartData[0]}}
           <ManagementCongestionSituationChart :chartData="chartData.situationChartData[0]" v-if="select == '1日間'" class="chart"/>
           <ManagementCongestionSituationChart :chartData="chartData.situationChartData[1]" v-if="select == '7日間'" class="chart"/>
           <ManagementCongestionSituationChart :chartData="chartData.situationChartData[2]" v-if="select == '1か月間'" class="chart"/>

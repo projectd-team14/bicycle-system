@@ -7,11 +7,11 @@
         <v-table>
          <tbody>
             <tr
-            v-for="item in desserts"
-            :key="item.name"
+            v-for="(v, k) in dash.data"
+            :key="k"
             >
-            <td>{{ item.name }}</td>
-            <td>{{ item.number }}</td>
+            <td>{{ v.spots_name }}</td>
+            <td>{{violatinArr[k]}}</td>
             </tr>
          </tbody>
       </v-table>
@@ -20,10 +20,22 @@
 </template>
 
 <script setup lang="ts">
+  const { dash } = useDash()
+  const { spots } = useSpots()
+
+const violatinArr = computed(() => {
+  const arr = []
+  spots.value.forEach((e, i) => {
+    e.situation.forEach((e, i) => {
+      arr.push(e.bicycle.filter(e => e.violatin_status == true).length)
+    })
+  })
+  return arr
+})
 
 </script>
 
-<script>
+<script lang="ts">
   export default {
     data () {
       return {
