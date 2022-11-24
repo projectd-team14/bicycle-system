@@ -164,7 +164,7 @@ class MainController extends Controller
                     }
                 } else {
                     for($i=0; $i < count($labelNamesNew); $i++) {
-                        $bicycle = Bicycle::where('spots_id', $spotsId)->where('labels_name',$labelNamesNew[$i])->get(['get_id','bicycles_id','updated_at','created_at','bicycles_status']);
+                        $bicycle = Bicycle::where('spots_id', $spotsId)->where('labels_name',$labelNamesNew[$i])->get(['cameras_id', 'get_id','bicycles_id','updated_at','created_at','bicycles_status']);
     
                         for ($i2=0; $i2 < count($bicycle); $i2++) {
                             if ($bicycle[$i2]['bicycles_status'] == 'None'){
@@ -177,6 +177,7 @@ class MainController extends Controller
                             $time = strtotime($bicycle[$i2]['updated_at']) - strtotime($bicycle[$i2]['created_at']);
                             $bicycleNew[$i2]= [
                                 'id' => $bicycle[$i2]['get_id'],
+                                'cameras_id' => $bicycle[$i2]['cameras_id'],
                                 'time' => $time,
                                 'violatin_status' => $bicycle[$i2]['bicycles_status'],
                                 'violatin_img' => "None",
