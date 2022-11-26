@@ -33,6 +33,13 @@
       required
     ></v-text-field>
 
+    <v-select 
+    v-model="spots.spots_status"
+    label="Status"
+    :items="items"
+    >
+    </v-select>
+
    <v-checkbox
       v-model="checkbox"
       :rules="[v => !!v || 'You must agree to continue!']"
@@ -56,7 +63,8 @@
          spots_url: 'https://www.youtube.com/embed/9plqYTT-3w8',
          spots_address: '',
          spots_img: '',
-      }
+      },
+      items: ['自転車', 'バイク', '全てを管理'],
     }),
 
     methods: {
