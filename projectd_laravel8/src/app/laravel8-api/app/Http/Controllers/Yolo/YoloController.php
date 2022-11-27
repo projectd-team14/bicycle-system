@@ -49,7 +49,7 @@ class YoloController extends Controller
     public function overTime($id)
     {
         $spotId = Camera::where('cameras_id', $id)->get('spots_id');
-        $overTime = Spot::where('spots_id', $spotId[0]["spots_id"])->get(['spots_id', 'spots_over_time']);
+        $overTime = Spot::where('spots_id', $spotId[0]["spots_id"])->get(['spots_id', 'spots_over_time', 'spots_status']);
 
         return $overTime;
     }
