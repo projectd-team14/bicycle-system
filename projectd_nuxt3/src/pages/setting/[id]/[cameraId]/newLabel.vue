@@ -57,12 +57,6 @@
         var rect = e.target.getBoundingClientRect()
         var x = (e.clientX - rect.left) / rate_w
         var y = (e.clientY - rect.top) / rate_h
-        console.log("点の位置",x,y)
-        console.log("増加量",rate_w,rate_h)
-        console.log(image.width);
-        console.log(image.height);
-        console.log(client_w);
-        console.log(client_h);
 
         points.push([x,y]);
         if (points.length > 4){
