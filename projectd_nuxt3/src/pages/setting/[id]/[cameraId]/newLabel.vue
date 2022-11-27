@@ -29,7 +29,7 @@
     methods: {
       async storeLabel() {
         const route = useRoute()
-        const id = route.params.id
+        const id = route.params.cameraId
         const a = await $fetch( '/api/setting/storeLabel', {
           method: 'POST',
           body: data,
@@ -158,7 +158,7 @@
 
 <script setup lang="ts">
   const route = useRoute()
-  const paramsId = route.params.id
+  const paramsId = route.params.cameraId
   const config = useRuntimeConfig()
   const imgURL = config.public.FastURL
   const image = document.getElementById("img_source"); 

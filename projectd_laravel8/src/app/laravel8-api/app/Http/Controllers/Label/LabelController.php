@@ -10,15 +10,25 @@ class LabelController extends Controller
 {
     public function labels(Request $request, $id)
     {
+        $labelSearchRecord = Label::where('cameras_id', $id)->exists();
         $data = $request->all();
         $dataStr = json_encode($data);
-        $labelData = Label::insertGetId([
-            'cameras_id' => $id,
-            'labels_json' => $dataStr,
 
-        ]);
-
-        return  "ラベリングデータを登録しました";
+        if ($labelSearchRecord == true) {
+            $labelData = Label::where('cameras_id', $id)->update([
+                'cameras_id' => $id,
+                'labels_json' => $dataStr,
+            ]);
+    
+            return  "ラベリングデータを更新しました";
+        } else {
+            $labelData = Label::insertGetId([
+                'cameras_id' => $id,
+                'labels_json' => $dataStr,
+            ]);
+    
+            return  $labelSearchRecord;
+        }
     }
 
     // ラベリングデータの初期設定用
