@@ -20,6 +20,13 @@ class LabelController extends Controller
                 'labels_json' => $dataStr,
             ]);
     
+            $url = "${ipAddress}/detect/?id=${id}&status=0";
+            $conn = curl_init();
+            curl_setopt($conn, CURLOPT_URL, $url);
+            curl_setopt($conn, CURLOPT_RETURNTRANSFER, true);
+            $res =  curl_exec($conn);
+            curl_close($conn);
+            
             return  "ラベリングデータを更新しました";
         } else {
             $labelData = Label::insertGetId([
