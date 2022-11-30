@@ -28,6 +28,7 @@ class LabelController extends Controller
 
             $labelData = Label::where('cameras_id', $id)->update(['cameras_id' => $id, 'labels_json' => $dataStr]);
     
+            /*
             $url = "${ipAddress}/create_labels_image/?id=${id}";
             $conn = curl_init();
             curl_setopt($conn, CURLOPT_URL, $url);
@@ -36,7 +37,8 @@ class LabelController extends Controller
             curl_setopt($conn, CURLOPT_HTTPHEADER, $headers);
             curl_setopt($conn, CURLOPT_RETURNTRANSFER, true);
             $res =  curl_exec($conn);
-            curl_close($conn);
+            curl_close($conn);            
+            */
             
             return  "ラベルを更新しました。";
         } else {
@@ -55,8 +57,10 @@ class LabelController extends Controller
 
         if ($checkLabels) {
             $checkLabels = Label::where('cameras_id', $id)->get('labels_json');
+
+            $result = json_decode($checkLabels[0]['labels_json']);
             
-            return $checkLabels;
+            return $result;
         } else {
             $labelsNull = [
                 'labels_json' => 'ラベルが登録されていません。' 
