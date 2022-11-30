@@ -60,6 +60,7 @@ Route::post('/delete_spot/{id}', [SpotController::class, 'deleteSpot']);
 // ラベリングデータ
 Route::post('/labels/{id}', [LabelController::class, 'labels']);
 Route::get('/labels_img/{id}', [LabelController::class, 'labelsImg']);
+Route::get('/check_labels/{id}', [LabelController::class, 'checkLabels']);
 
 // CSV
 Route::get('/csv/{id}', [CsvController::class, 'csv']);

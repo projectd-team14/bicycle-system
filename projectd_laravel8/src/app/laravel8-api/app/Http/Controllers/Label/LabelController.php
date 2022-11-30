@@ -30,4 +30,20 @@ class LabelController extends Controller
             return  $labelSearchRecord;
         }
     }
+
+    public function checkLabels($id)
+    {
+        $checkLabels = Label::where('cameras_id', $id)->exists(); 
+
+        if ($checkLabels) {
+            $checkLabels = Label::where('cameras_id', $id)->get('labels_json');
+            
+            return $checkLabels;
+        } else {
+            $labelsNull = [
+                'labels_json' => 'ラベルが登録されていません。' 
+            ];
+            return $labelsNull;
+        }
+    }
 }
