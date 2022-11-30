@@ -13,28 +13,39 @@ class LabelController extends Controller
         $labelSearchRecord = Label::where('cameras_id', $id)->exists();
         $data = $request->all();
         $dataStr = json_encode($data);
-
+        $ipAddress = env('LARAVEL_URL');
+        
         if ($labelSearchRecord == true) {
-            $labelData = Label::where('cameras_id', $id)->update([
-                'cameras_id' => $id,
-                'labels_json' => $dataStr,
-            ]);
+            $params = [
+                "labels_json" => $dataStr
+            ];
+            $json_params = json_encode($params);
+
+            $headers = [
+              'Content-Type: application/json',
+              'Accept-Charset: UTF-8',
+            ];
+
+            $labelData = Label::where('cameras_id', $id)->update(['cameras_id' => $id, 'labels_json' => $dataStr]);
     
-            $url = "${ipAddress}/detect/?id=${id}&status=0";
+            $url = "${ipAddress}/create_labels_image/?id=${id}";
             $conn = curl_init();
             curl_setopt($conn, CURLOPT_URL, $url);
+            curl_setopt($conn,CURLOPT_POST, TRUE);
+            curl_setopt($conn, CURLOPT_POSTFIELDS, $json_params);
+            curl_setopt($conn, CURLOPT_HTTPHEADER, $headers);
             curl_setopt($conn, CURLOPT_RETURNTRANSFER, true);
             $res =  curl_exec($conn);
             curl_close($conn);
             
-            return  "ラベリングデータを更新しました";
+            return  "ラベルを更新しました。";
         } else {
             $labelData = Label::insertGetId([
                 'cameras_id' => $id,
                 'labels_json' => $dataStr,
             ]);
     
-            return  $labelSearchRecord;
+            return  "ラベルを更新しました。";
         }
     }
 
