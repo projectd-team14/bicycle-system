@@ -30,19 +30,4 @@ class LabelController extends Controller
             return  $labelSearchRecord;
         }
     }
-
-    // ラベリングデータの初期設定用
-    /* 
-    public function labelsImg($id)
-    {
-        $url = "host.docker.internal:9000/?label=1&id=${id}";
-        $conn = curl_init();
-        curl_setopt($conn, CURLOPT_URL, $url);
-        curl_setopt($conn, CURLOPT_RETURNTRANSFER, true);
-        $res =  curl_exec($conn);
-        curl_close($conn);
-
-        return  $res;
-    }    
-    */
 }
