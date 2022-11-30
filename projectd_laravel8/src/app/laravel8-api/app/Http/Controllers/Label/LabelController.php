@@ -62,10 +62,7 @@ class LabelController extends Controller
             
             return $result;
         } else {
-            $labelsNull = [
-                'labels_json' => 'ラベルが登録されていません。' 
-            ];
-            return $labelsNull;
+            return 'ラベルが登録されていません。' ;
         }
     }
 }
