@@ -7,13 +7,11 @@
             <div>
               <p class="text-h4 pb-4">{{name}} の分析データ</p>
               <p class="text-h5">時間別 - 混雑状況</p>
-              <p class="text-h5">{{situationChartData2}}</p>
             </div>
             <div class="w-25  ml-auto">
               <v-select class="pa-4" :items="items" label="期間" v-model="select"/>
             </div>
           </div>
-          {{chartData.situationChartData[0]}}
           <ManagementCongestionSituationChart :chartData="chartData.situationChartData[0]" v-if="select == '1日間'" class="chart"/>
           <ManagementCongestionSituationChart :chartData="chartData.situationChartData[1]" v-if="select == '7日間'" class="chart"/>
           <ManagementCongestionSituationChart :chartData="chartData.situationChartData[2]" v-if="select == '1か月間'" class="chart"/>

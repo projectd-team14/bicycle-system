@@ -3,7 +3,7 @@
       <v-card width="300px" v-bind="props">
         <v-card-title class="bg-light-blue-lighten-3 text-center" v-if="!bicycle.violatin_status" >{{bicycle.time}}時間</v-card-title>
         <v-card-title class="bg-red-lighten-1 text-center" v-if="bicycle.violatin_status" >{{bicycle.time}}時間</v-card-title>
-        <v-img :src="imgURL+'/bicycle/?camera_id=100&bicycle_id='+bicycle.id" height="300" cover></v-img>
+        <v-img :src="imgURL+'/bicycle/?camera_id='+bicycle.cameras_id+'&bicycle_id='+bicycle.id" height="300" cover></v-img>
         <v-card-title class="bg-grey-lighten-3 text-center">ID: {{bicycle.id}}</v-card-title>
       </v-card>
    </div>

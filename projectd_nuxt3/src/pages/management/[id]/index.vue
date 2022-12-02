@@ -15,6 +15,12 @@
             </div>
          </v-card>
          <v-row class="mt-4">
+            <v-col cols="12">
+               <v-card class="pa-3">
+                  <p class="text-h4 my-2">駐輪場カメラ</p>
+                  <ManagementDisplay :camera="spots[index].camera" :situation="spots[index].situation" />
+               </v-card>
+            </v-col>
             <v-col lg="6" cols="12">
                <v-card class="pa-3">
                   <p class="text-h4 my-2">駐輪場カメラ</p>
