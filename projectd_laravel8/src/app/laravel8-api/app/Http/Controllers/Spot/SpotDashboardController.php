@@ -14,6 +14,18 @@ class SpotDashboardController extends Controller
         $spots = Spot::where('users_id', $id)->get(['spots_id', 'spots_name', 'spots_violations', 'spots_max']);
         $dataAll = [];
 
+        if (count($spots) === 0) {
+            $dataAll = [
+                [
+                    "spots_name" => "駐輪場がありません",
+                    "spots_violations" => [],
+                    "spots_congestion" => 0
+                ]
+            ];
+
+            return $dataAll;
+        }
+
         for ($i = 0; $i < count($spots); $i++) {
             //違法駐輪数推移
             $violationStr = explode(",",$spots[$i]["spots_violations"]);
