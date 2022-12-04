@@ -6,12 +6,13 @@
          color="white"
          height="auto"
       >
-         <v-carousel-item v-for="(a, i) in camera" :key="i" ref="a">
+         <v-carousel-item v-for="(a, i) in camera" :key="i">
             <div class="video d-flex justify-center align-center">
                <iframe :src=url(a.url) title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen/>
             </div>
             <div class="over">
-               <canvas id="canvas"  width="1280" height="640" @mouseover="drawSquare" @mouseout="clearSquare"/>
+               <img id="img_source" :src="imgURL+'/label/?id='+a.id" @load="setImage" cover>
+               <canvas id="canvas" @mouseover="drawSquare" @mouseout="clearSquare"/>
             </div>
          </v-carousel-item>
       </v-carousel>
@@ -29,13 +30,18 @@ const props = withDefaults(defineProps<Props>(), {
   camera: [],
   situation: []
 })
+
+const config = useRuntimeConfig()
+const imgURL = config.public.FastURL
+
 </script>
 
 <script lang="ts">
 export default {
    data(){
       return {
-         desserts:[0,120,220,20,260,40,100,150]
+         desserts:[0,120,220,20,260,40,100,150],
+         label:[]
       }
    },
    methods: {
@@ -43,20 +49,18 @@ export default {
          i = i.replace('watch?v=', 'embed/')
          const idIndex = i.indexOf('embed/')+6
          const id = i.slice(idIndex)
-         i += "?autoplay=1&mute=1&playsinline=1&loop=1&playlist=" + id + "&controls=0&disablekb=1"
+         i += "?autoplay=1&mute=1&playsinline=1&loop=0&playlist=" + id + "&controls=0&disablekb=1"
          return i;
-      },
-      con(i){
-         return i * 4.25
       },
       drawSquare() {
          const cvs = document.getElementById( "canvas" )
          const context = cvs.getContext('2d')
          context.beginPath()
-         context.moveTo(this.con(this.desserts[0]), this.con(this.desserts[1]))
-         context.lineTo(this.con(this.desserts[2]), this.con(this.desserts[3]))
-         context.lineTo(this.con(this.desserts[4]), this.con(this.desserts[5]))
-         context.lineTo(this.con(this.desserts[6]), this.con(this.desserts[7]))
+         context.moveTo(this.label[0].data[0].label_point1X , this.label[0].data[0].label_point1Y)
+         context.lineTo(this.label[0].data[0].label_point2X , this.label[0].data[0].label_point2Y)
+         context.lineTo(this.label[0].data[0].label_point3X , this.label[0].data[0].label_point3Y)
+         context.lineTo(this.label[0].data[0].label_point4X , this.label[0].data[0].label_point4Y)
+         context.fillStyle = "rgba(0,0,255,0.3)"
          context.fill()
          context.closePath()
          context.stroke()
@@ -64,14 +68,27 @@ export default {
          context.fillStyle = "rgb(0,0,0)"
          context.textAlign = "center"
          context.font = 'bold 140px "ＭＳ ゴシック"'
-         context.fillText('A', (this.con(this.desserts[0]+this.desserts[4]))/2+100, (this.con(this.desserts[1]+this.desserts[5]))/2)
-         context.fillStyle = "rgba(0,0,255,0.3)"
+         context.fillText('A', this.label[0].data[0].label_point1X , this.label[0].data[0].label_point1Y)
       },
       clearSquare() {
          const cvs = document.getElementById( "canvas" )
          const context = cvs.getContext('2d')
          context.clearRect(0, 0, 1280, 640)
-      }
+      },
+      setImage() {
+        const cvs = document.getElementById('canvas');
+        const ctx = cvs.getContext('2d'); 
+        const image = document.getElementById("img_source"); 
+        cvs.width  = image.width;
+        cvs.height = image.height;
+        document.getElementById("img_source").remove();
+      },
+   },
+   mounted(){
+      this.props.camera.forEach(async (e,i) => {
+         this.label[i] = await useFetch('/api/manage',{ params: { id: e.id } ,key:"label"+e.id})
+         console.log(this.label[i].data[0])
+      })
    }
 }
 </script>
