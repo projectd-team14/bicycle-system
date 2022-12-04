@@ -2,9 +2,13 @@
   <v-container>
   <v-card class="pa-4">
   <p class="text-h5 mb-5">ラベル登録</p>
-  <img id="img_source" :src="imgURL+'/label/?id='+paramsId" v-on:load="setImage" cover>
+  <!--
+      <img id="img_source" :src="imgURL+'/label/?id='+paramsId" v-on:load="setImage" cover>
+  -->
+  <img id="img_source" :src="imageSrc" v-on:load="setImage" cover>
   <canvas id="canvas" :style="('width: 100%; height: 100%;')" @click="drawSquare"></canvas>
-  <v-list-item title="エリアの保存" @click="onClickSaveButton" />
+  <v-list-item title="画像取得" @click="onClickResetImageButton" />  
+  <v-list-item title="エリア保存" @click="onClickSaveButton" />
   <v-list-item title="送信" @click="onClickPostButton" />
   </v-card>
   </v-container>
@@ -25,6 +29,7 @@
   export default {
     data: () => ({
       checkbox: false,
+      imageSrc: '',
     }),
     methods: {
       async storeLabel() {
@@ -36,6 +41,24 @@
           params: { id: id }
         } );
         this.$router.push('/setting/')
+      },
+      async onClickResetImageButton() {
+        points = [];
+        post_poins = [];
+        rate_w = null;
+        rate_h = null;
+        image = null;
+        cvs = null;
+        ctx = null;
+        coord = [];
+        coordarr = {};
+        data = [];
+        
+        const route = useRoute()
+        const id = route.params.cameraId
+        const config = useRuntimeConfig()
+        const imgURL = config.public.FastURL
+        this.imageSrc = imgURL + '/label/?id=' + id;
       },
       async setImage() {
         cvs = document.getElementById('canvas');
