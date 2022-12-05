@@ -1,5 +1,5 @@
 <template>
-   <v-sheet color="lighten-3">
+   <v-sheet color="lighten-3" height="500">
       <v-carousel
          hide-delimiter-background
          show-arrows="hover"
@@ -70,7 +70,6 @@ export default {
          } else {
             for (let i2 = 0; i2 < labelData.value[i].labels_json.length; i2++) {
                data = labelData.value[i].labels_json[i2];
-
                this.createLabel(data);
             }
          }
@@ -88,7 +87,7 @@ export default {
          ctx.lineTo(data.label_point3X, data.label_point3Y);
          ctx.lineTo(data.label_point4X, data.label_point4Y);
          ctx.closePath();
-         ctx.fill(); 
+         ctx.fill();
       }
    },
    async mounted() {
@@ -96,6 +95,17 @@ export default {
       const id = route.params.id
       const { data: labels } = await useFetch('/api/manage',{ params: { id: id } ,key: "label" + id})
       labelData = labels
+
+      this.props.camera.forEach((e, i) => {
+         setTimeout(() => {
+            console.log(document.getElementById("img_source"+i).width)
+            if(document.getElementById("img_source" + i) != null){
+               if(document.getElementById("img_source" + i).width > 0){
+                  this.setImage(i)
+               }
+            }
+         }, 100);
+      })
    }
 }
 </script>
