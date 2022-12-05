@@ -6,11 +6,11 @@
         <v-col lg="3" cols="6">
           <DashboardRequired />
         </v-col>
-        <v-col lg="5" cols="6">
+        <v-col lg="3" cols="6">
           <DashboardCongestion :color="color" />
         </v-col>
-        <v-col lg="4" cols="6">
-          <DashboardMonthlyTransition />
+        <v-col lg="6" cols="6">
+          <DashboardDay :color="color" />
         </v-col>
       </v-row>
     </div>
@@ -18,10 +18,21 @@
 </template>
 
 <script lang="ts">
+const colorList = [];
+
+for (let i = 0; i < 20; i++) {
+  var r = Math.floor(Math.random() * 200) ;
+  var g = Math.floor(Math.random() * 200) ;
+  var b = Math.floor(Math.random() * 200) ;
+  var colorCode = "rgba(" + r + "," + g + "," + b + ",0.6)";
+
+  colorList.push(colorCode);
+}
+
   export default {
     data () {
       return {
-        color: ["red","blue","green","purple","pink","indigo","lime","orange"]
+        color: colorList
       }
     }
   }

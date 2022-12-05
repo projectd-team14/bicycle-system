@@ -1,7 +1,7 @@
 <template>
    <v-card class="my-2 pa-3 card" >
       <v-card-title class="text-h5">
-         違法駐輪数推移
+         違法駐輪数推移 - １ヶ月間
       </v-card-title>
       <div class="px-8">
          <DashboardViolatinChart class="chart" :chartData="chartData"/>

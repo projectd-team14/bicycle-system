@@ -1,5 +1,5 @@
 <template>
-   <v-card class="my-2 pa-3 card" >
+   <v-card class="my-2 pa-3 card all overflow-auto" >
       <v-card-title class="text-h5">
          対応が必要な駐輪場
       </v-card-title>
@@ -57,3 +57,8 @@ const violatinArr = computed(() => {
     },
   }
 </script>
+
+<style lang="sass" scoped>
+.all
+   height: 360px
+</style>
