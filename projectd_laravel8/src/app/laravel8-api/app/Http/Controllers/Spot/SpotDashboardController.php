@@ -11,7 +11,7 @@ class SpotDashboardController extends Controller
 {
     public function congestionsSpot($id)
     {
-        $spots = Spot::where('users_id', $id)->get(['spots_id', 'spots_name', 'spots_count_day1', 'spots_violations', 'spots_max']);
+        $spots = Spot::where('users_id', $id)->get(['spots_id', 'spots_name', 'spots_count_day1', 'spots_violations', 'spots_max', 'spots_over_time']);
         $dataAll = [];
 
         if (count($spots) === 0) {
@@ -46,7 +46,8 @@ class SpotDashboardController extends Controller
                 'spots_name' => $spots[$i]['spots_name'],
                 'spots_violations' => $violationInt,
                 'spots_count_day1' => $day1Int,
-                'spots_congestion' => 100 * $count / $spots[$i]['spots_max']
+                'spots_congestion' => 100 * $count / $spots[$i]['spots_max'],
+                'spots_over_time' => $spots[$i]['spots_over_time']
             ];
 
             array_push($dataAll, $data);

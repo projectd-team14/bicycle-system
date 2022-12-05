@@ -1,19 +1,27 @@
 <template>
-   <v-card class="my-2 pa-3 card all overflow-auto" >
+   <v-card class="my-2 card all overflow-auto" >
       <v-card-title class="text-h5">
          対応が必要な駐輪場
       </v-card-title>
-      <div class="pa-8">
+      <div class="pa-6">
         <v-table>
-         <tbody>
+          <thead>
+            <tr>
+              <td>駐輪場名</td>
+              <td>放置自転車</td>
+              <td>上限</td>
+          </tr>
+          </thead>
+          <tbody>
             <tr
             v-for="(v, k) in dash.data"
             :key="k"
             >
             <td>{{ v.spots_name }}</td>
-            <td>{{violatinArr[k]}}</td>
+            <td>{{violatinArr[k]}}台</td>
+            <td>{{( Math.floor(v.spots_over_time / 3600))}}時間</td>
             </tr>
-         </tbody>
+          </tbody>
       </v-table>
       </div>
    </v-card>
