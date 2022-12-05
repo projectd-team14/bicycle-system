@@ -36,6 +36,7 @@ const imgURL = config.public.FastURL
   var cvs;
   var ctx;
   var labelData;
+  var data;
 
 export default {
    data(){
@@ -68,23 +69,26 @@ export default {
             // console.log(labelData.value[i].cameras_id)
          } else {
             for (let i2 = 0; i2 < labelData.value[i].labels_json.length; i2++) {
-               const data = labelData.value[i].labels_json[i2];
+               data = labelData.value[i].labels_json[i2];
 
-               var r = Math.floor(Math.random() * 200) ;
-               var g = Math.floor(Math.random() * 200) ;
-               var b = Math.floor(Math.random() * 200) ;
-               var color = "rgba(" + r + "," + g + "," + b + ",0.5)";
-
-               ctx.beginPath();
-               ctx.fillStyle = color;
-               ctx.moveTo(data.label_point1X, data.label_point1Y);
-               ctx.lineTo(data.label_point2X, data.label_point2Y);
-               ctx.lineTo(data.label_point3X, data.label_point3Y);
-               ctx.lineTo(data.label_point4X, data.label_point4Y);
-               ctx.closePath();
-               ctx.fill();   
+               this.createLabel(data);
             }
          }
+      },
+      createLabel(data) {
+         var r = Math.floor(Math.random() * 200) ;
+         var g = Math.floor(Math.random() * 200) ;
+         var b = Math.floor(Math.random() * 200) ;
+         var color = "rgba(" + r + "," + g + "," + b + ",0.5)";
+
+         ctx.beginPath();
+         ctx.fillStyle = color;
+         ctx.moveTo(data.label_point1X, data.label_point1Y);
+         ctx.lineTo(data.label_point2X, data.label_point2Y);
+         ctx.lineTo(data.label_point3X, data.label_point3Y);
+         ctx.lineTo(data.label_point4X, data.label_point4Y);
+         ctx.closePath();
+         ctx.fill(); 
       }
    },
    async mounted() {
