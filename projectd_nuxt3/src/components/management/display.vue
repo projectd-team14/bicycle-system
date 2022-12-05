@@ -7,8 +7,8 @@
          height="auto"
       >
          <v-carousel-item v-for="(a, i) in camera" :key="i">
-            <img id="img_source" :src="imgURL+'/label/?id='+a.id" v-on:load="setImage" cover>
-            <canvas id="canvas" :style="('width: 100%;')"></canvas>
+            <img :id="'img_source'+i" :src="imgURL+'/label/?id='+a.id" v-on:load="setImage(i)" cover>
+            <canvas :id="'canvas'+i" :style="('width: 100%;')"></canvas>
          </v-carousel-item>
       </v-carousel>
    </v-sheet>
@@ -35,21 +35,16 @@ const imgURL = config.public.FastURL
   var image;
   var cvs;
   var ctx;
-  var loadCheck = true;
   var labelData;
 
 export default {
    data(){
       return {
-         desserts:[0,120,220,20,260,40,100,150],
-         label:[]
+
       }
    },
    unmounted() {
-      const element = document.getElementById("canvas"); 
-         element.remove();
-         console.log("削除")
-         loadCheck = false;
+      // ここに２回目の処理を記述する必要がある
    },
    methods: {
       url(i) {
@@ -59,35 +54,35 @@ export default {
          i += "?autoplay=1&mute=1&playsinline=1&loop=0&playlist=" + id + "&controls=0&disablekb=1"
          return i;
       },
-      drawSquare() {
-         const cvs = document.getElementById("canvas")
-         const context = cvs.getContext('2d')
-      },
-      clearSquare() {
-         const cvs = document.getElementById( "canvas" )
-         const context = cvs.getContext('2d')
-         context.clearRect(0, 0, 1280, 640)
-      },
-      setImage() {
-         cvs = document.getElementById('canvas');
+      setImage(i) {
+         cvs = document.getElementById('canvas'+ i);
          ctx = cvs.getContext('2d'); 
-         image = document.getElementById("img_source"); 
+         image = document.getElementById("img_source" + i); 
          cvs.width  = image.width;
          cvs.height = image.height;
          ctx.drawImage(image, 0, 0); 
-         const element = document.getElementById("img_source"); 
+         const element = document.getElementById("img_source" + i); 
          element.remove();
-        
 
-         for (let i = 0; i < labelData.value.length; i++) {
-           
+         if (labelData.value[i].labels_json === 'None') {
+            // console.log(labelData.value[i].cameras_id)
+         } else {
             for (let i2 = 0; i2 < labelData.value[i].labels_json.length; i2++) {
-                console.log(labelData.value.length);
-               if (labelData.value[i].labels_json[i2].label_mark === 'None') {
-                  console.log('aaaa')
-               } else {
-                  console.log('bbbb')
-               }
+               const data = labelData.value[i].labels_json[i2];
+
+               var r = Math.floor(Math.random() * 200) ;
+               var g = Math.floor(Math.random() * 200) ;
+               var b = Math.floor(Math.random() * 200) ;
+               var color = "rgba(" + r + "," + g + "," + b + ",0.5)";
+
+               ctx.beginPath();
+               ctx.fillStyle = color;
+               ctx.moveTo(data.label_point1X, data.label_point1Y);
+               ctx.lineTo(data.label_point2X, data.label_point2Y);
+               ctx.lineTo(data.label_point3X, data.label_point3Y);
+               ctx.lineTo(data.label_point4X, data.label_point4Y);
+               ctx.closePath();
+               ctx.fill();   
             }
          }
       }
@@ -95,9 +90,7 @@ export default {
    async mounted() {
       const route = useRoute()
       const id = route.params.id
-      console.log(id);
       const { data: labels } = await useFetch('/api/manage',{ params: { id: id } ,key: "label" + id})
-      
       labelData = labels
    }
 }
