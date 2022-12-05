@@ -1,5 +1,5 @@
 <template>
-   <v-sheet color="grey lighten-3">
+   <v-sheet color="lighten-3">
       <v-carousel
          hide-delimiter-background
          show-arrows="hover"
@@ -7,13 +7,8 @@
          height="auto"
       >
          <v-carousel-item v-for="(a, i) in camera" :key="i">
-            <div class="video d-flex justify-center align-center">
-               <iframe :src=url(a.url) title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen/>
-            </div>
-            <div class="over">
-               <img id="img_source" :src="imgURL+'/label/?id='+a.id" @load="setImage" cover>
-               <canvas id="canvas" @mouseover="drawSquare" @mouseout="clearSquare"/>
-            </div>
+            <img id="img_source" :src="imgURL+'/label/?id='+a.id" v-on:load="setImage" cover>
+            <canvas id="canvas" :style="('width: 100%;')"></canvas>
          </v-carousel-item>
       </v-carousel>
    </v-sheet>
@@ -37,6 +32,10 @@ const imgURL = config.public.FastURL
 </script>
 
 <script lang="ts">
+  var image;
+  var cvs;
+  var ctx;
+
 export default {
    data(){
       return {
@@ -53,7 +52,7 @@ export default {
          return i;
       },
       drawSquare() {
-         const cvs = document.getElementById( "canvas" )
+         const cvs = document.getElementById("canvas")
          const context = cvs.getContext('2d')
          context.beginPath()
          context.moveTo(this.label[0].data[0].label_point1X , this.label[0].data[0].label_point1Y)
@@ -76,19 +75,22 @@ export default {
          context.clearRect(0, 0, 1280, 640)
       },
       setImage() {
-        const cvs = document.getElementById('canvas');
-        const ctx = cvs.getContext('2d'); 
-        const image = document.getElementById("img_source"); 
-        cvs.width  = image.width;
-        cvs.height = image.height;
-        document.getElementById("img_source").remove();
+         cvs = document.getElementById('canvas');
+         ctx = cvs.getContext('2d'); 
+         image = document.getElementById("img_source"); 
+         cvs.width  = image.width;
+         cvs.height = image.height;
+         ctx.drawImage(image, 0, 0); 
+         const element = document.getElementById("img_source"); 
+         element.remove();
       },
    },
-   mounted(){
-      this.props.camera.forEach(async (e,i) => {
-         this.label[i] = await useFetch('/api/manage',{ params: { id: e.id } ,key:"label"+e.id})
-         console.log(this.label[i].data[0])
-      })
+   async mounted(){
+      const route = useRoute()
+      const id = route.params.id
+      console.log(id);
+      const { data: labels } = await useFetch('/api/manage',{ params: { id: id } ,key: "label" + id})
+      console.log(labels.value[0])
    }
 }
 </script>

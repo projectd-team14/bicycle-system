@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Label;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Label;
+use App\Models\Camera;
 
 class LabelController extends Controller
 {
@@ -53,16 +54,30 @@ class LabelController extends Controller
 
     public function checkLabels($id)
     {
-        $checkLabels = Label::where('cameras_id', $id)->exists(); 
+        $checkCameras = Camera::where('spots_id', $id)->get(['cameras_id']);
+        $labelData = [];
 
-        if ($checkLabels) {
-            $checkLabels = Label::where('cameras_id', $id)->get('labels_json');
+        for ($i = 0; $i < count($checkCameras); $i++) {
+            $checkLabels = Label::where('cameras_id', $checkCameras[$i]['cameras_id'])->get('labels_json');
+            if (count($checkLabels) > 0) {
+                $json = json_decode($checkLabels[0]['labels_json']);
+                $data = [
+                    'cameras_id' => $checkCameras[$i]['cameras_id'],
+                    'labels_json' => $json
+                ];
+                array_push($labelData, $data);                
 
-            $result = json_decode($checkLabels[0]['labels_json']);
-            
-            return $result;
-        } else {
-            return 'ラベルが登録されていません。' ;
+            } else {
+                $data = [
+                    'cameras_id' => $checkCameras[$i]['cameras_id'],
+                    'labels_json' => [
+                        'label_mark' => 'None'
+                    ]
+                ];
+                array_push($labelData, $data);
+            }
         }
+
+        return $labelData;
     }
 }
