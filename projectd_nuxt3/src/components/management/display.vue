@@ -35,6 +35,8 @@ const imgURL = config.public.FastURL
   var image;
   var cvs;
   var ctx;
+  var loadCheck = true;
+  var labelData;
 
 export default {
    data(){
@@ -42,6 +44,12 @@ export default {
          desserts:[0,120,220,20,260,40,100,150],
          label:[]
       }
+   },
+   unmounted() {
+      const element = document.getElementById("canvas"); 
+         element.remove();
+         console.log("削除")
+         loadCheck = false;
    },
    methods: {
       url(i) {
@@ -54,20 +62,6 @@ export default {
       drawSquare() {
          const cvs = document.getElementById("canvas")
          const context = cvs.getContext('2d')
-         context.beginPath()
-         context.moveTo(this.label[0].data[0].label_point1X , this.label[0].data[0].label_point1Y)
-         context.lineTo(this.label[0].data[0].label_point2X , this.label[0].data[0].label_point2Y)
-         context.lineTo(this.label[0].data[0].label_point3X , this.label[0].data[0].label_point3Y)
-         context.lineTo(this.label[0].data[0].label_point4X , this.label[0].data[0].label_point4Y)
-         context.fillStyle = "rgba(0,0,255,0.3)"
-         context.fill()
-         context.closePath()
-         context.stroke()
-
-         context.fillStyle = "rgb(0,0,0)"
-         context.textAlign = "center"
-         context.font = 'bold 140px "ＭＳ ゴシック"'
-         context.fillText('A', this.label[0].data[0].label_point1X , this.label[0].data[0].label_point1Y)
       },
       clearSquare() {
          const cvs = document.getElementById( "canvas" )
@@ -83,14 +77,28 @@ export default {
          ctx.drawImage(image, 0, 0); 
          const element = document.getElementById("img_source"); 
          element.remove();
-      },
+        
+
+         for (let i = 0; i < labelData.value.length; i++) {
+           
+            for (let i2 = 0; i2 < labelData.value[i].labels_json.length; i2++) {
+                console.log(labelData.value.length);
+               if (labelData.value[i].labels_json[i2].label_mark === 'None') {
+                  console.log('aaaa')
+               } else {
+                  console.log('bbbb')
+               }
+            }
+         }
+      }
    },
-   async mounted(){
+   async mounted() {
       const route = useRoute()
       const id = route.params.id
       console.log(id);
       const { data: labels } = await useFetch('/api/manage',{ params: { id: id } ,key: "label" + id})
-      console.log(labels.value[0])
+      
+      labelData = labels
    }
 }
 </script>

@@ -70,9 +70,7 @@ class LabelController extends Controller
             } else {
                 $data = [
                     'cameras_id' => $checkCameras[$i]['cameras_id'],
-                    'labels_json' => [
-                        'label_mark' => 'None'
-                    ]
+                    'labels_json' => 'None'
                 ];
                 array_push($labelData, $data);
             }
