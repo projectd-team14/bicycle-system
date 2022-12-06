@@ -1,7 +1,7 @@
 <template>
     <v-card class="my-2 pa-3 card all" >
        <v-card-title class="text-h5">
-          利用者数数推移 - １日間
+          利用者数推移 - １日間
        </v-card-title>
        <div class="px-8">
           <DashboardDayChart class="chart" :chartData="chartData"/>
