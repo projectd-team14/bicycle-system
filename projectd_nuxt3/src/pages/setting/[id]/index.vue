@@ -75,7 +75,7 @@
       async deleteSpot(){
         const route = useRoute()
         const id = route.params.id
-        const c = await $fetch( '/api/setting/deleteSpots', {
+        const c = await $fetch( '/api/setting/deleteSpot', {
             method: 'POST',
             body: 1,
             params: { id: id }

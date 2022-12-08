@@ -47,7 +47,7 @@
       required
     ></v-checkbox>
 
-    <v-btn :disabled="!checkbox" color="success" class="mr-4" type="submit">送る</v-btn>
+    <v-btn :disabled="!checkbox" color="success" class="mr-4" type="submit" v-on:click="onClickUpdateButton()">送る</v-btn>
 
   </v-form>
 </v-card>
@@ -78,6 +78,13 @@
          location.reload()
       }
     },
+    async onclickUpdateButton(){
+      const { loginUser } = useAuth();
+      
+      const { spots } = useSpots();
+      const { data: props } = await useFetch('/api/deal',{ params: { id: loginUser.value.user.id  } });
+      spots.value = props;
+    }
   }
 </script>
 
