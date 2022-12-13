@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIndexToCamerasTable extends Migration
+class CreateIndexToSpotsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class CreateIndexToCamerasTable extends Migration
      */
     public function up()
     {
-        Schema::table('cameras', function (Blueprint $table) {
-            $table->index('cameras_name');
+        Schema::table('spots', function (Blueprint $table) {
+            $table->index('spots_name');
+            $table->index('users_id');
         });
     }
 
@@ -25,8 +26,9 @@ class CreateIndexToCamerasTable extends Migration
      */
     public function down()
     {
-        Schema::table('cameras', function (Blueprint $table) {
-            $table->index('cameras_name_index');
+        Schema::table('spots', function (Blueprint $table) {
+            $table->dropIndex('spots_name_index');
+            $table->dropIndex('users_id_index');
         });
     }
 }
