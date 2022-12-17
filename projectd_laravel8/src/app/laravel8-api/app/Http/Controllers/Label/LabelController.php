@@ -13,6 +13,12 @@ class LabelController extends Controller
     {
         $labelSearchRecord = Label::where('cameras_id', $id)->exists();
         $data = $request->all();
+
+        // XSS対策（攻撃そのものの対策ではなく、HTMLタグをDBやレスポンスに含めないようにする）
+        if ($this->htmlValidation($data)) {
+            return '使用できない文字が含まれています';
+        }
+
         $dataStr = json_encode($data);
         $ipAddress = env('LARAVEL_URL');
         
@@ -77,5 +83,20 @@ class LabelController extends Controller
         }
 
         return $labelData;
+    }
+
+    private function htmlValidation($data)
+    {
+        for ($i = 0; $i < count($data); $i++) {
+            $xssData = array_values($data[$i]);
+            for ($i2 = 0; $i2 < count($xssData); $i2++) {
+                if (preg_match('/<.*>/', $xssData[$i2])) {
+                    return true;
+                }
+            }
+        }
+
+
+        return false;
     }
 }

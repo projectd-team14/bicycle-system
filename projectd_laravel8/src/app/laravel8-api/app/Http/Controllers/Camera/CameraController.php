@@ -32,6 +32,12 @@ class CameraController extends Controller
     public function storeCamera(Request $request, $id)
     {
         $data = $request->all();
+
+        // XSS対策（攻撃そのものの対策ではなく、HTMLタグをDBやレスポンスに含めないようにする）
+        if ($this->htmlValidation($data)) {
+            return '使用できない文字が含まれています';
+        }
+                
         $cameraId = Camera::insertGetId([
             'cameras_name' => $data['cameras_name'],
             'spots_id' => $id, 
@@ -95,6 +101,19 @@ class CameraController extends Controller
         } else {
             return '処理が開始されていません';
         }
+    }
+
+    private function htmlValidation($data)
+    {
+        $xssData = array_values($data);
+
+        for ($i = 0; $i < count($xssData); $i++) {
+            if (preg_match('/<.*>/', $xssData[$i])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 

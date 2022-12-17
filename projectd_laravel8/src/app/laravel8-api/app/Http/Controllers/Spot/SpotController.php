@@ -44,6 +44,11 @@ class SpotController extends Controller
             $spotStatus = 3;
         }
 
+        // XSS対策（攻撃そのものの対策ではなく、HTMLタグをDBやレスポンスに含めないようにする）
+        if ($this->htmlValidation($data)) {
+            return '使用できない文字が含まれています';
+        }
+
         $spotId = Spot::insertGetId([
              'spots_name' => $data['spots_name'],
              'users_id' => $id, 
@@ -73,4 +78,16 @@ class SpotController extends Controller
         return "削除完了";
     }
 
+    private function htmlValidation($data)
+    {
+        $xssData = array_values($data);
+
+        for ($i = 0; $i < count($xssData); $i++) {
+            if (preg_match('/<.*>/', $xssData[$i])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
