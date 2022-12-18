@@ -36,9 +36,9 @@ class ChartController extends Controller
             $listMonth3 = explode(",",$spotCount[$i]['spots_count_month3']);
             $listViolations = explode(",",$spotCount[$i]['spots_violations']);
             
-            for ($i2=0; $i2 < count($camera); $i2++) {
-                if ($camera[$i2]['spots_id'] == $spotCount[$i]['spots_id']) {
-                    $countDay1 = $countDay1 + $camera[$i2]['cameras_count'];
+            for ($j=0; $j < count($camera); $j++) {
+                if ($camera[$j]['spots_id'] === $spotCount[$i]['spots_id']) {
+                    $countDay1 = $countDay1 + $camera[$j]['cameras_count'];
                 }
             }
             array_push($spotCountDay1, [$spotCount[$i]['spots_id'], $countDay1]);

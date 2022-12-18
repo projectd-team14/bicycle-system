@@ -38,8 +38,8 @@ class SpotDashboardController extends Controller
             $cameraCount = Camera::where('spots_id', $spots[$i]['spots_id'])->get('cameras_count');
             $count = 0;
 
-            for ($i2 = 0; $i2 < count($cameraCount); $i2++) {
-                $count = $count + $cameraCount[$i2]['cameras_count'];    
+            for ($j = 0; $j < count($cameraCount); $j++) {
+                $count = $count + $cameraCount[$j]['cameras_count'];    
             }
 
             $data = [
