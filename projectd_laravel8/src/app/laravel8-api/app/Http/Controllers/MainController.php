@@ -63,8 +63,8 @@ class MainController extends Controller
         $numberChartDataMonth3 = [0,0,0,0,0,0,0,0,0,0,0,0];
 
         for ($i=0; $i < count($numberChartDataDay1) - 1; $i++) {
-            for ($i2=0; $i2 < count($bicycles); $i2++) {
-                $timeBicycle = (strtotime($bicycles[$i2]['updated_at']) - strtotime($bicycles[$i2]['created_at'])) / 3600 ;
+            for ($j=0; $j < count($bicycles); $j++) {
+                $timeBicycle = (strtotime($bicycles[$j]['updated_at']) - strtotime($bicycles[$j]['created_at'])) / 3600 ;
                 if ($timeBicycle >= $i && $timeBicycle < $i+1) {
                     $numberChartDataDay1[$i] += 1;
                 }
