@@ -3,7 +3,6 @@ Bicycle parking lot management system using YOLOv5
 ## ディレクトリ構成  
 ```
 bicycle-system
-　│─ open_pages(一般ユーザー向けのGISページ)
   │─ projectd_laravel8(バックエンド)
   │─ projectd_nuxt3(フロントエンド)
   └─ sql_sample(テスト用SQL)
