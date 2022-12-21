@@ -11,10 +11,9 @@ bicycle-system
 ## 環境構築  
 ※本プロジェクトは[YOLOv5用サーバー](https://github.com/projectd-team14/yolov5-server)の環境構築が必要です。  
 〇主要フレームワーク、ライブラリ、言語等  
-・Nuxt.js(TypeScript,Sass)  
+・Nuxt.js(Vue.js,Node.js,TypeScript,Sass)  
 ・Laravel(PHP)  
-・YOLOv5(Python)
-・Node.js  
+・YOLOv5(Python)  
 〇使用ツール  
 ・Docker(必須)  
 ・Postman(APIテスト用、必須ではない)
