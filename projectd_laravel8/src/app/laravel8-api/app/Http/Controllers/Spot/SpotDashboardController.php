@@ -19,7 +19,7 @@ class SpotDashboardController extends Controller
                 [
                     "spots_name" => "駐輪場がありません",
                     "spots_violations" => [],
-                    "spots_day1" => [],
+                    "spots_count_day1" => [],
                     "spots_congestion" => 0
                 ]
             ];
