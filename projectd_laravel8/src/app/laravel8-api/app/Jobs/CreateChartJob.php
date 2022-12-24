@@ -35,21 +35,27 @@ class CreateChartJob implements ShouldQueue
     {
         $spotCount = Spot::get(['spots_id', 'spots_count_day1', 'spots_count_week1', 'spots_count_month1', 'spots_count_month3', 'spots_violations']);
         $camera = Camera::get(['spots_id', 'cameras_count']);
-
+        $bicycleViolations = Bicycle::where('bicycles_status', '違反')->get(['spots_id']);
+        
         $spotCountDay1 = [];
         $spotCountWeek1 = [];
         $spotCountMonth1 = [];
         $spotCountMonth3 = [];
 
         for ($i=0; $i < count($spotCount); $i++) {
-            $bicycleViolations = Bicycle::where('spots_id', $spotCount[$i]['spots_id'])->where('bicycles_status', '違反')->get('get_id');
-
+            $violationCount = 0;
             $countDay1 = 0;
             $dataDay1 = '';
             $dataAveWeek1 = 'None';
             $dataAveMonth1 = 'None';
             $dataAveMonth3 = 'None';
             $dataViolations = 'None';
+
+            for ($j = 0; $j < count($bicycleViolations); $j++) {
+                if ($spotCount[$i]['spots_id'] === $bicycleViolations[$j]['spots_id']) {
+                    $violationCount = $violationCount + 1;
+                }
+            }
 
             $listDay1 = explode(",",$spotCount[$i]['spots_count_day1']);
             $listWeek1 = explode(",",$spotCount[$i]['spots_count_week1']);
@@ -79,7 +85,7 @@ class CreateChartJob implements ShouldQueue
                     $dataAveMonth3 = $dummyMonth3 . (string)(array_sum($listDay1) / 24);
 
                     $dummyViolations = str_repeat('0,', 29);
-                    $dataViolations = $dummyViolations . (string)(count($bicycleViolations));
+                    $dataViolations = $dummyViolations . (string)$violationCount;
                 } else {
                     array_shift($listWeek1);
                     $beforeWeek1 = implode(',', $listWeek1);;
@@ -95,7 +101,7 @@ class CreateChartJob implements ShouldQueue
 
                     array_shift($listViolations);
                     $beforeViolation = implode(',', $listViolations);;
-                    $dataViolations = $beforeViolation . ',' .(string)(count($bicycleViolations));
+                    $dataViolations = $beforeViolation . ',' .(string)$violationCount;
                 }
             } else {
                 $dataDay1 = $spotCount[$i]['spots_count_day1'] . ',' . (string)$countDay1;
