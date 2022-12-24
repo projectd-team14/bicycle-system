@@ -8,6 +8,7 @@ use App\Models\Camera;
 use App\Models\Spot;
 use App\Models\Label;
 use App\Models\Bicycle;
+use App\Jobs\YoloUpdateJob;
 
 class YoloController extends Controller
 {
@@ -83,36 +84,13 @@ class YoloController extends Controller
     public function bicycleUpdate(Request $request)
     {
         $inputs = $request->all();
-        $bicycleStatusList = [];
-        for ($i=0; $i < count($inputs); $i++) {
-            if ($inputs[$i]['type'] === 'insert') {
-                $bicycleInsert = Bicycle::insertGetId([
-                    'spots_id' => $inputs[$i]['spots_id'],
-                    'cameras_id' => $inputs[$i]['cameras_id'],
-                    'labels_name' => $inputs[$i]['labels_name'], 
-                    'get_id' => $inputs[$i]['get_id'],
-                    'bicycles_x_coordinate' => $inputs[$i]['bicycles_x_coordinate'],
-                    'bicycles_y_coordinate' => $inputs[$i]['bicycles_y_coordinate'],
-                    'bicycles_status' => 'None',
-               ]);
-            } else {
-                $bicycleUpdate = Bicycle::where('cameras_id', $inputs[$i]['cameras_id'])->where('get_id', $inputs[$i]['get_id'])->update([
-                    'bicycles_x_coordinate' => $inputs[$i]['bicycles_x_coordinate'],
-                    'bicycles_y_coordinate' => $inputs[$i]['bicycles_y_coordinate'],
-               ]);
-            }
-            $bicycleStatus = Bicycle::where('cameras_id', $inputs[$i]['cameras_id'])->where('get_id', $inputs[$i]['get_id'])->get(['bicycles_id', 'bicycles_status', 'updated_at', 'created_at']);
-            $bicycleGet = [
-                'get_id' => $inputs[$i]['get_id'],
-                'bicycles_id' => $bicycleStatus[0]['bicycles_id'],
-                'bicycles_status' => $bicycleStatus[0]['bicycles_status'],
-                'updated_at' => $bicycleStatus[0]['updated_at'],
-                'created_at' => $bicycleStatus[0]['created_at']
-            ];
-            array_push($bicycleStatusList, $bicycleGet);
-        }
+        $data = $this->dispatch(new YoloUpdateJob($inputs));
 
-       return $bicycleStatusList;
+        $job = new YoloUpdateJob($inputs);
+        $this->dispatchSync($job);
+        $result = $job->getResult(); 
+
+       return $result;
     }
 
     public function bicycleDelete(Request $request, $camera_id)
