@@ -10,6 +10,7 @@ use App\Models\Label;
 use App\Models\Bicycle;
 use App\Jobs\YoloUpdateJob;
 use App\Jobs\YoloDeleteJob;
+use App\Jobs\YoloViolationJob;
 
 class YoloController extends Controller
 {
@@ -108,11 +109,12 @@ class YoloController extends Controller
     public function bicycleViolation(Request $request)
     {
         $inputs = $request->all();
-        for ($i=0; $i < count($inputs['violation_list']); $i++) {
-            $bicycleViolation = Bicycle::where('cameras_id', $inputs['camera_id'])->where('get_id', $inputs['violation_list'][$i])->update(['bicycles_status' => '違反']);
-        }
+
+        $job = new YoloViolationJob($inputs);
+        $this->dispatchSync($job);
+        $result = $job->getResult();
         
-        return $inputs;
+        return $result;
     }
 
 
