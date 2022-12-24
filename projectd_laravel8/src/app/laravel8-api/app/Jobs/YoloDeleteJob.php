@@ -15,15 +15,17 @@ class YoloDeleteJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $param;
+    protected $camera_id;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($inputs)
+    public function __construct($inputs, $camera_id)
     {
-        $this->param = $inputs;
+        $this->input = $inputs;
+        $this->camera_id = $camera_id;
     }
 
     /**
@@ -38,12 +40,12 @@ class YoloDeleteJob implements ShouldQueue
 
     public function getResult()
     {
-        $inputs = $this->param;
+        $inputs = $this->input;
 
         for ($i=0; $i < count($inputs['delete_list']); $i++){
-            Bicycle::where('cameras_id', $camera_id)->where('get_id', $inputs['delete_list'][$i])->delete();
+            Bicycle::where('cameras_id', $this->camera_id)->where('get_id', $inputs['delete_list'][$i])->delete();
         }
-
-        return $bicycleStatusList;
+        
+        return $inputs;
     }
 }
