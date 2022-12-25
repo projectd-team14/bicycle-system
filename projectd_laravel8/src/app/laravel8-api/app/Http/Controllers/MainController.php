@@ -56,6 +56,7 @@ class MainController extends Controller
             $dataMonth1,
             $dataMonth3
         ];
+
         //numberChartData
         $numberChartDataDay1 = [0,0,0,0,0,0,0,0,0,0,0,0];
         $numberChartDataWeek1 = [0,0,0,0,0,0,0,0,0,0,0,0];
@@ -104,6 +105,7 @@ class MainController extends Controller
             $dataMonth1,
             $dataMonth3
         ];
+
         return response()->json(
             [
                 'situationChartData' => $dataAll1,
@@ -120,6 +122,7 @@ class MainController extends Controller
         for ($i=0; $i<count($users); $i++) {
             array_push($spotsIdLis,$users[$i]['spots_id']); 
         }
+        
         for ($j=0; $j < count($spotsIdLis); $j++){
             $spotsId= $spotsIdLis[$j];
             $spots = Spot::where('spots_id', $spotsId)->get();
@@ -127,6 +130,7 @@ class MainController extends Controller
             $day1Int = array_map('intval', $day1Str);
             $cameraAll = Camera::where('spots_id', $spotsId)->get(['cameras_id','cameras_name','cameras_url']);
             $bicycles = Bicycle::where('spots_id', $spotsId)->whereIn('bicycles_status', ['None','違反'])->get();
+
             //cameraの項目
             $cameraNew=[];
             if (count($cameraAll) == 0) {
@@ -146,6 +150,7 @@ class MainController extends Controller
                     ];
                 }
             }
+
             //situationの項目
             $labelNames =[];
             for ($i=0; $i < count($bicycles); $i++) {
@@ -153,6 +158,7 @@ class MainController extends Controller
                     array_push($labelNames,$bicycles[$i]['labels_name']); 
                 }
             }
+
             $labelNamesNew = array_unique($labelNames);
 
             if (count($labelNamesNew) == 0) {
@@ -183,12 +189,14 @@ class MainController extends Controller
                             'violatin_img' => "None",
                         ];
                     }
+
                     $situation[$i]= [
                         'row' => $labelNamesNew[$i],
                         'bicycle' => $bicycleNew,
                     ];
                 }
             }
+
             $allData = [
                 'id' => $spots[0]['spots_id'],
                 'name' => $spots[0]['spots_name'],
