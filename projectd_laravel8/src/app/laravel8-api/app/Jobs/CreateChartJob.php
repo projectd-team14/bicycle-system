@@ -42,7 +42,7 @@ class CreateChartJob implements ShouldQueue
         $spotCountMonth1 = [];
         $spotCountMonth3 = [];
 
-        for ($i=0; $i < count($spotCount); $i++) {
+        for ($i = 0; $i < count($spotCount); $i++) {
             $violationCount = 0;
             $countDay1 = 0;
             $dataDay1 = '';
@@ -63,7 +63,7 @@ class CreateChartJob implements ShouldQueue
             $listMonth3 = explode(",",$spotCount[$i]['spots_count_month3']);
             $listViolations = explode(",",$spotCount[$i]['spots_violations']);
             
-            for ($j=0; $j < count($camera); $j++) {
+            for ($j = 0; $j < count($camera); $j++) {
                 if ($camera[$j]['spots_id'] === $spotCount[$i]['spots_id']) {
                     $countDay1 = $countDay1 + $camera[$j]['cameras_count'];
                 }

@@ -42,7 +42,7 @@ class YoloDeleteJob implements ShouldQueue
     {
         $inputs = $this->input;
 
-        for ($i=0; $i < count($inputs['delete_list']); $i++){
+        for ($i = 0; $i < count($inputs['delete_list']); $i++){
             Bicycle::where('cameras_id', $this->camera_id)->where('get_id', $inputs['delete_list'][$i])->delete();
         }
         

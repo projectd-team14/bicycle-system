@@ -41,7 +41,7 @@ class YoloUpdateJob implements ShouldQueue
         $inputs = $this->param;
         $bicycleStatusList = [];
 
-        for ($i=0; $i < count($inputs); $i++) {
+        for ($i = 0; $i < count($inputs); $i++) {
             if ($inputs[$i]['type'] === 'insert') {
                 $bicycleInsert = Bicycle::insertGetId([
                     'spots_id' => $inputs[$i]['spots_id'],
