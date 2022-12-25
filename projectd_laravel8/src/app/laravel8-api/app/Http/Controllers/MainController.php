@@ -210,28 +210,4 @@ class MainController extends Controller
 
         return $spotsDataAll;
     }
-
-    public function openApi(){
-        $spots = Spot::get();
-        $spotLisAll = [];
-        for ($i=0; $i < count($spots); $i++) {
-            $day1Str = explode(",",$spots[$i]["spots_count_day1"]);
-            $day1Int = array_map('intval', $day1Str);
-            $spotsAverage = $day1Int[count($day1Int)-1];
-            $spotsCount = count(Bicycle::where('spots_id', $spots[$i]['spots_id'])->orWhere('bicycles_status', 'None')->orWhere('bicycles_status', '違反')->get(['bicycles_id']));
-            $spotLis = [
-                'id' => $spots[$i]['spots_id'],
-                'spots_name' => $spots[$i]['spots_name'],
-                'spots_max' => $spots[$i]['spots_max'],
-                'spots_latitude' => $spots[$i]['spots_latitude'],
-                'spots_longitude' => $spots[$i]['spots_longitude'],
-                'spots_address' => $spots[$i]['spots_address'],
-                'spots_count' => $spotsCount,
-                'spots_average' => $spotsAverage
-            ];
-            array_push($spotLisAll,$spotLis);
-        }
-
-        return $spotLisAll;
-    }
 }

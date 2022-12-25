@@ -67,7 +67,6 @@ Route::get('/csv/{id}', [CsvController::class, 'csv']);
 // その他
 Route::get('/get_spot/{id}', [MainController::class, 'getSpot']);
 Route::get('/get_all/{id}', [MainController::class, 'getAll']);
-Route::get('/open_api', [MainController::class, 'openApi']);
 
 // YOLOv5
 Route::get('/get_camera_all', [YoloController::class, 'getCameraAll']);
