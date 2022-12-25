@@ -39,36 +39,45 @@ class YoloUpdateJob implements ShouldQueue
     public function getResult()
     {
         $inputs = $this->param;
-        $bicycleStatusList = [];
+        $insertItem = [];
+        $updateItem = []; 
+        $updateCameraId = [];
+        $updateGetId = [];
+        $cameraIdItem = [];        
+        $getIdItem = [];
 
         for ($i = 0; $i < count($inputs); $i++) {
             if ($inputs[$i]['type'] === 'insert') {
-                $bicycleInsert = Bicycle::insertGetId([
+                $data = [
                     'spots_id' => $inputs[$i]['spots_id'],
                     'cameras_id' => $inputs[$i]['cameras_id'],
                     'labels_name' => $inputs[$i]['labels_name'], 
                     'get_id' => $inputs[$i]['get_id'],
                     'bicycles_x_coordinate' => $inputs[$i]['bicycles_x_coordinate'],
                     'bicycles_y_coordinate' => $inputs[$i]['bicycles_y_coordinate'],
-                    'bicycles_status' => 'None',
-               ]);
+                    'bicycles_status' => 'None'
+                ];
+
+                array_push($insertItem, $data);
             } else {
-                $bicycleUpdate = Bicycle::where('cameras_id', $inputs[$i]['cameras_id'])->where('get_id', $inputs[$i]['get_id'])->update([
+                $data = [
                     'bicycles_x_coordinate' => $inputs[$i]['bicycles_x_coordinate'],
-                    'bicycles_y_coordinate' => $inputs[$i]['bicycles_y_coordinate'],
-               ]);
+                    'bicycles_y_coordinate' => $inputs[$i]['bicycles_y_coordinate']
+                ];
+                
+                array_push($updateItem, $data);
+                array_push($updateCameraId, $inputs[$i]['cameras_id']);
+                array_push($updateGetId, $inputs[$i]['get_id']);
             }
-            $bicycleStatus = Bicycle::where('cameras_id', $inputs[$i]['cameras_id'])->where('get_id', $inputs[$i]['get_id'])->get(['bicycles_id', 'bicycles_status', 'updated_at', 'created_at']);
-            $bicycleGet = [
-                'get_id' => $inputs[$i]['get_id'],
-                'bicycles_id' => $bicycleStatus[0]['bicycles_id'],
-                'bicycles_status' => $bicycleStatus[0]['bicycles_status'],
-                'updated_at' => $bicycleStatus[0]['updated_at'],
-                'created_at' => $bicycleStatus[0]['created_at']
-            ];
-            array_push($bicycleStatusList, $bicycleGet);
+
+            array_push($cameraIdItem, $inputs[$i]['cameras_id']);
+            array_push($getIdItem, $inputs[$i]['get_id']);
         }
 
-       return $bicycleStatusList;
+        Bicycle::insert($insertItem);
+        Bicycle::where('cameras_id', $updateCameraId)->where('get_id', $updateGetId)->update($updateItem);
+        $bicycleStatus = Bicycle::where('cameras_id', $cameraIdItem)->where('get_id', $getIdItem)->get(['bicycles_id', 'get_id', 'bicycles_status', 'updated_at', 'created_at']);
+
+       return $bicycleStatus;
     }
 }
