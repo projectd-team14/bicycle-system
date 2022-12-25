@@ -234,14 +234,4 @@ class MainController extends Controller
 
         return $spotLisAll;
     }
-
-    public function reset(){
-        $resetCameras = Camera::where('cameras_status','Run_process')->orWhere('cameras_status','Run')->get();
-        for ($i=0; $i < count($resetCameras); $i++) {
-            Camera::where('cameras_id', $resetCameras[$i]['cameras_id'])->update(['cameras_status'=>'None']); 
-            bicycle::where('cameras_id', $resetCameras[$i]['cameras_id'])->delete();
-        }
-
-        return '強制終了';
-    }
 }
