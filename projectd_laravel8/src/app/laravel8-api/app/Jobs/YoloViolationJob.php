@@ -39,10 +39,15 @@ class YoloViolationJob implements ShouldQueue
     public function getResult()
     {
         $inputs = $this->input;
+        $cameraIdItem = [];        
+        $getIdItem = [];
 
         for ($i = 0; $i < count($inputs['violation_list']); $i++) {
-            $bicycleViolation = Bicycle::where('cameras_id', $inputs['camera_id'])->where('get_id', $inputs['violation_list'][$i])->update(['bicycles_status' => '違反']);
+            array_push($cameraIdItem, $inputs['camera_id']);
+            array_push($getIdItem, $inputs['violation_list'][$i]);
         }
+
+        Bicycle::whereIn('cameras_id', $cameraIdItem)->whereIn('get_id', $getIdItem)->update(['bicycles_status' => '違反']);
 
         return $inputs;
     }
