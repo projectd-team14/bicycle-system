@@ -37,7 +37,6 @@ Route::middleware('auth:sanctum')->group(function(){
 });
 
 // 認証
-Route::get('/reset', [HomeController::class, 'reset']);
 Route::post('/register', [RegisterApiController::class, 'register']);
 Route::post('/login', [LoginApiController::class, 'login']);
 Route::post('/logout', [LoginApiController::class, 'logout']);
