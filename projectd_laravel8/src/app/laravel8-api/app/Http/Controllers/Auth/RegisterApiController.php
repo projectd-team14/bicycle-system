@@ -21,24 +21,22 @@ class RegisterApiController extends Controller
             'password' => 'required'
         ]);
 
-        //バリデーションで問題があった際にはエラーを返す
         if ($validator->fails()) {
             return response()->json($validator->messages(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        //バリエーションで問題がなかった場合にはユーザを作成する
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        //ユーザの作成が完了するとjsonを返す
         $json = [
             'data' => $user,
             'message' => 'User registration success!',
             'error' => ''
         ];
+        
         return response()->json( $json, Response::HTTP_OK);
     }
 }
