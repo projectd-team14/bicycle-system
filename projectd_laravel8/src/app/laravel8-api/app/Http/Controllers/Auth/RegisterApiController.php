@@ -21,7 +21,11 @@ class RegisterApiController extends Controller
             'password' => 'required'
         ]);
 
-        if ($validator->fails()) {
+        // XSS対策（攻撃そのものの対策ではなく、HTMLタグをDBやレスポンスに含めないようにする）
+        $data = $request->all();
+        $htmlValidationData = $this->htmlValidation($data);
+
+        if ($validator->fails() || $htmlValidationData) {
             return response()->json($validator->messages(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
@@ -36,7 +40,20 @@ class RegisterApiController extends Controller
             'message' => 'User registration success!',
             'error' => ''
         ];
-        
+
         return response()->json( $json, Response::HTTP_OK);
+    }
+
+    private function htmlValidation($data)
+    {
+        $xssData = array_values($data);
+
+        for ($i = 0; $i < count($xssData); $i++) {
+            if (preg_match('/<.*>/', $xssData[$i])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
