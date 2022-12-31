@@ -1,11 +1,18 @@
 <?php
-
+ 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+ 
 class CreateJobsTable extends Migration
 {
+    /**
+     * マイグレーションが使用するデータベース接続
+     *
+     * @var string
+     */
+    protected $connection = 'mysql';
+ 
     /**
      * Run the migrations.
      *
@@ -23,7 +30,7 @@ class CreateJobsTable extends Migration
             $table->unsignedInteger('created_at');
         });
     }
-
+ 
     /**
      * Reverse the migrations.
      *

@@ -43,7 +43,6 @@ return [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
-        // メインのデータベース
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
@@ -64,7 +63,6 @@ return [
             ]) : [],
         ],
 
-        // 負荷分散、Queueの保存等
         'mysql_second' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL_SECOND'),
