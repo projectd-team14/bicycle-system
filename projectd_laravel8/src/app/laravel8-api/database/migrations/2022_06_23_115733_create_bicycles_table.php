@@ -7,6 +7,13 @@ use Illuminate\Support\Facades\Schema;
 class CreateBicyclesTable extends Migration
 {
     /**
+     * マイグレーションが使用するデータベース接続
+     *
+     * @var string
+     */
+    protected $connection = 'mysql_second';
+
+    /**
      * Run the migrations.
      *
      * @return void
@@ -15,8 +22,8 @@ class CreateBicyclesTable extends Migration
     {
         Schema::create('bicycles', function (Blueprint $table) {
             $table->bigIncrements('bicycles_id');
-            $table->integer('spots_id');
-            $table->integer('cameras_id');
+            $table->integer('spots_id')->index();;
+            $table->integer('cameras_id')->index();;
             $table->string('labels_name');
             $table->integer('get_id');
             $table->string('bicycles_x_coordinate');

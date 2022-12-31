@@ -7,6 +7,13 @@ use Illuminate\Support\Facades\Schema;
 class CreateSpotsTable extends Migration
 {
     /**
+     * マイグレーションが使用するデータベース接続
+     *
+     * @var string
+     */
+    protected $connection = 'mysql_second';
+
+    /**
      * Run the migrations.
      *
      * @return void
@@ -15,8 +22,8 @@ class CreateSpotsTable extends Migration
     {
         Schema::create('spots', function (Blueprint $table) {
             $table->bigIncrements('spots_id');
-            $table->integer('users_id');
-            $table->string('spots_name');
+            $table->integer('users_id')->index();;
+            $table->string('spots_name')->index();;
             $table->string('spots_latitude');
             $table->string('spots_longitude');
             $table->string('spots_address');
