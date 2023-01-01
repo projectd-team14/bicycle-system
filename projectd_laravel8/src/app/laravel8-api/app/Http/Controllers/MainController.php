@@ -57,10 +57,10 @@ class MainController extends Controller
         ];
 
         //numberChartData
-        $numberChartDataDay1 = [0,0,0,0,0,0,0,0,0,0,0,0];
-        $numberChartDataWeek1 = [0,0,0,0,0,0,0,0,0,0,0,0];
-        $numberChartDataMonth1 = [0,0,0,0,0,0,0,0,0,0,0,0];
-        $numberChartDataMonth3 = [0,0,0,0,0,0,0,0,0,0,0,0];
+        $numberChartDataDay1 = array_fill(0, 12, 0);
+        $numberChartDataWeek1 = array_fill(0, 12, 0);
+        $numberChartDataMonth1 = array_fill(0, 12, 0);
+        $numberChartDataMonth3 = array_fill(0, 12, 0);
 
         for ($i=0; $i < count($numberChartDataDay1) - 1; $i++) {
             for ($j=0; $j < count($bicycles); $j++) {
