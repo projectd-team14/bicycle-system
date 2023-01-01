@@ -7,7 +7,6 @@ use App\Models\Spot;
 use App\Models\Bicycle;
 use App\Models\Camera;
 
-
 class MainController extends Controller
 {
     //駐輪情報
@@ -119,6 +118,7 @@ class MainController extends Controller
         $spotsUser = Spot::where('users_id', $id)->get(['spots_id']);
         $spotsIdLis = [];
         $spotsDataAll = [];
+
         for ($i=0; $i<count($spotsUser); $i++) {
             array_push($spotsIdLis, $spotsUser[$i]['spots_id']); 
         }
@@ -153,6 +153,7 @@ class MainController extends Controller
 
             //situationの項目
             $labelNames =[];
+            
             for ($i=0; $i < count($bicycles); $i++) {
                 if (!(in_array($bicycles[$i]['labels_name'], $labelNames))) {
                     array_push($labelNames,$bicycles[$i]['labels_name']); 
