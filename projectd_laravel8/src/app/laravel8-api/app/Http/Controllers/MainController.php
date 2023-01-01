@@ -116,11 +116,11 @@ class MainController extends Controller
 
     //全情報
     public function getAll($id){
-        $users = Spot::where('users_id', $id)->get();
+        $spotsUser = Spot::where('users_id', $id)->get(['spots_id']);
         $spotsIdLis = [];
         $spotsDataAll = [];
-        for ($i=0; $i<count($users); $i++) {
-            array_push($spotsIdLis,$users[$i]['spots_id']); 
+        for ($i=0; $i<count($spotsUser); $i++) {
+            array_push($spotsIdLis, $spotsUser[$i]['spots_id']); 
         }
         
         for ($j=0; $j < count($spotsIdLis); $j++){
