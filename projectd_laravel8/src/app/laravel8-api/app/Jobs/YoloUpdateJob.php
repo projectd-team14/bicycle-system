@@ -75,8 +75,8 @@ class YoloUpdateJob implements ShouldQueue
         }
 
         Bicycle::insert($insertItem);
-        Bicycle::where('cameras_id', $updateCameraId)->where('get_id', $updateGetId)->update($updateItem);
-        $bicycleStatus = Bicycle::where('cameras_id', $cameraIdItem)->where('get_id', $getIdItem)->get(['bicycles_id', 'get_id', 'bicycles_status', 'updated_at', 'created_at']);
+        Bicycle::where('cameras_id', $updateCameraId)->where('get_id', $updateGetId)->updateBulk($updateItem);
+        $bicycleStatus = Bicycle::where('cameras_id', $cameraIdItem)->get(['bicycles_id', 'get_id', 'bicycles_status', 'updated_at', 'created_at']);
 
        return $bicycleStatus;
     }
