@@ -115,26 +115,33 @@ class MainController extends Controller
 
     //全情報
     public function getAll($id){
-        $spotsUser = Spot::where('users_id', $id)->get(['spots_id']);
-        $spotsIdLis = [];
+        $spots = Spot::where('users_id', $id)->get();
         $spotsDataAll = [];
+        $spotsId = [];
 
-        for ($i=0; $i<count($spotsUser); $i++) {
-            array_push($spotsIdLis, $spotsUser[$i]['spots_id']); 
+        for ($i = 0; $i < count($spots); $i++) {
+            array_push($spotsId, $spots[$i]['spots_id']);
         }
-        
-        for ($j=0; $j < count($spotsIdLis); $j++){
-            $spotsId= $spotsIdLis[$j];
-            $spots = Spot::where('spots_id', $spotsId)->get();
-            $day1Str = explode(",",$spots[0]["spots_count_day1"]);
+
+        $cameraAll = Camera::where('spots_id', $spotsId)->get(['cameras_id', 'cameras_name', 'cameras_url']);
+        $bicycleAll = Bicycle::where('spots_id', $spotsId)->whereIn('bicycles_status', ['None', '違反'])->get();
+
+        for ($j = 0; $j < count($spots); $j++){
+            $day1Str = explode(",", $spots[$j]["spots_count_day1"]);
             $day1Int = array_map('intval', $day1Str);
-            $cameraAll = Camera::where('spots_id', $spotsId)->get(['cameras_id','cameras_name','cameras_url']);
-            $bicycles = Bicycle::where('spots_id', $spotsId)->whereIn('bicycles_status', ['None','違反'])->get();
 
             //cameraの項目
-            $cameraNew=[];
-            if (count($cameraAll) == 0) {
-                for ($i=0; $i <= count($cameraAll); $i++) {
+            $cameraNew = [];
+            $cameras = [];
+
+            for ($i = 0; $i < count($cameraAll); $i++) {
+                if ($cameraAll[$i]['spots_id'] === $spots[$j]['spots_id']) {
+                    array_push($cameras, $cameraAll[$i]);
+                }
+            }
+
+            if (count($cameras) == 0) {
+                for ($i=0; $i <= count($cameras); $i++) {
                     $cameraNew[$i]= [
                         'id' => [],
                         'name' => [],
@@ -142,51 +149,64 @@ class MainController extends Controller
                     ];
                 }
             } else {
-                for ($i=0; $i < count($cameraAll); $i++){
+                for ($i = 0; $i < count($cameras); $i++){
                     $cameraNew[$i]= [
-                        'id' => $cameraAll[$i]['cameras_id'],
-                        'name' => $cameraAll[$i]['cameras_name'],
-                        'url' => $cameraAll[$i]['cameras_url'],
+                        'id' => $cameras[$i]['cameras_id'],
+                        'name' => $cameras[$i]['cameras_name'],
+                        'url' => $cameras[$i]['cameras_url'],
                     ];
                 }
             }
 
             //situationの項目
-            $labelNames =[];
-            
-            for ($i=0; $i < count($bicycles); $i++) {
+            $labelNames = [];
+            $bicycles = [];
+
+            for ($i = 0; $i < count($bicycleAll); $i++) {
+                if ($bicycleAll[$i]['spots_id'] === $spots[$j]['spots_id']) {
+                    array_push($bicycles, $bicycleAll[$i]);                    
+                }
+            }
+
+            for ($i = 0; $i < count($bicycles); $i++) {
                 if (!(in_array($bicycles[$i]['labels_name'], $labelNames))) {
-                    array_push($labelNames,$bicycles[$i]['labels_name']); 
+                    array_push($labelNames, $bicycles[$i]['labels_name']); 
                 }
             }
 
             $labelNamesNew = array_unique($labelNames);
 
             if (count($labelNamesNew) == 0) {
-                for ($i=0; $i <= count($labelNamesNew); $i++) {
+                for ($i = 0; $i <= count($labelNamesNew); $i++) {
                     $situation[$i]= [
                         'row' => [],
                         'bicycle' => [],
                     ];
                 }
             } else {
-                for($i=0; $i < count($labelNamesNew); $i++) {
-                    $bicycle = Bicycle::where('spots_id', $spotsId)->where('labels_name',$labelNamesNew[$i])->get(['cameras_id', 'get_id','bicycles_id','updated_at','created_at','bicycles_status']);
+                for($i = 0; $i < count($labelNamesNew); $i++) {
+                    $inLabelBicycles = [];
 
-                    for ($k=0; $k < count($bicycle); $k++) {
-                        if ($bicycle[$k]['bicycles_status'] == 'None'){
-                            $bicycle[$k]['bicycles_status'] = false;
-                        } elseif ($bicycle[$k]['bicycles_status'] == '違反'){
-                            $bicycle[$k]['bicycles_status'] = true;
-                        } else {
-                            $bicycle[$k]['bicycles_status'] = false;
+                    for ($k = 0; $k < count($bicycles); $k++) {
+                        if ($bicycles[$k]['labels_name'] === $labelNamesNew[$i]) {
+                            array_push($inLabelBicycles, $bicycles[$k]);
                         }
-                        $time = strtotime($bicycle[$k]['updated_at']) - strtotime($bicycle[$k]['created_at']);
+                    }
+
+                    for ($k = 0; $k < count($inLabelBicycles); $k++) {
+                        if ($inLabelBicycles[$k]['bicycles_status'] == 'None'){
+                            $inLabelBicycles[$k]['bicycles_status'] = false;
+                        } elseif ($inLabelBicycles[$k]['bicycles_status'] == '違反'){
+                            $inLabelBicycles[$k]['bicycles_status'] = true;
+                        } else {
+                            $inLabelBicycles[$k]['bicycles_status'] = false;
+                        }
+                        $time = strtotime($inLabelBicycles[$k]['updated_at']) - strtotime($inLabelBicycles[$k]['created_at']);
                         $bicycleNew[$k]= [
-                            'id' => $bicycle[$k]['get_id'],
-                            'cameras_id' => $bicycle[$k]['cameras_id'],
+                            'id' => $inLabelBicycles[$k]['get_id'],
+                            'cameras_id' => $inLabelBicycles[$k]['cameras_id'],
                             'time' => $time,
-                            'violatin_status' => $bicycle[$k]['bicycles_status'],
+                            'violatin_status' => $inLabelBicycles[$k]['bicycles_status'],
                             'violatin_img' => "None",
                         ];
                     }
@@ -199,15 +219,15 @@ class MainController extends Controller
             }
 
             $allData = [
-                'id' => $spots[0]['spots_id'],
-                'name' => $spots[0]['spots_name'],
-                'address' => $spots[0]['spots_address'],
-                'latitude' => $spots[0]['spots_latitude'],
-                'longitude' => $spots[0]['spots_longitude'],
-                'max' => $spots[0]['spots_max'],
+                'id' => $spots[$j]['spots_id'],
+                'name' => $spots[$j]['spots_name'],
+                'address' => $spots[$j]['spots_address'],
+                'latitude' => $spots[$j]['spots_latitude'],
+                'longitude' => $spots[$j]['spots_longitude'],
+                'max' => $spots[$j]['spots_max'],
                 'count' => end($day1Int),
-                'overtime' => $spots[0]['spots_over_time'],
-                'img'=> $spots[0]['spots_img'],
+                'overtime' => $spots[$j]['spots_over_time'],
+                'img'=> $spots[$j]['spots_img'],
                 'camera' => $cameraNew,
                 'situation' => $situation
             ];
