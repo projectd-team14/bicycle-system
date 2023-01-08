@@ -13,6 +13,7 @@ class SpotDashboardController extends Controller
     {
         $spots = Spot::where('users_id', $id)->get(['spots_id', 'spots_name', 'spots_count_day1', 'spots_violations', 'spots_max', 'spots_over_time']);
         $dataAll = [];
+        $spotsId = [];
 
         if (count($spots) === 0) {
             $dataAll = [
@@ -28,6 +29,12 @@ class SpotDashboardController extends Controller
         }
 
         for ($i = 0; $i < count($spots); $i++) {
+            array_push($spotsId, $spots[$i]['spots_id']);
+        }
+
+        $cameraCount = Camera::where('spots_id', $spotsId)->get(['spots_id', 'cameras_count']);
+
+        for ($i = 0; $i < count($spots); $i++) {
             //推移
             $violationStr = explode(",",$spots[$i]["spots_violations"]);
             $violationInt = array_map('intval', $violationStr);
@@ -35,11 +42,12 @@ class SpotDashboardController extends Controller
             $day1Int = array_map('intval', $day1Str);
 
             // 混雑度
-            $cameraCount = Camera::where('spots_id', $spots[$i]['spots_id'])->get('cameras_count');
             $count = 0;
 
             for ($j = 0; $j < count($cameraCount); $j++) {
-                $count = $count + $cameraCount[$j]['cameras_count'];    
+                if ($cameraCount[$j]['spots_id'] === $spots[$i]['spots_id']){
+                    $count = $count + $cameraCount[$j]['cameras_count'];                        
+                }
             }
 
             $data = [
