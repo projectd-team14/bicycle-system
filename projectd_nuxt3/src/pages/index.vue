@@ -18,24 +18,24 @@
 </template>
 
 <script lang="ts">
-const colorList = [];
+  const colorList = [];
 
-for (let i = 0; i < 20; i++) {
-  var r = Math.floor(Math.random() * 200) ;
-  var g = Math.floor(Math.random() * 200) ;
-  var b = Math.floor(Math.random() * 200) ;
-  var colorCode = "rgba(" + r + "," + g + "," + b + ",0.6)";
+  for (let i = 0; i < 20; i++) {
+    var r = Math.floor(Math.random() * 200) ;
+    var g = Math.floor(Math.random() * 200) ;
+    var b = Math.floor(Math.random() * 200) ;
+    var colorCode = "rgba(" + r + "," + g + "," + b + ",0.6)";
 
-  colorList.push(colorCode);
-}
+    colorList.push(colorCode);
+  }
 
-  export default {
-    data () {
-      return {
-        color: colorList
+    export default {
+      data () {
+        return {
+          color: colorList
+        }
       }
     }
-  }
 </script>
 
 <script setup lang="ts">

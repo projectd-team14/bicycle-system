@@ -10,41 +10,47 @@
 </template>
 
 <script setup lang="ts">
-const { dash } = useDash()
+   const { dash } = useDash()
+   var spotsCount = 0
 
-interface Props {
-   color: Array,
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  color:[]
-})
-
-const chartData = computed(() => {
-   const datasets = []
-   const labels = []
-   dash.value.data[0].spots_violations.forEach((e, i) => {
-      var dt = new Date()
-      dt.setDate(dt.getDate() - i)
-      labels.unshift(dt.getMonth()+"/"+dt.getDate())
-   })
-   dash.value.data.forEach((e, i) => {
-      datasets.push(
-         {
-            label: e.spots_name,
-            backgroundColor: props.color[i],
-            borderColor: props.color[i],
-            data: e.spots_violations
-         }
-      )
-   })
-   const Data = {
-      labels: labels,
-      datasets: datasets
+   interface Props {
+      color: Array,
    }
-   return Data
-})
 
+   const props = withDefaults(defineProps<Props>(), {
+   color:[]
+   })
+
+   const chartData = computed(() => {
+      const datasets = []
+      const labels = []
+      dash.value.data[0].spots_violations.forEach((e, i) => {
+         var dt = new Date()
+         dt.setDate(dt.getDate() - i)
+         labels.unshift(dt.getMonth()+"/"+dt.getDate())
+      })
+      dash.value.data.forEach((e, i) => {
+         if (i > 20) {
+            spotsCount = 0
+         } else {
+            spotsCount = spotsCount + 1
+         }
+
+         datasets.push(
+            {
+               label: e.spots_name,
+               backgroundColor: props.color[spotsCount],
+               borderColor: props.color[spotsCount],
+               data: e.spots_violations
+            }
+         )
+      })
+      const Data = {
+         labels: labels,
+         datasets: datasets
+      }
+      return Data
+   })
 </script>
 
 <style lang="sass" scoped>

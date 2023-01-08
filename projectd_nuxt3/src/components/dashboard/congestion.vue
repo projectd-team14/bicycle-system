@@ -21,15 +21,27 @@
 </template>
 
 <script setup lang="ts">
-const { dash } = useDash()
+   const { dash } = useDash()
+   const colorList = []
+   var spotsCount = 0
 
-interface Props {
-   color: Array,
-}
 
-const props = withDefaults(defineProps<Props>(), {
-  color:[]
-})
+   for (let i = 0; i < dash.value.length; i++) {
+      if (i > 20) {
+         spotsCount = 0
+      } else {
+         spotsCount = spotsCount + 1
+      }
+      colorList.push(Array[i])
+   }
+
+   interface Props {
+      color: colorList
+   }
+
+   const props = withDefaults(defineProps<Props>(), {
+      color:[]
+   })
 </script>
 
 <style lang="sass" scoped>

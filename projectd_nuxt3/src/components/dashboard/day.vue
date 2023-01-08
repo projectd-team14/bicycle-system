@@ -11,6 +11,7 @@
  
  <script setup lang="ts">
  const { dash } = useDash()
+ var spotsCount = 0
  
  interface Props {
     color: Array,
@@ -27,6 +28,12 @@
 
     })
     dash.value.data.forEach((e, i) => {
+      if (i > 20) {
+         spotsCount = 0
+      } else {
+         spotsCount = spotsCount + 1
+      }
+
        datasets.push(
           {
              label: e.spots_name,
