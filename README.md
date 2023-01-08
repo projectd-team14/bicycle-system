@@ -37,7 +37,7 @@ docker compose up -d --build
 ```
 4-1.projectd_laravel8のコンテナに接続(projectd_laravel8ディレクトリで行う)
 ```
-docker container exec -it projectd_laravel8-php-1 bash
+docker-compose exec php sh
 cd laravel8-api
 composer install
 ```
