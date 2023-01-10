@@ -22,7 +22,7 @@ class CreateCamerasTable extends Migration
     {
         Schema::create('cameras', function (Blueprint $table) {
             $table->bigIncrements('cameras_id');
-            $table->integer('spots_id')->index();;
+            $table->integer('spots_id')->index();
             $table->string('cameras_name');
             $table->string('cameras_url');
             $table->string('cameras_status')->defalut('None');

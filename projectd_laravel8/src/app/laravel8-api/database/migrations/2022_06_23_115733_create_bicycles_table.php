@@ -22,8 +22,8 @@ class CreateBicyclesTable extends Migration
     {
         Schema::create('bicycles', function (Blueprint $table) {
             $table->bigIncrements('bicycles_id');
-            $table->integer('spots_id')->index();;
-            $table->integer('cameras_id')->index();;
+            $table->integer('spots_id')->index();
+            $table->integer('cameras_id')->index();
             $table->string('labels_name');
             $table->integer('get_id');
             $table->string('bicycles_x_coordinate');

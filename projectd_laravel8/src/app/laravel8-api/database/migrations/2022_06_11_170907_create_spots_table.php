@@ -22,8 +22,8 @@ class CreateSpotsTable extends Migration
     {
         Schema::create('spots', function (Blueprint $table) {
             $table->bigIncrements('spots_id');
-            $table->integer('users_id')->index();;
-            $table->string('spots_name')->index();;
+            $table->integer('users_id')->index();
+            $table->string('spots_name')->index();
             $table->string('spots_latitude');
             $table->string('spots_longitude');
             $table->string('spots_address');

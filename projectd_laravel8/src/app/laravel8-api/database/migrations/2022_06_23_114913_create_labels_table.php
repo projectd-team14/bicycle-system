@@ -22,7 +22,7 @@ class CreateLabelsTable extends Migration
     {
         Schema::create('labels', function (Blueprint $table) {
             $table->bigIncrements('labels_id');
-            $table->integer('cameras_id')->index();;
+            $table->integer('cameras_id')->index();
             $table->json('labels_json')->nullable();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
