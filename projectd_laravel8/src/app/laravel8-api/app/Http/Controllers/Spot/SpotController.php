@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Spot;
 use App\Models\Bicycle;
 use App\Jobs\CreateSpotJob;
+use App\Jobs\DeleteSpotJob;
 
 class SpotController extends Controller
 {
@@ -74,9 +75,10 @@ class SpotController extends Controller
 
     public function deleteSpot(Request $request, $id)
     {
-        $inputs = $request->all();
-         Spot::where('spots_id', $id)->delete();
-         Camera::where('spots_id', $id)->delete();
+        $deleteSpotName = Spot::where('spots_id', $id)->get(['spots_name']);
+        $this->deleteSpotLog($deleteSpotName);
+        Spot::where('spots_id', $id)->delete();
+        Camera::where('spots_id', $id)->delete();
 
         return "削除完了";
     }
@@ -98,4 +100,9 @@ class SpotController extends Controller
     {
         CreateSpotJob::dispatch($data);
     }
+
+    private function deleteSpotLog($deleteSpotName)
+    {
+        DeleteSpotJob::dispatch($deleteSpotName);
+    } 
 }
