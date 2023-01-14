@@ -38,7 +38,7 @@ class CreateUserJob implements ShouldQueue
         Log::insertGetId([
             'logs_id' => $searchUserId[0]['id'],
             'logs_status' => 'user',
-            'logs_message' => 'new_user_create'
+            'logs_message' => 'create_new_user'
         ]);
     }
 }
