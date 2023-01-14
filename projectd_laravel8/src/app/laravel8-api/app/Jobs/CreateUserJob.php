@@ -8,7 +8,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\Models\User;
 use App\Models\Log;
 
 class CreateUserJob implements ShouldQueue
@@ -34,9 +33,8 @@ class CreateUserJob implements ShouldQueue
      */
     public function handle()
     {
-        $searchUserId = User::whereEmail($this->param)->get(['id']);
         Log::insertGetId([
-            'logs_id' => $searchUserId[0]['id'],
+            'logs_name' => $this->param,
             'logs_status' => 'user',
             'logs_message' => 'create_new_user'
         ]);

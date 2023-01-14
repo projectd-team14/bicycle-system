@@ -15,7 +15,7 @@ class CreateLogsTable extends Migration
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->id();
-            $table->integer('logs_id')->index();
+            $table->string('logs_name')->index();
             $table->string('logs_status')->defalut('None');
             $table->string('logs_message')->defalut('None');
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
