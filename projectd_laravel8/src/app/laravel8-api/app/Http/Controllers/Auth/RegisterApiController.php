@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use \Symfony\Component\HttpFoundation\Response;
+use App\Jobs\CreateUserJob;
 
 class RegisterApiController extends Controller
 {
@@ -41,6 +42,8 @@ class RegisterApiController extends Controller
             'error' => ''
         ];
 
+        $this->createUserLog($request);
+
         return response()->json( $json, Response::HTTP_OK);
     }
 
@@ -55,5 +58,10 @@ class RegisterApiController extends Controller
         }
 
         return false;
+    }
+
+    private function createUserLog($request)
+    {
+        CreateUserJob::dispatch($request);
     }
 }
