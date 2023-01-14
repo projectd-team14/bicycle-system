@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Spot;
 use App\Models\Bicycle;
+use App\Jobs\CreateSpotJob;
 
 class SpotController extends Controller
 {
@@ -64,7 +65,9 @@ class SpotController extends Controller
              'spots_over_time' => $data['spots_over_time'] * 3600,
              'spots_max' => $data['spots_max'],
              'spots_url' => $data['spots_url'],
-        ]);            
+        ]);      
+
+        $this->createUserLog($data);
 
         return $data;
     }
@@ -89,5 +92,10 @@ class SpotController extends Controller
         }
 
         return false;
+    }
+
+    private function createUserLog($data)
+    {
+        CreateSpotJob::dispatch($data);
     }
 }
