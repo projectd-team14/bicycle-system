@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Camera;
 use App\Models\Bicycle;
+use App\Jobs\CreateCameraJob;
 
 class CameraController extends Controller
 {
@@ -45,6 +46,9 @@ class CameraController extends Controller
             'cameras_status' => 'Stop',
             'cameras_count' => 0,
         ]);
+        
+        $this->createCameraLog($data);
+
         return $data;
     }
 
@@ -114,6 +118,11 @@ class CameraController extends Controller
         }
 
         return false;
+    }
+
+    private function createCameraLog($data)
+    {
+        CreateCameraJob::dispatch($data);
     }
 }
 

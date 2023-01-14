@@ -67,7 +67,7 @@ class SpotController extends Controller
              'spots_url' => $data['spots_url'],
         ]);      
 
-        $this->createUserLog($data);
+        $this->createSpotLog($data);
 
         return $data;
     }
@@ -94,7 +94,7 @@ class SpotController extends Controller
         return false;
     }
 
-    private function createUserLog($data)
+    private function createSpotLog($data)
     {
         CreateSpotJob::dispatch($data);
     }
